@@ -1,6 +1,6 @@
 const TextInput = (props) => {
-    const placeholder = props.codigo
-    const setValueState = props.func
+    const placeholder = props.type
+    const setValueState = props.setter
     const inputValueHandler = (event) => { setValueState(event.target.value) }
     return (
         <div>

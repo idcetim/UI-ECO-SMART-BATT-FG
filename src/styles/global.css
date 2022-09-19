@@ -19,3 +19,10 @@
     width: 300px;
     margin-bottom: 30px;
 }
+
+.bt-registrar {
+    padding: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    margin-top: 18px;
+}
