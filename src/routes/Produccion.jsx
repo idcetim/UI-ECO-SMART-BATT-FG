@@ -5,6 +5,7 @@ import TextInputDate from '../components/TextInputDate';
 import TextInputFile from '../components/TextInputFile';
 import { entradas, entradasFile } from '../api/endpoints';
 import { postHeader } from '../api/fetchHeader';
+import '../styles/global.css'
 export const Produccion = () => {
   const [newCode, setNewCode] = useState('')
   const [date, setDate] = useState()
@@ -34,15 +35,19 @@ export const Produccion = () => {
   const selectOptions = ["Calidad", "2N", "3N", "4N", "5N", "Reciclado"]
   console.log(hash)
   return (
-    <div>
-      <TextInput type={"Origen"} func={setOriginCode} />
-      <TextInput type={'Código Lote'} setter={setNewCode} />
+    <div className='web-wrapper'>
+      <h1>Registrar producto final</h1>
+      <TextInput type={"Código lote de origen"} func={setOriginCode} />
+      <TextInput type={'Código Lote producto'} setter={setNewCode} />
       <TextInputDate setter={setDate} />
       <TextInput type={'Cantidad'} setter={setAmount} />
       <SelectInput options={selectOptions} setter={setQuality} />
-      <label>Resultado análisis</label>
-      <TextInputFile func={setChemicalAnalysis} />
-      <button onClick={clickHandler}>Registrar</button>
+      <div className='div-file-title'>
+        <label className='file-title'>Resultado análisis</label>
+        <TextInputFile func={setChemicalAnalysis} />
+      </div>
+
+      <button onClick={clickHandler} className='bt-registrar'>Registrar</button>
       <Suspense fallback={''}>{hash}</Suspense>
 
     </div>

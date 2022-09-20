@@ -6,9 +6,10 @@ import {Produccion} from './routes/Produccion'
 import {VerStockEntradas} from './routes/VerStockEntradas'
 import {VerStockProduccion} from './routes/VerStockProduccion'
 import NavBar from "./routes/NavBar";
+import './styles/global.css'
 
 function App() {
-  return ( <div >
+  return ( <div>
     <BrowserRouter >
     <NavBar />
     <Routes >

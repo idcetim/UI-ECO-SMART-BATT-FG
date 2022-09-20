@@ -22,7 +22,19 @@
 
 .bt-registrar {
     padding: 5px;
-    font-size: 14px;
+    font-family: 'comic-sans';
+    font-size: 20px;
     font-weight: bold;
-    margin-top: 18px;
+    margin-top: 22px;
+    border-radius: 3px;
+}
+
+.div-file-title {
+    margin-top: 20px;
+}
+
+.file-title {
+    font-family: 'comic sans';
+    font-weight: bold;
+    font-size: 20px;
 }

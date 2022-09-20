@@ -1,0 +1,20 @@
+.normal-input-text,
+.normal-input-date,
+.normal-input-select,
+.normal-input-file {
+    padding: 8px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+    width: 200px;
+    border-radius: 2px;
+    font-size: 20px;
+    font-family: 'Comic Sans';
+}
+
+.normal-input-select {
+    width: 220px;
+}
+
+.normal-input-file {
+    width: 450px;
+}

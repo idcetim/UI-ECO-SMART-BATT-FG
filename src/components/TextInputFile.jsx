@@ -1,11 +1,12 @@
 import React from "react"
+import '../styles/inputs.css'
 const TextInputFile = (props) => {
     const setValueState = props.func
     const inputValueHandler = (event) => { setValueState(fileInput.current.files[0]) }
     const fileInput = React.createRef()
     return (
         <div>
-            <input className="input-text" type="file"  title=" " ref={fileInput} onChange={inputValueHandler} />
+            <input className="normal-input-file" type="file"  title=" " ref={fileInput} onChange={inputValueHandler} />
             
         </div>
     )
