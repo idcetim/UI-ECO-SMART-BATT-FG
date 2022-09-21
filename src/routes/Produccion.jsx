@@ -3,7 +3,7 @@ import SelectInput from '../components/SelectInput';
 import TextInput from '../components/TextInput';
 import TextInputDate from '../components/TextInputDate';
 import TextInputFile from '../components/TextInputFile';
-import { produccion , produccionOrdenFile, produccionQuimicoFile, produccionGranulometricoFile } from '../api/endpoints';
+import { produccion, produccionOrdenFile, produccionQuimicoFile, produccionGranulometricoFile } from '../api/endpoints';
 import { postHeader } from '../api/fetchHeader';
 import '../styles/global.css'
 
@@ -20,13 +20,13 @@ export const Produccion = () => {
 
   const clickHandler = async () => {
     const formData1 = new FormData();
-    formData1.append('fileAnalisis', chemicalAnalysis)
+    formData1.append('fileQuimico', chemicalAnalysis)
     await fetch(produccionQuimicoFile, { method: 'POST', body: formData1, })
     const formData2 = new FormData();
-    formData2.append('fileAnalisis', granuAnalysis)
+    formData2.append('fileGranulometria', granuAnalysis)
     await fetch(produccionGranulometricoFile, { method: 'POST', body: formData2, })
     const formData3 = new FormData();
-    formData3.append('fileAnalisis', workOrder)
+    formData3.append('fileOrden', workOrder)
     await fetch(produccionOrdenFile, { method: 'POST', body: formData3, })
     const workOrderUrl = `https://silicio.blob.core.windows.net/orden-trabajo/${workOrder.name}`
     const granuAnalysisUrl = `https://silicio.blob.core.windows.net/granulometria-producto/${granuAnalysis.name}`

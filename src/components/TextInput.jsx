@@ -8,8 +8,6 @@ const TextInput = (props) => {
         <div>
             <input className="normal-input-text" placeholder={placeholder} onChange={inputValueHandler} />
         </div>
-
-
     )
 }
 
