@@ -1,4 +1,4 @@
-import { Suspense, useState } from 'react';
+import {  useState } from 'react';
 import SelectInput from '../components/SelectInput';
 import TextInput from '../components/TextInput';
 import TextInputDate from '../components/TextInputDate';
@@ -30,6 +30,7 @@ export const Entradas = () => {
       "quality": quality,
       "origin": origin
     })
+    console.log(bodyData)
     const response = await fetch(entradas, { method: 'POST', headers: postHeader, body: bodyData, })
     setHash(await response.json())
   }
@@ -40,16 +41,16 @@ export const Entradas = () => {
       <h1>Registrar entrada de lotes</h1>
       <TextInput type={'Código Lote'} setter={setCode} />
       <TextInputDate setter={setDate} />
-      <TextInput type={'Cantidad'} setter={setAmount} />
-      <TextInput type={"Origen"} func={setOrigin} />
+      <TextInput type={'Cantidad (kg)'} setter={setAmount} />
+      <TextInput type={"Origen"} setter={setOrigin} />
       <SelectInput options={selectOptions} setter={setQuality} />
       <div className='div-file-title'>
         <label className='file-title'>Resultado análisis</label>
-        <TextInputFile func={setAnalysis} />
+        <TextInputFile setter={setAnalysis} />
       </div>
 
       <button onClick={clickHandler} className='bt-registrar'>Registrar</button>
-      <Suspense fallback={''}>{hash}</Suspense>
+      {/* <Suspense fallback={''}>{hash}</Suspense> */}
 
     </div>
 
