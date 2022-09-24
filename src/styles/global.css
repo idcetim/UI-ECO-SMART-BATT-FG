@@ -21,12 +21,13 @@
 }
 
 .bt-registrar {
-    padding: 5px;
+    padding: 8px;
     font-family: 'comic-sans';
     font-size: 20px;
     font-weight: bold;
-    margin-top: 22px;
+    margin-top: 16px;
     border-radius: 3px;
+    background-color: rgb(193, 216, 246);
 }
 
 .div-file-title {

@@ -1,10 +1,12 @@
-import { Suspense, useState } from 'react';
+import { useEffect, useState } from 'react';
 import SelectInput from '../components/SelectInput';
 import TextInput from '../components/TextInput';
 import TextInputDate from '../components/TextInputDate';
 import TextInputFile from '../components/TextInputFile';
 import { produccion, produccionOrdenFile, produccionQuimicoFile, produccionGranulometricoFile } from '../api/endpoints';
 import { postHeader } from '../api/fetchHeader';
+import { ShowHash } from '../components/ShowHash';
+import { Loading } from '../components/Loading';
 import '../styles/global.css'
 
 export const Produccion = () => {
@@ -18,8 +20,15 @@ export const Produccion = () => {
   const [granuAnalysis, setGranuAnalysis] = useState()
   const [workOrder, setWorkOrder] = useState()
   const [hash, setHash] = useState()
+  const  [isRegisterOngoing, setIsRegisterOnGoing] = useState(false)
+  const buttonDisabledCondition = !newCode || !amount || !quality || !granuAnalysis || !date || !originCode || !workOrder || !chemicalAnalysis
+
+  useEffect(() => {
+    if(hash === undefined) setIsRegisterOnGoing(false)
+  }, [hash])
 
   const clickHandler = async () => {
+    setIsRegisterOnGoing(true)
     const formData1 = new FormData();
     formData1.append('fileQuimico', chemicalAnalysis)
     await fetch(produccionQuimicoFile, { method: 'POST', body: formData1, })
@@ -43,7 +52,6 @@ export const Produccion = () => {
       "quality": quality,
       "originCode": originCode
     })
-    console.log(bodyData)
     const response = await fetch(produccion, { method: 'POST', headers: postHeader, body: bodyData, })
     setHash(await response.json())
   }
@@ -54,7 +62,7 @@ export const Produccion = () => {
     <div className='web-wrapper'>
       <h2>Registrar producto final</h2>
       <TextInput type={"Código lote de origen"} setter={setOriginCode} />
-      <TextInput type={'Código Lote producto'} setter={setNewCode} />
+      <TextInput type={'Código nuevo producto'} setter={setNewCode} />
       <TextInputDate setter={setDate} />
       <SelectInput options={selectProductTypeOptions} setter={setProductType} />
       <TextInput type={'Cantidad (kg)'} setter={setAmount} />
@@ -73,8 +81,9 @@ export const Produccion = () => {
         <TextInputFile setter={setWorkOrder} />
       </div>
 
-      <button onClick={clickHandler} className='bt-registrar'>Registrar</button>
-      <Suspense fallback={''}>{hash}</Suspense>
+      <button onClick={clickHandler} className='bt-registrar' disabled={buttonDisabledCondition}>Registrar</button>
+      {hash!== undefined && isRegisterOngoing && <ShowHash txHash={hash} />} 
+      {hash === undefined && isRegisterOngoing &&  <Loading />}
 
     </div>
 

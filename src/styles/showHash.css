@@ -1,7 +1,8 @@
 .div-showTxHash {
-    margin-top: 15px;
+    margin-top: 20px;
+    margin-bottom: 50px;
     display: grid;
-    grid-template-columns: 195px 220px;
+    grid-template-columns: 220px 220px;
 }
 
 .span-hashTx {
@@ -9,11 +10,14 @@
     white-space: nowrap;
     overflow: hidden;
     display: grid;
+    font-size: 20px;
+    font-family: 'comic sans';
 }
 
 .hash-link {
-    font-size: 16px;
+    font-size: 20px;
     font-weight: bold;
     color: rgb(2, 185, 2);
     display: grid;
+    font-family: 'comic sans';
 }

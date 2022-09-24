@@ -2,8 +2,9 @@
 import '../styles/showHash.css'
 
 export const ShowHash = (props) => {
+  console.log(props)
   const txHash = props?.txHash
-  const fantomExplorer = "https://testnet.ftmscan.com/tx/" + txHash
+  const fantomExplorer = `https://testnet.ftmscan.com/tx/${txHash}`
   return (
     <div className='div-showTxHash'>
      <span className='span-hashTx'> ✅ Registro completado:</span> 

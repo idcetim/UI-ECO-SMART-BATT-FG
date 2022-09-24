@@ -1,4 +1,4 @@
-import { useState} from 'react';
+import { useState, useEffect} from 'react';
 //import {ErrorBoundary} from 'react-error-boundary'
 import SelectInput from '../components/SelectInput';
 import TextInput from '../components/TextInput';
@@ -8,6 +8,7 @@ import { entradas, entradasFile } from '../api/endpoints';
 import { postHeader } from '../api/fetchHeader';
 import '../styles/global.css'
 import { ShowHash } from '../components/ShowHash';
+import { Loading } from '../components/Loading';
 
 export const Entradas = () => {
   const [code, setCode] = useState('')
@@ -17,8 +18,17 @@ export const Entradas = () => {
   const [origin, setOrigin] = useState('')
   const [analysis, setAnalysis] = useState()
   const [hash, setHash] = useState()
-
+  const  [isRegisterOngoing, setIsRegisterOnGoing] = useState(false)
+  const selectOptions = ["Calidad", "2N", "3N", "4N", "5N", "Reciclado"]
+  const buttonDisabledCondition = !code || !amount || !quality || !analysis || !date || !origin
+  
+  useEffect(() => {
+    if(hash === undefined) setIsRegisterOnGoing(false)
+  }, [hash])
+  
   const clickHandler = async () => {
+ 
+    setIsRegisterOnGoing(true)
     const file = analysis
     const formData = new FormData();
     formData.append('fileAnalisis', file)
@@ -32,11 +42,10 @@ export const Entradas = () => {
       "quality": quality,
       "origin": origin
     })
-    console.log(bodyData)
     const response = await fetch(entradas, { method: 'POST', headers: postHeader, body: bodyData, })
     setHash(await response.json())
   }
-  const selectOptions = ["Calidad", "2N", "3N", "4N", "5N", "Reciclado"]
+  
   return (
     <div className='web-wrapper'>
       <h1>Registrar entrada de lotes</h1>
@@ -50,10 +59,10 @@ export const Entradas = () => {
         <TextInputFile setter={setAnalysis} />
       </div>
 
-      <button onClick={clickHandler} className='bt-registrar'>Registrar</button>
-    {/* <ErrorBoundary fallback={<div></div>}> */}
-     {hash!== undefined ? <ShowHash props={hash} /> : <></>}
-     {/* </ErrorBoundary> */}
+      <button onClick={clickHandler} className='bt-registrar'disabled={buttonDisabledCondition}>Registrar</button>
+
+     {hash!== undefined && isRegisterOngoing && <ShowHash txHash={hash} />} 
+     {hash=== undefined && isRegisterOngoing &&  <Loading />}
 
     </div>
 
