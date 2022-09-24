@@ -12,6 +12,7 @@ export const Produccion = () => {
   const [date, setDate] = useState()
   const [amount, setAmount] = useState('')
   const [quality, setQuality] = useState('')
+  const [productType, setProductType] = useState('')
   const [originCode, setOriginCode] = useState('')
   const [chemicalAnalysis, setChemicalAnalysis] = useState()
   const [granuAnalysis, setGranuAnalysis] = useState()
@@ -36,35 +37,40 @@ export const Produccion = () => {
       "date": date,
       "amount": amount,
       "order": workOrderUrl,
+      "productType": productType,
       "chemicalAnalysis": chemicalAnalysisUrl,
       "granuAnalysis": granuAnalysisUrl,
       "quality": quality,
       "originCode": originCode
     })
+    console.log(bodyData)
     const response = await fetch(produccion, { method: 'POST', headers: postHeader, body: bodyData, })
     setHash(await response.json())
   }
-  const selectOptions = ["Calidad", "2N", "3N", "4N", "5N", "Reciclado"]
-  console.log(hash)
+  const selectQualityOptions = ["Calidad", "2N", "3N", "4N", "5N", "Reciclado"]
+  const selectProductTypeOptions = ["Tipo de producto", "0.2 - 2 mm", "< 0.5 mm"]
+  console.log("hash", hash)
   return (
     <div className='web-wrapper'>
       <h2>Registrar producto final</h2>
-      <TextInput type={"Código lote de origen"} func={setOriginCode} />
+      <TextInput type={"Código lote de origen"} setter={setOriginCode} />
       <TextInput type={'Código Lote producto'} setter={setNewCode} />
       <TextInputDate setter={setDate} />
+      <SelectInput options={selectProductTypeOptions} setter={setProductType} />
       <TextInput type={'Cantidad (kg)'} setter={setAmount} />
-      <SelectInput options={selectOptions} setter={setQuality} />
-      <div className='div-file-title'>
-        <label className='file-title'>Orden de trabajo</label>
-        <TextInputFile func={setWorkOrder} />
-      </div>
+      <SelectInput options={selectQualityOptions} setter={setQuality} />
+
       <div className='div-file-title'>
         <label className='file-title'>Resultado análisis químico</label>
-        <TextInputFile func={setChemicalAnalysis} />
+        <TextInputFile setter={setChemicalAnalysis} />
       </div>
       <div className='div-file-title'>
         <label className='file-title'>Resultado análisis granulométrico</label>
-        <TextInputFile func={setGranuAnalysis} />
+        <TextInputFile setter={setGranuAnalysis} />
+      </div>
+      <div className='div-file-title'>
+        <label className='file-title'>Orden de trabajo</label>
+        <TextInputFile setter={setWorkOrder} />
       </div>
 
       <button onClick={clickHandler} className='bt-registrar'>Registrar</button>

@@ -1,4 +1,5 @@
-import {  useState } from 'react';
+import { useState} from 'react';
+//import {ErrorBoundary} from 'react-error-boundary'
 import SelectInput from '../components/SelectInput';
 import TextInput from '../components/TextInput';
 import TextInputDate from '../components/TextInputDate';
@@ -6,6 +7,7 @@ import TextInputFile from '../components/TextInputFile';
 import { entradas, entradasFile } from '../api/endpoints';
 import { postHeader } from '../api/fetchHeader';
 import '../styles/global.css'
+import { ShowHash } from '../components/ShowHash';
 
 export const Entradas = () => {
   const [code, setCode] = useState('')
@@ -35,7 +37,6 @@ export const Entradas = () => {
     setHash(await response.json())
   }
   const selectOptions = ["Calidad", "2N", "3N", "4N", "5N", "Reciclado"]
-  console.log(hash)
   return (
     <div className='web-wrapper'>
       <h1>Registrar entrada de lotes</h1>
@@ -50,7 +51,9 @@ export const Entradas = () => {
       </div>
 
       <button onClick={clickHandler} className='bt-registrar'>Registrar</button>
-      {/* <Suspense fallback={''}>{hash}</Suspense> */}
+    {/* <ErrorBoundary fallback={<div></div>}> */}
+     {hash!== undefined ? <ShowHash props={hash} /> : <></>}
+     {/* </ErrorBoundary> */}
 
     </div>
 
