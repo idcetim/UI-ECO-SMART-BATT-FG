@@ -1,13 +1,12 @@
-import { useState, useEffect} from 'react';
-import { entradas } from '../api/endpoints';
-export const VerStockEntradas = () => {
-const [lotesCode, setLotesCode] = useState()
+import { React, Suspense } from 'react';
+import { Loading } from '../components/Loading';
+import { ShowEntryLotes } from '../components/ShowEntryLotes';
 
-  useEffect(()=> {
-    fetch(entradas).then((allLotes)=> {
-      setLotesCode(allLotes)
-    })
-  },[])
-    console.log(lotesCode)
-    return(<div></div>)
+export const VerStockEntradas = () => {
+
+  return (<div>
+    <Suspense fallback={<Loading />}>
+      <ShowEntryLotes />
+    </Suspense>
+  </div>)
 }
