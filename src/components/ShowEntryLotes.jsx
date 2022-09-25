@@ -2,9 +2,10 @@ import { React, useEffect, useState } from 'react';
 import { entradas } from '../api/endpoints';
 import { header } from '../api/fetchHeader';
 import { Loading } from './Loading';
+import { SingleLoteInfo } from './SingleLoteInfo';
 import '../styles/global.css'
 import '../styles/showLotesCodes.css'
-import { SingleLoteInfo } from './SingleLoteInfo';
+
 
 export const ShowEntryLotes = () => {
   const [lotesCode, setLotesCode] = useState([])
@@ -29,7 +30,7 @@ export const ShowEntryLotes = () => {
       </div>
       <div>
 
-        {singleLote !== null && <SingleLoteInfo loteCode={singleLote} />}
+        {singleLote !== null && <SingleLoteInfo loteCode={singleLote} type={"Entry"} />}
 
       </div>
     </div>
