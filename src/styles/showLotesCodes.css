@@ -1,0 +1,19 @@
+.bt-lotes {
+    background-color: rgb(149, 163, 189);
+    color: black;
+    font-weight: bold;
+    font-size: 18px;
+    font-family: 'comic sans';
+    margin: 5px;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.bt-lotes:hover {
+    background-color: rgb(67, 201, 250);
+}
+
+.bt-lotes-wrapper {
+    margin-top: 20px;
+    margin-left: 15px;
+}

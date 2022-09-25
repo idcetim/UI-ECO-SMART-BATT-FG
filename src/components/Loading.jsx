@@ -1,8 +1,8 @@
 import '../styles/loading.css'
-export const Loading = () => {
+export const Loading = (props) => {
   return (
     <div class="ring">
-      Registrando
+      {props.text}
       <span className='span-loading'></span>
     </div>
   )

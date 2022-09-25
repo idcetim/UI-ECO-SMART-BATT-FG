@@ -83,7 +83,7 @@ export const Produccion = () => {
 
       <button onClick={clickHandler} className='bt-registrar' disabled={buttonDisabledCondition}>Registrar</button>
       {hash!== undefined && isRegisterOngoing && <ShowHash txHash={hash} />} 
-      {hash === undefined && isRegisterOngoing &&  <Loading />}
+      {hash === undefined && isRegisterOngoing &&  <Loading text={"Registrando"} />}
 
     </div>
 

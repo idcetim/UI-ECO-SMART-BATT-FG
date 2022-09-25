@@ -1,6 +1,9 @@
 import { React,  useEffect, useState } from 'react';
 import { produccion } from '../api/endpoints';
 import { header } from '../api/fetchHeader';
+import { Loading } from './Loading';
+import '../styles/showLotesCodes.css'
+
 export const ShowProductLotes = () => {
   const [lotesCode, setLotesCode] = useState([])
 
@@ -14,9 +17,10 @@ export const ShowProductLotes = () => {
  }, [lotesCode])
  
   return (
-  <div>
-    { lotesCode.length > 0 && lotesCode.map((lote, index) => {
-      return <span key={index}>{lote}</span>
-    })}
+    <div className='bt-lotes-wrapper'>
+      <h2>Ver Producto final</h2>
+      {lotesCode.length > 0 
+        ? lotesCode.map((lote, index) => <button key={index} className="bt-lotes">{lote}</button>)
+        : <Loading text={"Cargando"} />}
     </div>)
 }
