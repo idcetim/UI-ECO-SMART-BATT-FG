@@ -1,0 +1,26 @@
+.table-div {
+    margin-top: 40px;
+}
+
+table {
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid black;
+    border: collapse;
+    font-size: 20px;
+    font-family: 'comic sans';
+}
+
+tr,
+td {
+    padding: 10px;
+}
+
+.title {
+    text-decoration: underline;
+    text-transform: uppercase;
+    font-size: 22px;
+    letter-spacing: 2px;
+    font-weight: bold;
+    color: rgb(145, 105, 2)
+}
