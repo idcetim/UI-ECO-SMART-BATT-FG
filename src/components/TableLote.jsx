@@ -31,7 +31,7 @@ export const TableLote = (props) => {
               <td><b>Cantidad:</b> {Cantidad} kg</td>
             </tr>
             <tr>
-              <td><b>Análisis:</b> {Analisis}</td>
+              <td><b>Análisis:</b> <a className='' href={Analisis} target="_blank" rel="noreferrer">Ver análisis</a></td>
             </tr>
             <tr>
               <td><b>Blockchain: </b><a className='' href={fantomExplorer} target="_blank" rel="noreferrer">Ver transacción</a> </td>
@@ -70,13 +70,13 @@ export const TableLote = (props) => {
               <td><b>Cantidad:</b> {Cantidad} kg</td>
             </tr>
             <tr>
-              <td><b>Orden trabajo:</b> {OrdenUrl}</td>
+              <td><b>Orden trabajo:</b><a className='' href={OrdenUrl} target="_blank" rel="noreferrer">Ver orden de trabajo</a></td>
             </tr>
             <tr>
-              <td><b>Químico:</b> {QuimicoUrl}</td>
+              <td><b>Químico:</b> <a className='' href={QuimicoUrl} target="_blank" rel="noreferrer">Ver análisis químico</a></td>
             </tr>
             <tr>
-              <td><b>Granulometría:</b> {GranulometriaUrl}</td>
+              <td><b>Granulometría:</b><a className='' href={GranulometriaUrl} target="_blank" rel="noreferrer">Ver granulometría</a></td>
             </tr>
             <tr>
               <td><b>Blockchain: </b><a className='' href={fantomExplorer} target="_blank" rel="noreferrer">Ver transacción</a> </td>
