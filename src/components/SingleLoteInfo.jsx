@@ -6,10 +6,9 @@ import { header } from '../api/fetchHeader';
 import { Loading } from './Loading';
 import { TableLote } from './TableLote';
 
-export const SingleLoteInfo = (props) => {
+export const SingleLoteInfo = ({ loteCode, type }) => {
   const [loteData, setData] = useState(null)
   const [hashData, setHashData] = useState(null)
-  const type = props.type
   const fetchLote = async (loteCode) => {
     const url = type === "Entry" ? `${entradas}/${loteCode}` : `${produccion}/${loteCode}`
     const data = await fetch(url, header)
@@ -23,12 +22,14 @@ export const SingleLoteInfo = (props) => {
   }
 
   useEffect(() => {
-    if (loteData === null) fetchLote(props.loteCode)
-  },)
+    fetchLote(loteCode)
+    // eslint-disable-next-line
+  }, [loteCode])
 
   useEffect(() => {
-    if (hashData === null) fetchHash(props.loteCode)
-  },)
+    fetchHash(loteCode)
+    // eslint-disable-next-line
+  }, [loteCode])
 
   return (
     <div>

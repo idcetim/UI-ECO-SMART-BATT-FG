@@ -1,10 +1,7 @@
 import '../styles/global.css'
 import '../styles/table.css'
 
-export const TableLote = (props) => {
-  const type = props.type
-  const hashData = props.hashData
-  const loteData = props.loteData
+export const TableLote = ({ loteData, type, hashData }) => {
   const fantomExplorer = `https://testnet.ftmscan.com/tx/${hashData}`
   if (type === "Entry") {
     const { Codigo, Fecha, Calidad, Origen, Cantidad, Analisis } = loteData
