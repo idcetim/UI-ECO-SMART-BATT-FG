@@ -1,4 +1,4 @@
-import { useState, useEffect} from 'react';
+import { useState, useEffect } from 'react';
 //import {ErrorBoundary} from 'react-error-boundary'
 import SelectInput from '../components/SelectInput';
 import TextInput from '../components/TextInput';
@@ -18,16 +18,16 @@ export const Entradas = () => {
   const [origin, setOrigin] = useState('')
   const [analysis, setAnalysis] = useState()
   const [hash, setHash] = useState()
-  const  [isRegisterOngoing, setIsRegisterOnGoing] = useState(false)
+  const [isRegisterOngoing, setIsRegisterOnGoing] = useState(false)
   const selectOptions = ["Calidad", "2N", "3N", "4N", "5N", "Reciclado"]
   const buttonDisabledCondition = !code || !amount || !quality || !analysis || !date || !origin
-  
+
   useEffect(() => {
-    if(hash === undefined) setIsRegisterOnGoing(false)
+    if (hash === undefined) setIsRegisterOnGoing(false)
   }, [hash])
-  
+
   const clickHandler = async () => {
- 
+
     setIsRegisterOnGoing(true)
     const file = analysis
     const formData = new FormData();
@@ -43,9 +43,22 @@ export const Entradas = () => {
       "origin": origin
     })
     const response = await fetch(entradas, { method: 'POST', headers: postHeader, body: bodyData, })
-    setHash(await response.json())
+    if (response.ok) {
+      setHash(await response.json())
+    } else {
+      setHash(undefined)
+      alert("Error registrando información")
+      setIsRegisterOnGoing(false)
+      return(
+        <div className='web-wrapper'>
+          <h3>Error al registrar en la blockchain</h3>
+          <h4><i>Realiza la operación más tarde</i></h4>
+        </div>
+      )
+    }
+
   }
-  
+
   return (
     <div className='web-wrapper'>
       <h1>Registrar entrada de lotes</h1>
@@ -59,10 +72,10 @@ export const Entradas = () => {
         <TextInputFile setter={setAnalysis} />
       </div>
 
-      <button onClick={clickHandler} className='bt-registrar'disabled={buttonDisabledCondition}>Registrar</button>
+      <button onClick={clickHandler} className='bt-registrar' disabled={buttonDisabledCondition}>Registrar</button>
 
-     {hash!== undefined && isRegisterOngoing && <ShowHash txHash={hash} />} 
-     {hash=== undefined && isRegisterOngoing &&  <Loading text={"Registrando"} />}
+      {hash !== undefined && isRegisterOngoing && <ShowHash txHash={hash} />}
+      {hash === undefined && isRegisterOngoing && <Loading text={"Registrando"} />}
 
     </div>
 

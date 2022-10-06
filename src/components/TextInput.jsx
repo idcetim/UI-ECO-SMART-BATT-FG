@@ -6,7 +6,7 @@ const TextInput = (props) => {
     const inputValueHandler = (event) => { setValueState(event.target.value) }
     return (
         <div>
-            <input className="normal-input-text" placeholder={placeholder} onChange={inputValueHandler} />
+            <input className="normal-input-text" placeholder={placeholder} onChange={inputValueHandler}  />
         </div>
     )
 }

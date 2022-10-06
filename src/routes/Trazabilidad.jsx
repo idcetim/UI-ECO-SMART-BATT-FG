@@ -9,7 +9,7 @@ const Trazabilidad = () =>  {
   
   return(
       <div className='web-wrapper'>
-          <h1 className="main-h1"> Gestión de stock</h1>
+          <h1 className="main-h1"> Trazabilidad </h1>
       
           <button className="button-home" onClick={registrarHandler}>Registrar entradas</button>
          

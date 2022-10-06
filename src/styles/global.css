@@ -39,3 +39,10 @@
     font-weight: bold;
     font-size: 20px;
 }
+
+.blockchain-link {
+    color: orangered;
+    font-size: 24px;
+    font-family: 'comic sans';
+    font-weight: bold;
+}
