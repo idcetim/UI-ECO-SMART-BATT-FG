@@ -1,10 +1,11 @@
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import {Home} from "./routes/Home"
-import {Entradas} from "./routes/Entradas"
-import {Produccion} from './routes/Produccion'
-import {VerStockEntradas} from './routes/VerStockEntradas'
-import {VerStockProduccion} from './routes/VerStockProduccion'
+import { Home } from "./routes/Home"
+import { Entradas } from "./routes/Entradas"
+import { Produccion } from './routes/Produccion'
+import { VerStockEntradas } from './routes/VerStockEntradas'
+import { VerStockProduccion } from './routes/VerStockProduccion'
+import { Estadisticas } from "./routes/Estadisticas";
 import Trazabilidad from "./routes/Trazabilidad";
 import Stock from "./routes/Stock";
 import NavBar from "./routes/NavBar";
@@ -22,6 +23,7 @@ function App() {
       <Route path = "/trazabilidad/produccion"element = { < Produccion/> }/>
       <Route path = "/trazabilidad/verentradas" element = { < VerStockEntradas /> }/> 
       <Route path = "/trazabilidad/verproduccion" element = { < VerStockProduccion /> }/> 
+      <Route path = "/trazabilidad/estadisticas" element = { < Estadisticas /> }/> 
     </Routes> 
     </BrowserRouter>
     </div>

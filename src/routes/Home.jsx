@@ -2,7 +2,7 @@
 import '../styles/global.css'
 
 export const Home = () => {
-    const smartContractAddress = '0x46196a39d26A4026A37AFD12eBf31831d3472634'
+    const smartContractAddress = '0xc7B23f2ffCfe6b466308dF175AA15c6202aa2a82'
     const smartContractUrl = `https://testnet.ftmscan.com/address/${smartContractAddress}`
     return(
         <div className='web-wrapper'>

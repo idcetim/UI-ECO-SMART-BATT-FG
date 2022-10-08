@@ -3,7 +3,6 @@ const SelectInput = (props) => {
     const options = props.options
     const setValueState = props.setter
     const optionValueHandler = (event) => { 
-        console.log(event.target.value)
         setValueState(event.target.value) }
     return (
         <div>

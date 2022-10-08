@@ -1,11 +1,11 @@
 import { React, Suspense } from 'react';
 import { Loading } from '../components/Loading';
-import { ShowProductLotes } from '../components/ShowProductLotes';
+import { ShowLotes } from '../components/ShowLotes';
 
 export const VerStockProduccion = () => {
   return (<div>
     <Suspense fallback={<Loading />}>
-      <ShowProductLotes />
+      <ShowLotes type={"Product"} />
     </Suspense>
   </div>)
 
