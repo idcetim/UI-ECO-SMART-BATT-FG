@@ -47,7 +47,9 @@ export const Entradas = () => {
       setHash(await response.json())
     } else {
       setHash(undefined)
-      alert("Error registrando información")
+      alert(`
+      Error registrando información del lote ${code}.
+      Revisa que ese lote no haya sido registrado`)
       setIsRegisterOnGoing(false)
       return(
         <div className='web-wrapper'>
@@ -76,7 +78,7 @@ export const Entradas = () => {
 
       {hash !== undefined && isRegisterOngoing && <ShowHash txHash={hash} />}
       {hash === undefined && isRegisterOngoing && <Loading text={"Registrando"} />}
-
+      <br/>
     </div>
 
   )

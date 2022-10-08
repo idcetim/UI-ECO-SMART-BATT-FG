@@ -81,7 +81,7 @@ export const TableLote = ({ loteData, type, hashData }) => {
 
           </tbody>
         </table>
-
+        <br/>
       </div>
     )
   }

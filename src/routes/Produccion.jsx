@@ -53,8 +53,21 @@ export const Produccion = () => {
       "originCode": originCode
     })
     const response = await fetch(produccion, { method: 'POST', headers: postHeader, body: bodyData, })
-    setHash(await response.json())
+    if(response.ok) setHash(await response.json())
+    else {      setHash(undefined)
+    alert(`
+    Error registrando información del lote ${newCode}.
+    Revisa que ese lote no haya sido registrado`)
+    setIsRegisterOnGoing(false)
+    return(
+      <div className='web-wrapper'>
+        <h3>Error al registrar en la blockchain</h3>
+        <h4><i>Realiza la operación más tarde</i></h4>
+      </div>
+    )
   }
+
+}
   const selectQualityOptions = ["Calidad", "2N", "3N", "4N", "5N", "Reciclado"]
   const selectProductTypeOptions = ["Tipo de producto", "0.2 - 2 mm", "< 0.5 mm"]
   console.log("hash", hash)
@@ -84,7 +97,7 @@ export const Produccion = () => {
       <button onClick={clickHandler} className='bt-registrar' disabled={buttonDisabledCondition}>Registrar</button>
       {hash!== undefined && isRegisterOngoing && <ShowHash txHash={hash} />} 
       {hash === undefined && isRegisterOngoing &&  <Loading text={"Registrando"} />}
-
+      <br/>
     </div>
 
   )
