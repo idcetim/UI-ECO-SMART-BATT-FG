@@ -21,7 +21,7 @@ export const Produccion = () => {
   const [workOrder, setWorkOrder] = useState()
   const [hash, setHash] = useState()
   const  [isRegisterOngoing, setIsRegisterOnGoing] = useState(false)
-  const buttonDisabledCondition = !newCode || !amount || !quality || !granuAnalysis || !date || !originCode || !workOrder || !chemicalAnalysis
+  const buttonDisabledCondition = !newCode || !amount || !quality || !date || !originCode 
 
   useEffect(() => {
     if(hash === undefined) setIsRegisterOnGoing(false)
@@ -38,9 +38,9 @@ export const Produccion = () => {
     const formData3 = new FormData();
     formData3.append('fileOrden', workOrder)
     await fetch(produccionOrdenFile, { method: 'POST', body: formData3, })
-    const workOrderUrl = `https://silicio.blob.core.windows.net/orden-trabajo/${workOrder.name}`
-    const granuAnalysisUrl = `https://silicio.blob.core.windows.net/granulometria-producto/${granuAnalysis.name}`
-    const chemicalAnalysisUrl = `https://silicio.blob.core.windows.net/quimico-producto/${chemicalAnalysis.name}`
+    const workOrderUrl = workOrder === undefined ? 'No hay información' : `https://silicio.blob.core.windows.net/orden-trabajo/${workOrder.name}`
+    const granuAnalysisUrl = granuAnalysis === undefined ? 'No hay información' : `https://silicio.blob.core.windows.net/granulometria-producto/${granuAnalysis.name}`
+    const chemicalAnalysisUrl = chemicalAnalysis === undefined ? 'No hay información' : `https://silicio.blob.core.windows.net/quimico-producto/${chemicalAnalysis.name}`
     const bodyData = JSON.stringify({
       "code": newCode,
       "date": date,

@@ -20,7 +20,7 @@ export const Entradas = () => {
   const [hash, setHash] = useState()
   const [isRegisterOngoing, setIsRegisterOnGoing] = useState(false)
   const selectOptions = ["Calidad", "2N", "3N", "4N", "5N", "Reciclado"]
-  const buttonDisabledCondition = !code || !amount || !quality || !analysis || !date || !origin
+  const buttonDisabledCondition = !code || !amount || !quality || !date || !origin
 
   useEffect(() => {
     if (hash === undefined) setIsRegisterOnGoing(false)
@@ -33,7 +33,7 @@ export const Entradas = () => {
     const formData = new FormData();
     formData.append('fileAnalisis', file)
     await fetch(entradasFile, { method: 'POST', body: formData, })
-    const analysisUrl = `https://silicio.blob.core.windows.net/analisis-lotes/${file.name}`
+    const analysisUrl = file === undefined ? 'No hay información' : `https://silicio.blob.core.windows.net/analisis-lotes/${file.name}`
     const bodyData = JSON.stringify({
       "code": code,
       "date": date,

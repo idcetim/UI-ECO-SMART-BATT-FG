@@ -5,6 +5,7 @@ export const TableLote = ({ loteData, type, hashData }) => {
   const fantomExplorer = `https://testnet.ftmscan.com/tx/${hashData}`
   if (type === "Entry") {
     const { Codigo, Fecha, Calidad, Origen, Cantidad, Analisis } = loteData
+    console.log(Analisis)
     return (
       <div className="table-div">
         <table>
@@ -27,8 +28,13 @@ export const TableLote = ({ loteData, type, hashData }) => {
             <tr>
               <td><b>Cantidad:</b> {Cantidad} kg</td>
             </tr>
+
             <tr>
-              <td><b>Análisis:</b> <a className='' href={Analisis} target="_blank" rel="noreferrer">Ver análisis</a></td>
+              {
+                Analisis === "No hay información"
+                  ? <td><b>Análisis:</b> <span className='color-red'>{Analisis}</span></td>
+                  : <td><b>Análisis:</b> <a className='' href={Analisis} target="_blank" rel="noreferrer">Ver análisis</a></td>
+              }
             </tr>
             <tr>
               <td><b>Blockchain: </b><a className='' href={fantomExplorer} target="_blank" rel="noreferrer">Ver transacción</a> </td>
@@ -67,13 +73,19 @@ export const TableLote = ({ loteData, type, hashData }) => {
               <td><b>Cantidad:</b> {Cantidad} kg</td>
             </tr>
             <tr>
-              <td><b>Orden trabajo:</b><a className='' href={OrdenUrl} target="_blank" rel="noreferrer">Ver orden de trabajo</a></td>
+              {OrdenUrl === 'No hay información'
+              ? <td><b>Orden trabajo: </b> <span className='color-red'>{OrdenUrl}</span></td>
+              : <td><b>Orden trabajo: </b><a className='' href={OrdenUrl} target="_blank" rel="noreferrer">Ver orden de trabajo</a></td> }
             </tr>
             <tr>
-              <td><b>Químico:</b> <a className='' href={QuimicoUrl} target="_blank" rel="noreferrer">Ver análisis químico</a></td>
+            {QuimicoUrl === 'No hay información'
+              ? <td><b>Químico: </b> <span className='color-red'>{QuimicoUrl}</span></td>
+              : <td><b>Químico: </b><a className='' href={QuimicoUrl} target="_blank" rel="noreferrer">Ver análisis químico</a></td> }
             </tr>
             <tr>
-              <td><b>Granulometría:</b><a className='' href={GranulometriaUrl} target="_blank" rel="noreferrer">Ver granulometría</a></td>
+            {GranulometriaUrl === 'No hay información'
+              ? <td><b>Granulometría: </b> <span className='color-red'>{GranulometriaUrl}</span></td>
+              :  <td><b>Granulometría: </b><a className='' href={GranulometriaUrl} target="_blank" rel="noreferrer">Ver granulometría</a></td> }  
             </tr>
             <tr>
               <td><b>Blockchain: </b><a className='' href={fantomExplorer} target="_blank" rel="noreferrer">Ver transacción</a> </td>
@@ -81,7 +93,7 @@ export const TableLote = ({ loteData, type, hashData }) => {
 
           </tbody>
         </table>
-        <br/>
+        <br />
       </div>
     )
   }

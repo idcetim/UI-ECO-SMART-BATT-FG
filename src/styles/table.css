@@ -5,7 +5,7 @@
 table {
     padding: 10px;
     border-radius: 10px;
-    border: 1px solid black;
+    border: 4px solid black;
     border: collapse;
     font-size: 20px;
     font-family: 'comic sans';
@@ -14,6 +14,7 @@ table {
 tr,
 td {
     padding: 10px;
+    font-size: 22px;
 }
 
 .title {
@@ -23,4 +24,9 @@ td {
     letter-spacing: 2px;
     font-weight: bold;
     color: rgb(145, 105, 2)
+}
+
+.color-red {
+    color: red;
+    font-weight: bold;
 }

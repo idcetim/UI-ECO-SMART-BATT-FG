@@ -5,14 +5,14 @@ const NavBar = () => {
     <nav className='nav'>
       <div className='navMenu'>
         <Link to='/' className='navLink' activeStyle>
-        📦 Ferroglobe 
+        Ferroglobe 
         </Link>
         <Link to='/trazabilidad' className='navLink' activeStyle>
         Trazabilidad 
         </Link>
-        <Link to='/stock' className='navLink' activeStyle>
+        {/* <Link to='/stock' className='navLink' activeStyle>
         Gestión stock 
-        </Link>
+        </Link> */}
       </div>
     </nav>
   )
