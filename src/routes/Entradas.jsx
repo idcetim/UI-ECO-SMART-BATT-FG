@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState} from 'react';
 //import {ErrorBoundary} from 'react-error-boundary'
 import SelectInput from '../components/SelectInput';
 import TextInput from '../components/TextInput';
@@ -17,18 +17,12 @@ export const Entradas = () => {
   const [quality, setQuality] = useState('')
   const [origin, setOrigin] = useState('')
   const [analysis, setAnalysis] = useState()
-  const [hash, setHash] = useState()
-  const [isRegisterOngoing, setIsRegisterOnGoing] = useState(false)
+  const [hash, setHash] = useState(undefined)
   const selectOptions = ["Calidad", "2N", "3N", "4N", "5N", "Reciclado"]
   const buttonDisabledCondition = !code || !amount || !quality || !date || !origin
 
-  useEffect(() => {
-    if (hash === undefined) setIsRegisterOnGoing(false)
-  }, [hash])
-
   const clickHandler = async () => {
-
-    setIsRegisterOnGoing(true)
+    setHash('loading')
     const file = analysis
     const formData = new FormData();
     formData.append('fileAnalisis', file)
@@ -45,13 +39,16 @@ export const Entradas = () => {
     const response = await fetch(entradas, { method: 'POST', headers: postHeader, body: bodyData, })
     if (response.ok) {
       setHash(await response.json())
+      setAmount('')
+      setCode('')
+      setOrigin('')
+      setQuality('')
     } else {
       setHash(undefined)
       alert(`
       Error registrando información del lote ${code}.
       Revisa que ese lote no haya sido registrado`)
-      setIsRegisterOnGoing(false)
-      return(
+      return (
         <div className='web-wrapper'>
           <h3>Error al registrar en la blockchain</h3>
           <h4><i>Realiza la operación más tarde</i></h4>
@@ -64,11 +61,11 @@ export const Entradas = () => {
   return (
     <div className='web-wrapper'>
       <h1>Registrar entrada de lotes</h1>
-      <TextInput type={'Código Lote'} setter={setCode} />
+      <TextInput type={'Código Lote'} setter={setCode} value={code} />
       <TextInputDate setter={setDate} />
-      <TextInput type={'Cantidad (kg)'} setter={setAmount} />
-      <TextInput type={"Origen"} setter={setOrigin} />
-      <SelectInput options={selectOptions} setter={setQuality} />
+      <TextInput type={'Cantidad (kg)'} setter={setAmount} value={amount} />
+      <TextInput type={"Origen"} setter={setOrigin} value={origin}/>
+      <SelectInput options={selectOptions} setter={setQuality}  value={quality}/>
       <div className='div-file-title'>
         <label className='file-title'>Resultado análisis</label>
         <TextInputFile setter={setAnalysis} />
@@ -76,9 +73,9 @@ export const Entradas = () => {
 
       <button onClick={clickHandler} className='bt-registrar' disabled={buttonDisabledCondition}>Registrar</button>
 
-      {hash !== undefined && isRegisterOngoing && <ShowHash txHash={hash} />}
-      {hash === undefined && isRegisterOngoing && <Loading text={"Registrando"} />}
-      <br/>
+      {hash !== undefined && hash.startsWith('0x') &&  <ShowHash txHash={hash} />}
+      {hash === 'loading' &&  <Loading text={"Registrando"} />}
+      <br />
     </div>
 
   )

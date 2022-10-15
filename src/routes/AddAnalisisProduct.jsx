@@ -11,7 +11,7 @@ export const AddAnalisisProduct = () => {
   const [lotesCode, setLotesCode] = useState([])
   const [singleLote, setSingleLote] = useState(null)
   const [analisis, setAnalisis] = useState(null)
-  const [registerDone, setRegisterDone] = useState(null)
+  const [registerDone, setRegisterDone] = useState('pending')
 
   useEffect(() => {
     (async () => {
@@ -21,15 +21,14 @@ export const AddAnalisisProduct = () => {
   }, [])
 
   const selectHandler = async (e) => {
-    setRegisterDone(null)
     const loteCode = e.target.value
     const res = await fetch(`${produccion}/${loteCode}`, header)
     const data = await res.json()
-    console.log(data)
     setSingleLote(data)
   }
 
   const registrarHandler = async (type) => {
+    setRegisterDone('loading')
     const file = analisis
     const formData = new FormData();
     if (type === "granu") {
@@ -41,8 +40,8 @@ export const AddAnalisisProduct = () => {
         "analysis": analysisUrl
       })
       const response = await fetch(produccionGra, { method: 'POST', headers: postHeader, body: bodyData, })
-      if(response.ok) setRegisterDone("granu")
-     
+      if (response.ok) setRegisterDone("granu")
+
     } else if (type === "quimico") {
       formData.append('fileQuimico', file)
       await fetch(produccionQuimicoFile, { method: 'POST', body: formData, })
@@ -52,7 +51,7 @@ export const AddAnalisisProduct = () => {
         "analysis": analysisUrl
       })
       const response = await fetch(produccionQui, { method: 'POST', headers: postHeader, body: bodyData, })
-      if(response.ok) setRegisterDone("quimico")
+      if (response.ok) setRegisterDone("quimico")
     } else {
       formData.append('fileOrden', file)
       await fetch(produccionOrdenFile, { method: 'POST', body: formData, })
@@ -62,7 +61,7 @@ export const AddAnalisisProduct = () => {
         "analysis": analysisUrl
       })
       const response = await fetch(produccionOrden, { method: 'POST', headers: postHeader, body: bodyData, })
-      if(response.ok) setRegisterDone("orden")
+      if (response.ok) setRegisterDone("orden")
     }
   }
 
@@ -92,11 +91,13 @@ export const AddAnalisisProduct = () => {
                   <TextInputFile setter={setAnalisis} />
                 </div>
                 <button onClick={() => { registrarHandler("granu") }} className='bt-registrar' disabled={!analisis}>Registrar</button>
+                <div className="div-register">
+                  {registerDone === "granu" && <span className="register-done">Registro realizado correctamente ✅</span>}
+                  {registerDone === 'loading' && <Loading text="Registrando" />}
+                </div>
               </>
             }
-            <div className="div-register">
-              {registerDone === "granu" && <span className="register-done">Registro realizado correctamente ✅</span>}
-            </div>
+
           </div>
 
           <div className="div-adding-analisis">
@@ -109,11 +110,12 @@ export const AddAnalisisProduct = () => {
                   <TextInputFile setter={setAnalisis} />
                 </div>
                 <button onClick={() => { registrarHandler("quimico") }} className='bt-registrar' disabled={!analisis}>Registrar</button>
+                <div className="div-register">
+                  {registerDone === "quimico" && <span className="register-done">Registro realizado correctamente ✅</span>}
+                  {registerDone === 'loading' && <Loading text="Registrando" />}
+                </div>
               </>
             }
-            <div className="div-register">
-              {registerDone === "quimico" && <span className="register-done">Registro realizado correctamente ✅</span>}
-            </div>
           </div>
 
           <div className="div-adding-analisis">
@@ -126,11 +128,12 @@ export const AddAnalisisProduct = () => {
                   <TextInputFile setter={setAnalisis} />
                 </div>
                 <button onClick={() => { registrarHandler("orden") }} className='bt-registrar' disabled={!analisis}>Registrar</button>
+                <div className="div-register">
+                  {registerDone === "orden" && <span className="register-done">Registro realizado correctamente ✅</span>}
+                  {registerDone === 'loading' && <Loading text="Registrando" />}
+                </div>
               </>
             }
-            <div className="div-register">
-              {registerDone === "orden" && <span className="register-done">Registro realizado correctamente ✅</span>}
-            </div>
           </div>
         </section>
       }

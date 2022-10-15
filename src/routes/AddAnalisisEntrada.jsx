@@ -12,7 +12,7 @@ export const AddAnalisisEntrada = () => {
   const [lotesCode, setLotesCode] = useState([])
   const [singleLote, setSingleLote] = useState(null)
   const [analisis, setAnalisis] = useState(null)
-  const [registerDone, setRegisterDone] = useState(null)
+  const [registerDone, setRegisterDone] = useState('pending')
 
   useEffect(() => {
     (async () => {
@@ -22,7 +22,7 @@ export const AddAnalisisEntrada = () => {
   }, [])
 
   const selectHandler = async (e) => {
-    setRegisterDone(null)
+    setRegisterDone('pending')
     const loteCode = e.target.value
     const res = await fetch(`${entradas}/${loteCode}`, header)
     const data = await res.json()
@@ -30,6 +30,7 @@ export const AddAnalisisEntrada = () => {
   }
 
   const registrarHandler = async () => {
+    setRegisterDone('loading')
     const file = analisis
     const formData = new FormData();
     formData.append('fileAnalisis', file)
@@ -69,16 +70,16 @@ export const AddAnalisisEntrada = () => {
                 </div>
 
                 <button onClick={registrarHandler} className='bt-registrar' disabled={!analisis}>Registrar</button>
+
+                <div className="div-register">
+                  {registerDone.startsWith('0x') && <span className="register-done">Registro realizado correctamente ✅</span>}
+                  {registerDone === 'loading' && <Loading text="Registrando" />}
+                </div>
               </>
             }
-            <div className="div-register">
-              {registerDone !== null && <span className="register-done">Registro realizado correctamente ✅</span>}
-            </div>
-
           </div>
         </section>
       }
-
     </div>
   )
 }
