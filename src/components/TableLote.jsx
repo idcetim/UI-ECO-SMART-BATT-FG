@@ -5,7 +5,6 @@ export const TableLote = ({ loteData, type, hashData }) => {
   const fantomExplorer = `https://testnet.ftmscan.com/tx/${hashData}`
   if (type === "Entry") {
     const { Codigo, Fecha, Calidad, Origen, Cantidad, Analisis } = loteData
-    console.log(Analisis)
     return (
       <div className="table-div">
         <table>

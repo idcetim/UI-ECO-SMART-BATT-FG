@@ -17,3 +17,35 @@
     margin-top: 20px;
     margin-left: 15px;
 }
+
+.select-lotes {
+    width: 200px;
+    font-size: 20px;
+    font-family: 'comic sans';
+    font-weight: bold;
+    padding: 5px;
+}
+
+.div-adding-analisis {
+    margin-top: 25px;
+    border-radius: 5px;
+    border: 2px solid black;
+    padding: 15px;
+    width: 500px;
+}
+
+.lote-color {
+    color: darkgoldenrod;
+}
+
+.register-done {
+    font-weight: bold;
+    font-family: 'comic sans';
+    font-style: italic;
+    font-size: 20px;
+    color: darkgreen;
+}
+
+.div-register {
+    margin-top: 15px;
+}
