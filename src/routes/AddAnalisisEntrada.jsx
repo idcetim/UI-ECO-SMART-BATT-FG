@@ -16,8 +16,9 @@ export const AddAnalisisEntrada = () => {
 
   useEffect(() => {
     (async () => {
-      const data = await fetch(entradas, header)
-      setLotesCode(await data.json())
+      const res = await fetch(entradas, header)
+      const data = await res.json()
+      setLotesCode(["Lotes", ...data])
     })()
   }, [])
 
