@@ -10,18 +10,13 @@ export const ShowLotes = ({ type }) => {
   const [lotesCode, setLotesCode] = useState([])
   const [singleLote, setSingleLote] = useState(null)
 
- 
-
-  const fetchAllLotes = async () => {
-    const url = type === "Product" ? produccion : entradas
-    const data = await fetch(url, header)
-    setLotesCode(await data.json())
-  }
-
   useEffect(() => { 
-    fetchAllLotes()
-     // eslint-disable-next-line
-   }, [])
+    (async function(){
+      const url = type === "Product" ? produccion : entradas
+      const data = await fetch(url, header)
+      setLotesCode(await data.json())
+    })()
+   }, [type])
  
   return (
     <div className='web-wrapper'>

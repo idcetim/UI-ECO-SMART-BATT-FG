@@ -9,27 +9,21 @@ import { TableLote } from './TableLote';
 export const SingleLoteInfo = ({ loteCode, type }) => {
   const [loteData, setData] = useState(null)
   const [hashData, setHashData] = useState(null)
-  const fetchLote = async (loteCode) => {
-    const url = type === "Entry" ? `${entradas}/${loteCode}` : `${produccion}/${loteCode}`
-    const data = await fetch(url, header)
-    setData(await data.json())
-  }
-
-  const fetchHash = async (loteCode) => {
-    const url = type === "Entry" ? `${entradas}/hash/${loteCode}` : `${produccion}/hash/${loteCode}`
-    const data = await fetch(url, header)
-    setHashData(await data.json())
-  }
+  useEffect(() => {
+    (async function () {
+      const url = type === "Entry" ? `${entradas}/${loteCode}` : `${produccion}/${loteCode}`
+      const data = await fetch(url, header)
+      setData(await data.json())
+    })()
+  }, [loteCode, type])
 
   useEffect(() => {
-    fetchLote(loteCode)
-    // eslint-disable-next-line
-  }, [loteCode])
-
-  useEffect(() => {
-    fetchHash(loteCode)
-    // eslint-disable-next-line
-  }, [loteCode])
+    (async function (){
+      const url = type === "Entry" ? `${entradas}/hash/${loteCode}` : `${produccion}/hash/${loteCode}`
+      const data = await fetch(url, header)
+      setHashData(await data.json())
+    })()
+  }, [loteCode, type])
 
   return (
     <div>
