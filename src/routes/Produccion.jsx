@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import SelectInput from '../components/SelectInput';
 import TextInput from '../components/TextInput';
 import TextInputDate from '../components/TextInputDate';
@@ -16,31 +16,38 @@ export const Produccion = () => {
   const [quality, setQuality] = useState('')
   const [productType, setProductType] = useState('')
   const [originCode, setOriginCode] = useState('')
-  const [chemicalAnalysis, setChemicalAnalysis] = useState()
-  const [granuAnalysis, setGranuAnalysis] = useState()
-  const [workOrder, setWorkOrder] = useState()
-  const [hash, setHash] = useState()
-  const  [isRegisterOngoing, setIsRegisterOnGoing] = useState(false)
+  const [chemicalAnalysis, setChemicalAnalysis] = useState(undefined)
+  const [granuAnalysis, setGranuAnalysis] = useState(undefined)
+  const [workOrder, setWorkOrder] = useState(undefined)
+  const [hash, setHash] = useState(undefined)
   const buttonDisabledCondition = !newCode || !amount || !quality || !date || !originCode 
 
-  useEffect(() => {
-    if(hash === undefined) setIsRegisterOnGoing(false)
-  }, [hash])
-
   const clickHandler = async () => {
-    setIsRegisterOnGoing(true)
-    const formData1 = new FormData();
-    formData1.append('fileQuimico', chemicalAnalysis)
-    await fetch(produccionQuimicoFile, { method: 'POST', body: formData1, })
-    const formData2 = new FormData();
-    formData2.append('fileGranulometria', granuAnalysis)
-    await fetch(produccionGranulometricoFile, { method: 'POST', body: formData2, })
-    const formData3 = new FormData();
-    formData3.append('fileOrden', workOrder)
-    await fetch(produccionOrdenFile, { method: 'POST', body: formData3, })
-    const workOrderUrl = workOrder === undefined ? 'No hay información' : `https://silicio.blob.core.windows.net/orden-trabajo/${workOrder.name}`
-    const granuAnalysisUrl = granuAnalysis === undefined ? 'No hay información' : `https://silicio.blob.core.windows.net/granulometria-producto/${granuAnalysis.name}`
-    const chemicalAnalysisUrl = chemicalAnalysis === undefined ? 'No hay información' : `https://silicio.blob.core.windows.net/quimico-producto/${chemicalAnalysis.name}`
+    let chemicalAnalysisUrl
+    let granuAnalysisUrl
+    let workOrderUrl
+    setHash('loading')
+    if (chemicalAnalysis === undefined) chemicalAnalysisUrl = 'No hay información'
+    else {
+      const formData1 = new FormData();
+      formData1.append('fileQuimico', chemicalAnalysis)
+      await fetch(produccionQuimicoFile, { method: 'POST', body: formData1, })
+      chemicalAnalysisUrl = `https://silicio.blob.core.windows.net/quimico-producto/${chemicalAnalysis.name}`
+    }
+    if (granuAnalysis === undefined) granuAnalysisUrl = 'No hay información'
+    else {
+      const formData2 = new FormData();
+      formData2.append('fileGranulometria', granuAnalysis)
+      await fetch(produccionGranulometricoFile, { method: 'POST', body: formData2, })
+      granuAnalysisUrl = `https://silicio.blob.core.windows.net/granulometria-producto/${granuAnalysis.name}`
+    }
+    if (workOrder === undefined) workOrderUrl = 'No hay información'
+    else {
+      const formData3 = new FormData();
+      formData3.append('fileOrden', workOrder)
+      await fetch(produccionOrdenFile, { method: 'POST', body: formData3, })
+      workOrderUrl =`https://silicio.blob.core.windows.net/orden-trabajo/${workOrder.name}`
+    }
     const bodyData = JSON.stringify({
       "code": newCode,
       "date": date,
@@ -53,24 +60,24 @@ export const Produccion = () => {
       "originCode": originCode
     })
     const response = await fetch(produccion, { method: 'POST', headers: postHeader, body: bodyData, })
-    if(response.ok) setHash(await response.json())
-    else {      setHash(undefined)
-    alert(`
-    Error registrando información del lote ${newCode}.
-    Revisa que ese lote no haya sido registrado`)
-    setIsRegisterOnGoing(false)
-    return(
-      <div className='web-wrapper'>
-        <h3>Error al registrar en la blockchain</h3>
-        <h4><i>Realiza la operación más tarde</i></h4>
-      </div>
-    )
-  }
+    if (response.ok) setHash(await response.json())
+    else {
+      setHash(undefined)
+      alert(`
+      Error registrando información del lote ${newCode}.
+      Revisa que ese lote no haya sido registrado`)
+      return (
+        <div className='web-wrapper'>
+          <h3>Error al registrar en la blockchain</h3>
+          <h4><i>Realiza la operación más tarde</i></h4>
+        </div>
+      )
+    }
 
-}
+  }
   const selectQualityOptions = ["Calidad", "2N", "3N", "4N", "5N", "Reciclado"]
   const selectProductTypeOptions = ["Tipo de producto", "0.2 - 2 mm", "< 0.5 mm"]
-  console.log("hash", hash)
+ 
   return (
     <div className='web-wrapper'>
       <h2>Registrar producto final</h2>
@@ -95,8 +102,8 @@ export const Produccion = () => {
       </div>
 
       <button onClick={clickHandler} className='bt-registrar' disabled={buttonDisabledCondition}>Registrar</button>
-      {hash!== undefined && isRegisterOngoing && <ShowHash txHash={hash} />} 
-      {hash === undefined && isRegisterOngoing &&  <Loading text={"Registrando"} />}
+      {hash !== undefined && hash.startsWith('0x') && <ShowHash txHash={hash} />}
+      {hash === 'loading' && <Loading text={"Registrando"} />}
       <br/>
     </div>
 
