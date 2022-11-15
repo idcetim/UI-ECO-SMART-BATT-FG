@@ -1,4 +1,5 @@
 {
     "appService.defaultWebAppToDeploy": "/subscriptions/e6bb8a78-43c1-4e0e-be35-0636f35d50d1/AppServices/subscriptions/e6bb8a78-43c1-4e0e-be35-0636f35d50d1/resourceGroups/ECOSMARTBATT/providers/Microsoft.Web/sites/ferroglobe-stock",
-    "appService.deploySubpath": "."
+    "appService.deploySubpath": ".",
+    "typescript.tsdk": "node_modules/typescript/lib"
 }

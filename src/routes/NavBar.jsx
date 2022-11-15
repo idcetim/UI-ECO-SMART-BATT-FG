@@ -4,12 +4,10 @@ const NavBar = () => {
   return (
     <nav className='nav'>
       <div className='navMenu'>
-        <Link to='/' className='navLink' activeStyle>
-        Ferroglobe 
-        </Link>
-        <Link to='/trazabilidad' className='navLink' activeStyle>
-        Trazabilidad 
-        </Link>
+        <Link to='/' className='navLink' activeStyle>Ferroglobe</Link>
+        <Link to='/trazabilidad' className='navLink' activeStyle>Trazabilidad</Link>
+        <Link to='/leerlotes' className='navLink' activeStyle>Leer lotes</Link>
+        
         {/* <Link to='/stock' className='navLink' activeStyle>
         Gestión stock 
         </Link> */}
