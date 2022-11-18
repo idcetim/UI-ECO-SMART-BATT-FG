@@ -12,29 +12,33 @@ import Trazabilidad from "./routes/Trazabilidad";
 import Stock from "./routes/Stock";
 import NavBar from "./routes/NavBar";
 import './styles/global.css'
-import LeerLotes from "./routes/LeerLotes.tsx";
+import LeerLotes from "./routes/LeerLotes";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import GestionStock from "./routes/GestionStock"
+import Registro from "./routes/Registro"
 
 function App() {
-  return ( <div>
+  return (<div>
     <BrowserRouter >
-    <NavBar />
-    <Routes >
-      <Route path = "/" element = { < Home /> }/> 
-      <Route path = "/trazabilidad" element = { < Trazabilidad /> }/> 
-      <Route path = "/stock" element={<Stock />} />
-      <Route path = "/leerlotes" element={ <LeerLotes />} />
-      <Route path = "/trazabilidad/entradas" element = { < Entradas /> }/> 
-      <Route path = "/trazabilidad/entradas/analisis" element = { < AddAnalisisEntrada /> }/> 
-      <Route path = "/trazabilidad/produccion"element = { < Produccion/> }/>
-      <Route path = "/trazabilidad/produccion/analisis"element = { < AddAnalisisProduct/> }/>
-      <Route path = "/trazabilidad/verentradas" element = { < VerStockEntradas /> }/> 
-      <Route path = "/trazabilidad/verproduccion" element = { < VerStockProduccion /> }/> 
-      <Route path = "/trazabilidad/estadisticas" element = { < Estadisticas /> }/> 
-    </Routes> 
+      <NavBar />
+      <Routes >
+        <Route path="/" element={< Home />} />
+        <Route path="/trazabilidad" element={< Trazabilidad />} />
+        <Route path="/stock" element={<Stock />} />
+        <Route path="/leerlotes" element={<LeerLotes />} />
+        <Route path="/trazabilidad/entradas" element={< Entradas />} />
+        <Route path="/trazabilidad/entradas/analisis" element={< AddAnalisisEntrada />} />
+        <Route path="/trazabilidad/produccion" element={< Produccion />} />
+        <Route path="/trazabilidad/produccion/analisis" element={< AddAnalisisProduct />} />
+        <Route path="/trazabilidad/verentradas" element={< VerStockEntradas />} />
+        <Route path="/trazabilidad/verproduccion" element={< VerStockProduccion />} />
+        <Route path="/trazabilidad/estadisticas" element={< Estadisticas />} />
+        <Route path="/gestionstock" element={< GestionStock />} />
+        <Route path="/registro" element={< Registro />} />
+      </Routes>
     </BrowserRouter>
-    </div>
-);
+  </div>
+  );
 }
 
 export default App;

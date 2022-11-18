@@ -37,6 +37,7 @@ export const Entradas = () => {
       "origin": origin
     })
     const response = await fetch(entradas, { method: 'POST', headers: postHeader, body: bodyData, })
+
     if (response.ok) {
       setHash(await response.json())
       setAmount('')

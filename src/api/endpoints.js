@@ -1,5 +1,5 @@
-//export const url = "http://localhost:5000/"
-export const url = "https://server-stock.azurewebsites.net/"
+export const url = "http://localhost:5000/"
+// export const url = "https://server-stock.azurewebsites.net/"
 
 export const entradas = `${url}entradas`
 
@@ -24,3 +24,7 @@ export const produccionQuimicoFile = `${url}produccion/quimico`
 export const produccionGranulometricoFile = `${url}produccion/granulometria`
 
 export const cantidadProduccion = `${url}cantidad/produccion`
+
+export const getLote = `${url}entradas/getEntrada`
+
+export const getLotes = `${url}entradas/getEntradas`
