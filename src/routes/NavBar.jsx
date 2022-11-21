@@ -91,19 +91,19 @@ const NavBar = () => {
 							}}
 						>
 							<MenuItem onClick={handleCloseNavMenu}>
-								<Link to='/'>
+								<Link to='/trazabilidad'>
 									<Typography textAlign='center'>Trazabilidad</Typography>
 								</Link>
 							</MenuItem>
 
 							<MenuItem onClick={handleCloseNavMenu}>
-								<Link to='/'>
+								<Link to='/gestionstock'>
 									<Typography textAlign='center'>Gestion stock</Typography>
 								</Link>
 							</MenuItem>
 
 							<MenuItem onClick={handleCloseNavMenu}>
-								<Link to='/'>
+								<Link to='/registro'>
 									<Typography textAlign='center'>Registro</Typography>
 								</Link>
 							</MenuItem>

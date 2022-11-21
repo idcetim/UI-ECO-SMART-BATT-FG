@@ -11,6 +11,7 @@ import TablePagination from '@mui/material/TablePagination';
 import Paper from '@mui/material/Paper';
 import Modal from 'react-bootstrap/Modal';
 import { getLote, getLotes } from '../api/endpoints';
+import Skeleton from '@mui/material/Skeleton';
 
 const GestionStock = () => {
     const [lotesData, setLotesData] = React.useState([])
@@ -66,8 +67,63 @@ const GestionStock = () => {
             { id: 'analisis', label: 'Analisis', minWidth: 170 }
         ]
 
+        const Filas = () => {
+            if (lotesData.length == 0) {
+                return (
+                    <TableRow>
+                        <TableCell>
+                            <Skeleton variant="rectangular" width={210} height={40} />
+                        </TableCell>
+
+                        <TableCell>
+                            <Skeleton variant="rectangular" width={210} height={40} />
+                        </TableCell>
+                        
+                        <TableCell>
+                            <Skeleton variant="rectangular" width={210} height={40} />
+                        </TableCell>
+
+                        <TableCell>
+                            <Skeleton variant="rectangular" width={210} height={40} />
+                        </TableCell>
+
+                        <TableCell>
+                            <Skeleton variant="rectangular" width={210} height={40} />
+                        </TableCell>
+
+                        <TableCell>
+                            <Skeleton variant="rectangular" width={210} height={40} />
+                        </TableCell>
+                    </TableRow>
+                )
+            }
+
+            return (
+                <>
+                    {lotesData
+                        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                        .map((row) => {
+                            return (
+                                <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
+                                    {columns.map((column) => {
+                                        const value = row[column.id];
+                                        return (
+                                            <TableCell key={column.id} align={column.align}>
+                                                {column.format && typeof value === 'number'
+                                                    ? column.format(value)
+                                                    : value}
+                                            </TableCell>
+                                        );
+                                    })}
+                                </TableRow>
+                            );
+                        })}
+                </>
+            )
+        }
+
         return (
-            <Paper sx={{ width: '100%', overflow: 'hidden', maxWidth: '90%', marginTop: '40px' }}>
+            <Paper sx={{ width: '100%', overflow: 'hidden', maxWidth: '90%', marginTop: '40px', marginBottom: '40px' }}>
                 <TableContainer>
                     <Table stickyHeader aria-label="sticky table">
                         <TableHead>
@@ -84,24 +140,7 @@ const GestionStock = () => {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {lotesData
-                                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                .map((row) => {
-                                    return (
-                                        <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
-                                            {columns.map((column) => {
-                                                const value = row[column.id];
-                                                return (
-                                                    <TableCell key={column.id} align={column.align}>
-                                                        {column.format && typeof value === 'number'
-                                                            ? column.format(value)
-                                                            : value}
-                                                    </TableCell>
-                                                );
-                                            })}
-                                        </TableRow>
-                                    );
-                                })}
+                            <Filas />
                         </TableBody>
                     </Table>
                 </TableContainer>
@@ -217,15 +256,23 @@ const GestionStock = () => {
     }
 
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            <FileUploadButton handleFileUpload={handleFileChange} title={'Leer lotes de fichero'} />
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '20px', marginRight: '5%'}}>
+                <FileUploadButton
+                    handleFileUpload={handleFileChange}
+                    title={'Leer lotes de fichero'}
+                    callback={() => setLotesArchivo([])}
+                />
+            </div>
 
-            {
-                lotesArchivo.length > 0 ?
-                    <FileParsed lotesData={lotesArchivo} />
-                    :
-                    <Lotes />
-            }
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
+                {
+                    lotesArchivo.length > 0 ?
+                        <FileParsed lotesData={lotesArchivo} />
+                        :
+                        <Lotes />
+                }
+            </div>
         </div>
     )
 }
