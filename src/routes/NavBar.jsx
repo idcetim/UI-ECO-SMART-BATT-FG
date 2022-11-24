@@ -1,67 +1,34 @@
-// import '../styles/navBar.css'
-// import { Link } from 'react-router-dom'
 
-// const NavBar = () => {
-// 	return (
-// 		<nav className='nav'>
-// 			<div className='navMenu'>
-// 				<Link to='/' className='navLink'>Ferroglobe</Link>
-// 				<Link to='/trazabilidad' className='navLink'>Trazabilidad</Link>
-// 				<Link to='/leerlotes' className='navLink'>Leer lotes</Link>
+import { useState } from 'react'
+import { NavLink } from 'react-router-dom'
+import AppBar from '@mui/material/AppBar'
+import Box from '@mui/material/Box'
+import Toolbar from '@mui/material/Toolbar'
+import Typography from '@mui/material/Typography'
+import Container from '@mui/material/Container'
+import Button from '@mui/material/Button'
+import MenuItem from '@mui/material/MenuItem'
+import IconButton from '@mui/material/IconButton'
+import Menu from '@mui/material/Menu'
 
-// 				{/* <Link to='/stock' className='navLink' activestyle>
-//         Gestión stock 
-//         </Link> */}
-// 			</div>
-// 		</nav>
-// 	)
-// }
+import '../styles/navBar.css'
 
-import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
-import Container from '@mui/material/Container';
-import Button from '@mui/material/Button';
-import MenuItem from '@mui/material/MenuItem';
-import AdbIcon from '@mui/icons-material/Adb';
-import { Link } from 'react-router-dom'
-
+import MenuIcon from '@mui/icons-material/Menu'
 
 const NavBar = () => {
-	const [anchorElNav, setAnchorElNav] = React.useState(null);
+	const [anchorElNav, setAnchorElNav] = useState(null);
 
 	const handleOpenNavMenu = (event) => setAnchorElNav(event.currentTarget)
 	const handleCloseNavMenu = () => setAnchorElNav(null)
-
 	return (
 		<AppBar position="static">
 			<Container maxWidth="xl">
 				<Toolbar disableGutters>
-					<AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
 
-					<Typography
-						variant="h6"
-						noWrap
-						component="a"
-						href="/"
-						sx={{
-							mr: 2,
-							display: { xs: 'none', md: 'flex' },
-							fontFamily: 'monospace',
-							fontWeight: 700,
-							letterSpacing: '.3rem',
-							color: 'inherit',
-							textDecoration: 'none',
-						}}
-					>FERROGLOBE</Typography>
-
+					{/* NAVBAR PARA TAMAÑO DE PANTALLA PEQUEÑO */}
 					<Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
 						<IconButton
+							edge= "start"
 							size="large"
 							aria-label="account of current user"
 							aria-controls="menu-appbar"
@@ -71,7 +38,6 @@ const NavBar = () => {
 						>
 							<MenuIcon />
 						</IconButton>
-
 						<Menu
 							id="menu-appbar"
 							anchorEl={anchorElNav}
@@ -91,36 +57,34 @@ const NavBar = () => {
 							}}
 						>
 							<MenuItem onClick={handleCloseNavMenu}>
-								<Link to='/trazabilidad'>
+								<NavLink to='/trazabilidad'>
 									<Typography textAlign='center'>Trazabilidad</Typography>
-								</Link>
+								</NavLink>
 							</MenuItem>
 
 							<MenuItem onClick={handleCloseNavMenu}>
-								<Link to='/gestionstock'>
+								<NavLink to='/gestionstock'>
 									<Typography textAlign='center'>Gestion stock</Typography>
-								</Link>
+								</NavLink>
 							</MenuItem>
 
 							<MenuItem onClick={handleCloseNavMenu}>
-								<Link to='/registro'>
+								<NavLink to='/registro'>
 									<Typography textAlign='center'>Registro</Typography>
-								</Link>
+								</NavLink>
 							</MenuItem>
 						</Menu>
-					</Box> 
-					
-					<AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
+					</Box>
 
+			{/* NAVBAR PARA TAMAÑO DE PANTALLA NORMAL */}
 					<Typography
-						variant="h5"
+						variant="h6"
 						noWrap
-						component="a"
-						href=""
+						component={NavLink}
+						to="/"
 						sx={{
 							mr: 2,
-							display: { xs: 'flex', md: 'none' },
-							flexGrow: 1,
+							display: { xs: 'none', md: 'flex' },
 							fontFamily: 'monospace',
 							fontWeight: 700,
 							letterSpacing: '.3rem',
@@ -128,20 +92,21 @@ const NavBar = () => {
 							textDecoration: 'none',
 						}}
 					>FERROGLOBE</Typography>
-
 					<Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
 						{/* <Button component={Link} to='/' sx={{ my: 2, color: 'white', display: 'block' }}>Ferroglobe</Button>
 						<Button component={Link} to='/trazabilidad' sx={{ my: 2, color: 'white', display: 'block' }}>Trazabilidad</Button>
 						<Button component={Link} to='/leerlotes' sx={{ my: 2, color: 'white', display: 'block' }}>Leer lotes</Button> */}
 
-						<Button component={Link} to='/trazabilidad' sx={{ my: 2, color: 'white', display: 'block' }}>Trazabilidad</Button>
-						<Button component={Link} to='/gestionstock' sx={{ my: 2, color: 'white', display: 'block' }}>Gestion stock</Button>
-						<Button component={Link} to='/registro' sx={{ my: 2, color: 'white', display: 'block' }}>Registro</Button>
+						<Button component={NavLink} to={`/trazabilidad`} activeClassName="active" sx={{ my: 2, color: 'white', display: 'block' }}>Trazabilidad</Button>
+						<Button component={NavLink} to={`/gestionstock`}   sx={{ my: 2, color: 'white', display: 'block' }}>Gestion stock</Button>
+						<Button component={NavLink} to={`/registro`}  sx={{ my: 2, color: 'white', display: 'block' }}>Registro</Button>
 					</Box>
 				</Toolbar>
 			</Container>
 		</AppBar>
 	);
 }
+
+// export const myNavLink = ({  }) => { return <NavLink className="navLink" to={`/${text}`} />}
 
 export default NavBar
