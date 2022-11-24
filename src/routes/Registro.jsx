@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState } from 'react';
 import { Tabs, Tab, Typography, Box } from '@mui/material';
 import { Entradas } from './Entradas'
 import { Produccion } from './Produccion';
@@ -10,7 +10,7 @@ import { Produccion } from './Produccion';
 // }
 
 const Registro = () => {
-    const [value, setValue] = React.useState(0);
+    const [value, setValue] = useState(0);
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -20,8 +20,8 @@ const Registro = () => {
         <Box sx={{ width: '100%' }}>
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                 <Tabs value={value} onChange={handleChange} aria-label="basic tabs example" centered>
-                    <Tab label="Registrar MMPP" {...a11yProps(0)} />
-                    <Tab label="Registrar pedido" {...a11yProps(1)} />
+                    <Tab label="Registrar Materias primas" {...a11yProps(0)} />
+                    <Tab label="Registrar producto" {...a11yProps(1)} />
                 </Tabs>
             </Box>
 

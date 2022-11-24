@@ -8,6 +8,10 @@
     z-index: 12;
 }
 
+.active {
+    color: rgb(28, 2, 105);
+}
+
 .navMenu {
     display: flex;
     align-items: center;
