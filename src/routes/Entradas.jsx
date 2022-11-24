@@ -1,21 +1,21 @@
 import { useState } from 'react';
-//import {ErrorBoundary} from 'react-error-boundary'
 import SelectInput from '../components/SelectInput';
 import TextInput from '../components/TextInput';
 import TextInputDate from '../components/TextInputDate';
-import TextInputFile from '../components/TextInputFile';
 import { entradas, entradasFile } from '../api/endpoints';
 import { postHeader } from '../api/fetchHeader';
 import '../styles/global.css'
 import { ShowHash } from '../components/ShowHash';
 import { Loading } from '../components/Loading';
-import Form from 'react-bootstrap/Form';
+import Form from 'react-bootstrap/Form'
+import Typography from '@mui/material/Typography'
 
 export const Entradas = () => {
 	const [code, setCode] = useState('')
 	const [date, setDate] = useState()
 	const [amount, setAmount] = useState('')
 	const [quality, setQuality] = useState('')
+	const [location, setLocation] = useState('')
 	const [origin, setOrigin] = useState('')
 	const [analysis, setAnalysis] = useState()
 	const [hash, setHash] = useState(undefined)
@@ -45,6 +45,7 @@ export const Entradas = () => {
 			setCode('')
 			setOrigin('')
 			setQuality('')
+			setLocation('')
 		} else {
 			setHash(undefined)
 			alert(`Error registrando información del lote ${code}. Revisa que ese lote no haya sido registrado`)
@@ -59,18 +60,19 @@ export const Entradas = () => {
 
 	return (
 		<div className='web-wrapper'>
-			<h1>Registrar entrada de lotes</h1>
+			<Typography variant="h5" sx={{mb: 2, fontWeight: 500}}>Registrar materias primas</Typography>
 			<TextInput type={'Código Lote'} setter={setCode} value={code} />
 			<TextInputDate setter={setDate} />
 			<TextInput type={'Cantidad (kg)'} setter={setAmount} value={amount} />
 			<TextInput type={"Origen"} setter={setOrigin} value={origin} />
+			<TextInput type={'Ubicación'} setter={setLocation} value={location} />
 			<SelectInput options={selectOptions} setter={setQuality} value={quality} />
 			<div className='div-file-title'>
 				<label className='file-title'>Resultado análisis</label>
 				{/* <TextInputFile setter={setAnalysis} /> */}
-				<Form.Control 
-					type="file" 
-					style={{maxWidth: "500px"}} 
+				<Form.Control
+					type="file"
+					style={{maxWidth: "500px"}}
 					onChange={ev => {
 						setAnalysis(ev.target.files[0])
 					}}

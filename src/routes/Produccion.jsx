@@ -2,12 +2,12 @@ import { useState } from 'react';
 import SelectInput from '../components/SelectInput';
 import TextInput from '../components/TextInput';
 import TextInputDate from '../components/TextInputDate';
-import TextInputFile from '../components/TextInputFile';
 import { produccion, produccionOrdenFile, produccionQuimicoFile, produccionGranulometricoFile } from '../api/endpoints';
-import { postHeader } from '../api/fetchHeader';
-import { ShowHash } from '../components/ShowHash';
-import { Loading } from '../components/Loading';
-import Form from 'react-bootstrap/Form';
+import { postHeader } from '../api/fetchHeader'
+import { ShowHash } from '../components/ShowHash'
+import { Loading } from '../components/Loading'
+import Form from 'react-bootstrap/Form'
+import Typography from '@mui/material/Typography'
 import '../styles/global.css'
 
 export const Produccion = () => {
@@ -15,6 +15,7 @@ export const Produccion = () => {
 	const [date, setDate] = useState()
 	const [amount, setAmount] = useState('')
 	const [quality, setQuality] = useState('')
+	const [location, setLocation] = useState('')
 	const [productType, setProductType] = useState('')
 	const [originCode, setOriginCode] = useState('')
 	const [chemicalAnalysis, setChemicalAnalysis] = useState(undefined)
@@ -81,12 +82,13 @@ export const Produccion = () => {
 
 	return (
 		<div className='web-wrapper'>
-			<h2>Registrar producto final</h2>
+			<Typography variant="h5" sx={{ mb: 2, fontWeight: 500 }}>Registrar producto</Typography>
 			<TextInput type={"Código lote de origen"} setter={setOriginCode} />
 			<TextInput type={'Código nuevo producto'} setter={setNewCode} />
 			<TextInputDate setter={setDate} />
-			<SelectInput options={selectProductTypeOptions} setter={setProductType} />
+			<TextInput type={'Ubicación'} setter={setLocation} value={location} />
 			<TextInput type={'Cantidad (kg)'} setter={setAmount} />
+			<SelectInput options={selectProductTypeOptions} setter={setProductType} />
 			<SelectInput options={selectQualityOptions} setter={setQuality} />
 
 			<div className='div-file-title'>
@@ -131,3 +133,4 @@ export const Produccion = () => {
 
 	)
 }
+
