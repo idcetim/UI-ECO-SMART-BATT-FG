@@ -28,3 +28,5 @@ export const cantidadProduccion = `${url}cantidad/produccion`
 export const getLote = `${url}entradas/getEntrada`
 
 export const getLotes = `${url}entradas/getEntradas`
+
+export const updateLote = `${url}entradas/updateLote`
