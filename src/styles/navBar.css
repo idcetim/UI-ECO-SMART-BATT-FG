@@ -1,4 +1,10 @@
-.nav {
+/* .active {
+    color: rgb(255, 7, 226);
+    text-decoration: underline;
+} */
+
+
+/* .nav {
     background: #004560;
     height: 85px;
     display: flex;
@@ -8,25 +14,17 @@
     z-index: 12;
 }
 
-.active {
-    color: rgb(28, 2, 105);
-}
-
 .navMenu {
     display: flex;
     align-items: center;
     margin-right: -24px;
-    /* Second Nav */
-    /* margin-right: 24px; */
-    /* Third Nav */
-    /* width: 100vw;
-    white-space: nowrap; */
     @media screen and (max-width: 768px) {
         display: none;
     }
-}
+} */
 
-.navLink {
+
+/* .navLink {
     color: #808080;
     display: flex;
     align-items: center;
@@ -50,15 +48,13 @@
     display: flex;
     align-items: center;
     margin-right: 24px;
-    /* Third Nav */
-    /* justify-content: flex-end;
-  width: 100vw; */
     @media screen and (max-width: 768px) {
         display: none;
     }
-}
+} */
 
-.navBtnLink {
+
+/* .navBtnLink {
     border-radius: 4px;
     background: #808080;
     padding: 10px 22px;
@@ -68,7 +64,6 @@
     cursor: pointer;
     transition: all 0.2s ease-in-out;
     text-decoration: none;
-    /* Second Nav */
     margin-left: 24px;
 }
 
@@ -76,4 +71,4 @@
     transition: all 0.2s ease-in-out;
     background: #fff;
     color: #808080;
-}
+} */

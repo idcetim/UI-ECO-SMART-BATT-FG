@@ -26,7 +26,7 @@ const Trazabilidad = () => {
 		<Box sx={{ width: '100%' }}>
 			<Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
 				<Tabs value={currentTab} onChange={tabChanged} aria-label="basic tabs example" centered>
-					<Tab label="Òrdenes de trabajo" {...a11yProps(0)} />
+					<Tab label="Órdenes de trabajo" {...a11yProps(0)} />
 					<Tab label="Código de lote" {...a11yProps(0)} />
 				</Tabs>
 			</Box>

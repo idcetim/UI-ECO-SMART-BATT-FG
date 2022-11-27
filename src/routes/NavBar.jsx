@@ -11,7 +11,7 @@ import MenuItem from '@mui/material/MenuItem'
 import IconButton from '@mui/material/IconButton'
 import Menu from '@mui/material/Menu'
 
-import '../styles/navBar.css'
+import '../styles/navbar.css'
 
 import MenuIcon from '@mui/icons-material/Menu'
 
@@ -20,6 +20,10 @@ const NavBar = () => {
 
 	const handleOpenNavMenu = (event) => setAnchorElNav(event.currentTarget)
 	const handleCloseNavMenu = () => setAnchorElNav(null)
+
+	const activeStyle = {
+		color: '#c4be01'
+	}
 	return (
 		<AppBar position="static">
 			<Container maxWidth="xl">
@@ -57,19 +61,19 @@ const NavBar = () => {
 							}}
 						>
 							<MenuItem onClick={handleCloseNavMenu}>
-								<NavLink to='/trazabilidad'>
+								<NavLink to='/trazabilidad' style={({ isActive }) => isActive ? activeStyle : null}>
 									<Typography textAlign='center'>Trazabilidad</Typography>
 								</NavLink>
 							</MenuItem>
 
 							<MenuItem onClick={handleCloseNavMenu}>
-								<NavLink to='/gestionstock'>
+								<NavLink to='/gestionstock' style={({ isActive }) => isActive ? activeStyle : null}>
 									<Typography textAlign='center'>Gestion stock</Typography>
 								</NavLink>
 							</MenuItem>
 
 							<MenuItem onClick={handleCloseNavMenu}>
-								<NavLink to='/registro'>
+								<NavLink to='/registro' style={({ isActive }) => isActive ? activeStyle : null}>
 									<Typography textAlign='center'>Registro</Typography>
 								</NavLink>
 							</MenuItem>
@@ -92,14 +96,11 @@ const NavBar = () => {
 							textDecoration: 'none',
 						}}
 					>FERROGLOBE</Typography>
-					<Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-						{/* <Button component={Link} to='/' sx={{ my: 2, color: 'white', display: 'block' }}>Ferroglobe</Button>
-						<Button component={Link} to='/trazabilidad' sx={{ my: 2, color: 'white', display: 'block' }}>Trazabilidad</Button>
-						<Button component={Link} to='/leerlotes' sx={{ my: 2, color: 'white', display: 'block' }}>Leer lotes</Button> */}
 
-						<Button component={NavLink} to={`/trazabilidad`} activeClassName="active" sx={{ my: 2, color: 'white', display: 'block' }}>Trazabilidad</Button>
-						<Button component={NavLink} to={`/gestionstock`}   sx={{ my: 2, color: 'white', display: 'block' }}>Gestion stock</Button>
-						<Button component={NavLink} to={`/registro`}  sx={{ my: 2, color: 'white', display: 'block' }}>Registro</Button>
+					<Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+						<Button component={NavLink} style={({ isActive }) => isActive ? activeStyle : null} to='/trazabilidad' sx={{ my: 2, color: 'white', display: 'block' }}>Trazabilidad</Button>
+						<Button component={NavLink} style={({ isActive }) => isActive ? activeStyle : null} to='/gestionstock' sx={{ my: 2, color: 'white', display: 'block' }}>Gestion stock</Button>
+						<Button component={NavLink} style={({ isActive }) => isActive ? activeStyle : null} to='/registro' sx={{ my: 2, color: 'white', display: 'block' }}>Registro</Button>
 					</Box>
 				</Toolbar>
 			</Container>
