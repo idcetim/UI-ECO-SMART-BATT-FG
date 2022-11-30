@@ -1,5 +1,8 @@
-export const url = "http://localhost:5000/"
+// export const url = "http://localhost:5000/"
 // export const url = "https://server-stock.azurewebsites.net/"
+
+// export const url = "http://localhost:7071/api/"
+export const url = "https://ferroglobe.azurewebsites.net/api/"
 
 export const entradas = `${url}entradas`
 
@@ -25,8 +28,8 @@ export const produccionGranulometricoFile = `${url}produccion/granulometria`
 
 export const cantidadProduccion = `${url}cantidad/produccion`
 
-export const getLote = `${url}entradas/getEntrada`
+export const getLote = `${url}GetEntradaBD`
 
-export const getLotes = `${url}entradas/getEntradas`
+export const getLotes = `${url}GetEntradasBD`
 
 export const updateLote = `${url}entradas/updateLote`
