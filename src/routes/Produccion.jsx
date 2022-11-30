@@ -249,10 +249,22 @@ const Produccion = () => {
 							size='large'
 							onClick={() => {
 								let resultado = {
-
+									codigoLoteOrigen: codigoLoteOrigen,
+									codigoNuevoProducto: codigoNuevoProducto,
+									fecha: fecha,
+									ubicacion: ubicacion,
+									cantidad: cantidad,
+									calidad: calidad,
+									tipoProducto: tipoProducto,
+									granulometria10: granulometria10,
+									granulometria50: granulometria50,
+									granulometria90: granulometria90,
+									aluminio: aluminio,
+									calcio: calcio,
+									hierro: hierro,
+									titanio: titanio,
+									totalImpurezas: totalImpurezas
 								}
-
-								console.log(resultado)
 							}}
 						>Guardar</Button>
 					</Grid>
