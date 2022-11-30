@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Tabs, Tab, Typography, Box } from '@mui/material';
+import { Tabs, Tab, Box } from '@mui/material';
 import Entradas from './Entradas'
 import Produccion from './Produccion';
 
@@ -19,9 +19,9 @@ const Registro = () => {
     return (
         <Box sx={{ width: '100%' }}>
             <Box sx={{ borderBottom: 1, borderColor: 'divider', display: 'flex', justifyContent: 'center' }}>
-                <Tabs 
-                    value={value} onChange={handleChange} 
-                    aria-label="basic tabs example" 
+                <Tabs
+                    value={value} onChange={handleChange}
+                    aria-label="basic tabs example"
                     variant="scrollable"
                     scrollButtons
                     allowScrollButtonsMobile

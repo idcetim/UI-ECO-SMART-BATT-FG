@@ -1,6 +1,7 @@
 
 import '../styles/global.css'
 import styles from '../styles/Home.module.css'
+import { Link } from 'react-router-dom'
 
 // export const Home = () => {
 //     const smartContractAddress = '0x3532D9Ce801eE7343b06bfe848B16CFE09df8bDA'
@@ -28,41 +29,22 @@ export const Home = () => {
                 Bienvenido!
             </h1>
 
-            {/* <p className={styles.description}>
-                Get started by editing{' '}
-                <code className={styles.code}>pages/index.tsx</code>
-            </p> */}
 
             <div className={styles.grid}>
-                <a href="https://nextjs.org/docs" className={styles.card}>
+                <Link to="/trazabilidad" className={styles.card}>
                     <h2>Trazabilidad &rarr;</h2>
-                    <p>Consulte la información registrada en la blockchain de las ordenes de trabajo.</p>
-                </a>
+                    <p>Visualizar  información  de productos guardada en la blockchain.</p>
+                </Link>
 
-                <a href="https://nextjs.org/learn" className={styles.card}>
-                    <h2>Gestion stock &rarr;</h2>
-                    <p>Explore el stock de productos y de materias primas.</p>
-                </a>
+                <Link to="/gestionstock" className={styles.card}>
+                    <h2>Gestión stock &rarr;</h2>
+                    <p>Ver y editar información del stock de materias primas y productos.</p>
+                </Link>
 
-                <a
-                    href="https://github.com/vercel/next.js/tree/canary/examples"
-                    className={styles.card}
-                >
+                <Link to="/registro" className={styles.card}>
                     <h2>Registro &rarr;</h2>
-                    <p>Cree un nuevo registro para un producto terminado o materia prima.</p>
-                </a>
-
-                {/* <a
-                    href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={styles.card}
-                >
-                    <h2>Deploy &rarr;</h2>
-                    <p>
-                        Instantly deploy your Next.js site to a public URL with Vercel.
-                    </p>
-                </a> */}
+                    <p>Registrar un nuevo lote de materias primas o productos.</p>
+                </Link>
             </div>
         </div>
     )
