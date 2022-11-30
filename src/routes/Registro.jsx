@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Tabs, Tab, Typography, Box } from '@mui/material';
-import { Entradas } from './Entradas'
-import { Produccion } from './Produccion';
+import Entradas from './Entradas'
+import Produccion from './Produccion';
 
 // interface TabPanelProps {
 //     children?: React.ReactNode;
@@ -18,8 +18,14 @@ const Registro = () => {
 
     return (
         <Box sx={{ width: '100%' }}>
-            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                <Tabs value={value} onChange={handleChange} aria-label="basic tabs example" centered>
+            <Box sx={{ borderBottom: 1, borderColor: 'divider', display: 'flex', justifyContent: 'center' }}>
+                <Tabs 
+                    value={value} onChange={handleChange} 
+                    aria-label="basic tabs example" 
+                    variant="scrollable"
+                    scrollButtons
+                    allowScrollButtonsMobile
+                >
                     <Tab label="Registrar Materias primas" {...a11yProps(0)} />
                     <Tab label="Registrar producto" {...a11yProps(1)} />
                 </Tabs>
@@ -49,7 +55,7 @@ const TabPanel = (props) => {
         >
             {value === index && (
                 <Box sx={{ p: 3 }}>
-                    <Typography>{children}</Typography>
+                    {children}
                 </Box>
             )}
         </div>

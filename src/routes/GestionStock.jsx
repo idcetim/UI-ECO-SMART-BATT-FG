@@ -20,6 +20,8 @@ import {
     GridRowModes,
     DataGrid,
     GridActionsCellItem,
+    GridToolbarContainer,
+    GridToolbarExport
 } from '@mui/x-data-grid';
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
@@ -43,10 +45,10 @@ const GestionStock = () => {
                     variant="scrollable"
                     scrollButtons
                     allowScrollButtonsMobile
-                // sx={{
-                //     '& .MuiTabs-flexContainer': {
-                //         flexWrap: 'wrap',
-                // }}} 
+                    // sx={{
+                    //     '& .MuiTabs-flexContainer': {
+                    //         flexWrap: 'wrap',
+                    // }}} 
                 >
                     <Tab label="Materias primas" {...a11yProps(0)} />
                     <Tab label="Producto final" {...a11yProps(0)} />
@@ -71,10 +73,10 @@ const GestionStock = () => {
 
 const Resumen = () => {
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '20px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '10px' }}>
             <h3>Cantidad de botellas en stock</h3>
 
-            <TableContainer component={Paper} sx={{ width: '300px', marginTop: '25px' }}>
+            <TableContainer component={Paper} sx={{ width: '300px', marginTop: '10px' }}>
                 <Table aria-label="simple table">
                     <TableHead>
                         <TableRow>
@@ -182,7 +184,7 @@ const GestionStockListaLotes = () => {
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '20px', marginRight: '5%' }}>
+            <div style={{ display: 'flex', justifyContent: 'flex-end', marginRight: '5%' }}>
                 <FileUploadButton
                     handleFileUpload={handleFileChange}
                     title={'Leer lotes de fichero'}
@@ -199,6 +201,14 @@ const GestionStockListaLotes = () => {
                 }
             </div>
         </div>
+    )
+}
+
+const CustomToolbar = () => {
+    return (
+        <GridToolbarContainer>
+            <GridToolbarExport />
+        </GridToolbarContainer>
     )
 }
 
@@ -314,7 +324,7 @@ const TablaLotesBD = (props) => {
     return (
         <Box
             sx={{
-                height: 650,
+                height: 700,
                 width: '1050px',
                 maxWidth: '90%',
                 '& .actions': {
@@ -323,7 +333,7 @@ const TablaLotesBD = (props) => {
                 '& .textPrimary': {
                     color: 'text.primary',
                 },
-                marginTop: '40px',
+                marginTop: '20px',
                 marginBottom: '40px'
             }}
         >
@@ -348,6 +358,9 @@ const TablaLotesBD = (props) => {
                 }}
                 loading={props.lotesBD == null}
                 error={props.errorLoadingLotes == true ? true : undefined}
+                components={{
+                    Toolbar: CustomToolbar
+                }}
             />
         </Box>
     );
@@ -451,7 +464,7 @@ const ModalDetalleLoteCSV = (props) => {
     )
 }
 
-const readLotesFromCSV = async (file) => {
+const  readLotesFromCSV = async (file) => {
     return await new Promise((resolve, reject) => {
         let lotesData = []
         const reader = new FileReader()

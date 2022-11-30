@@ -11,8 +11,6 @@ import MenuItem from '@mui/material/MenuItem'
 import IconButton from '@mui/material/IconButton'
 import Menu from '@mui/material/Menu'
 
-import '../styles/navbar.css'
-
 import MenuIcon from '@mui/icons-material/Menu'
 
 const NavBar = () => {
