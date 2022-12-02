@@ -31,35 +31,22 @@ export const Home = () => {
                 Bienvenido!
             </h1>
 
-            {/* <p className={styles.description}>
-                Get started by editing{' '}
-                <code className={styles.code}>pages/index.tsx</code>
-            </p> */}
 
             <div className={styles.grid}>
-                <a href="https://nextjs.org/docs" className={styles.card}>
-                    <div style={{ display: 'flex', alignItems: 'center' }}>
-                        {/* <<ContentPasteSearchIcon /> */}
-                        <h2>Trazabilidad &rarr;</h2>
-                    </div>
-                    <p>Consulte la información registrada en la blockchain de las ordenes de trabajo.</p>
-                </a>
+                <Link to="/trazabilidad" className={styles.card}>
+                    <h2>Trazabilidad &rarr;</h2>
+                    <p>Visualizar  información  de productos guardada en la blockchain.</p>
+                </Link>
 
-                <a href="https://nextjs.org/learn" className={styles.card}>
-                    <h2>Gestion stock &rarr;</h2>
-                    <p>Explore el stock de productos y de materias primas.</p>
-                </a>
+                <Link to="/gestionstock" className={styles.card}>
+                    <h2>Gestión stock &rarr;</h2>
+                    <p>Ver y editar información del stock de materias primas y productos.</p>
+                </Link>
 
-                <a
-                    href="https://github.com/vercel/next.js/tree/canary/examples"
-                    className={styles.card}
-                >
-                    <div style={{ display: 'flex', alignItems: 'center' }}>
-                        {/* <AppRegistrationIcon /> */}
-                        <h2>Registro &rarr;</h2>
-                    </div>
-                    <p>Cree un nuevo registro para un producto terminado o materia prima.</p>
-                </a>
+                <Link to="/registro" className={styles.card}>
+                    <h2>Registro &rarr;</h2>
+                    <p>Registrar un nuevo lote de materias primas o productos.</p>
+                </Link>
             </div>
         </div>
     )

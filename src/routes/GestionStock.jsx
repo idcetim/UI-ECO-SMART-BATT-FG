@@ -52,7 +52,7 @@ const GestionStock = () => {
                     // }}} 
                 >
                     <Tab label="Materias primas" {...a11yProps(0)} />
-                    <Tab label="Producto final" {...a11yProps(0)} />
+                    <Tab label="Productos" {...a11yProps(0)} />
                     <Tab label="Resumen" {...a11yProps(0)} />
                 </Tabs>
             </Box>
