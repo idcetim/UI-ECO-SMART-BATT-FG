@@ -39,7 +39,7 @@ export const Home = () => {
             <div className={styles.grid}>
                 <a href="https://nextjs.org/docs" className={styles.card}>
                     <div style={{ display: 'flex', alignItems: 'center' }}>
-                        <ContentPasteSearchIcon />
+                        {/* <<ContentPasteSearchIcon /> */}
                         <h2>Trazabilidad &rarr;</h2>
                     </div>
                     <p>Consulte la información registrada en la blockchain de las ordenes de trabajo.</p>
@@ -55,23 +55,11 @@ export const Home = () => {
                     className={styles.card}
                 >
                     <div style={{ display: 'flex', alignItems: 'center' }}>
-                        <AppRegistrationIcon />
+                        {/* <AppRegistrationIcon /> */}
                         <h2>Registro &rarr;</h2>
                     </div>
                     <p>Cree un nuevo registro para un producto terminado o materia prima.</p>
                 </a>
-
-                {/* <a
-                    href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={styles.card}
-                >
-                    <h2>Deploy &rarr;</h2>
-                    <p>
-                        Instantly deploy your Next.js site to a public URL with Vercel.
-                    </p>
-                </a> */}
             </div>
         </div>
     )
