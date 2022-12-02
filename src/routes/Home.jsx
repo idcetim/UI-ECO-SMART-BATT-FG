@@ -1,6 +1,9 @@
 
 import '../styles/global.css'
 import styles from '../styles/Home.module.css'
+import { Link } from 'react-router-dom'
+import ContentPasteSearchIcon from '@mui/icons-material/ContentPasteSearch';
+import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
 
 // export const Home = () => {
 //     const smartContractAddress = '0x3532D9Ce801eE7343b06bfe848B16CFE09df8bDA'
@@ -35,7 +38,10 @@ export const Home = () => {
 
             <div className={styles.grid}>
                 <a href="https://nextjs.org/docs" className={styles.card}>
-                    <h2>Trazabilidad &rarr;</h2>
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                        <ContentPasteSearchIcon />
+                        <h2>Trazabilidad &rarr;</h2>
+                    </div>
                     <p>Consulte la información registrada en la blockchain de las ordenes de trabajo.</p>
                 </a>
 
@@ -48,7 +54,10 @@ export const Home = () => {
                     href="https://github.com/vercel/next.js/tree/canary/examples"
                     className={styles.card}
                 >
-                    <h2>Registro &rarr;</h2>
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                        <AppRegistrationIcon />
+                        <h2>Registro &rarr;</h2>
+                    </div>
                     <p>Cree un nuevo registro para un producto terminado o materia prima.</p>
                 </a>
 

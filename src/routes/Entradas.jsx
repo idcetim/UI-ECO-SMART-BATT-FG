@@ -111,6 +111,8 @@ const Entradas = () => {
 	const [hierro, setHierro] = useState('')
 	const [titanio, setTitanio] = useState('')
 	const [totalImpurezas, setTotalImpurezas] = useState('')
+	const [analisis, setAnalisis] = useState('')
+	const [granulometria, setGranulometria] = useState('')
 
 	return (
 		<div style={{ display: 'flex', justifyContent: 'center' }}>
@@ -144,10 +146,6 @@ const Entradas = () => {
 						</Select>
 					</Grid>
 
-					{/* <Grid item xs={4} sm={8} md={12}>
-						<Form.Control type="file" style={{maxWidth: "500px"}} onChange={ev => setAnalisis(ev.target.value)} />
-					</Grid> */}
-
 					<Grid item xs={4} sm={8} md={12}>
 						<h4>Granulometría:</h4>
 					</Grid>
@@ -162,6 +160,10 @@ const Entradas = () => {
 
 					<Grid item xs={2} sm={4} md={4}>
 						<TextField label="90" variant='outlined' value={granulometria90} onChange={ev => setGranulometria90(ev.target.value)} />	
+					</Grid>
+
+					<Grid item xs={4} sm={8} md={12}>
+						<Form.Control type="file" style={{maxWidth: "500px"}} onChange={ev => setGranulometria(ev.target.value)} />
 					</Grid>
 
 					<Grid item xs={4} sm={8} md={12}>
@@ -188,6 +190,10 @@ const Entradas = () => {
 						<TextField label="Total impurezas" variant="outlined" value={totalImpurezas} onChange={ev => setTotalImpurezas(ev.target.value)} />
 					</Grid>
 
+					<Grid item xs={4} sm={8} md={12}>
+						<Form.Control type="file" style={{maxWidth: "500px"}} onChange={ev => setAnalisis(ev.target.value)} />
+					</Grid>
+
 					<Grid item xs={4} sm={8} md={12} sx={{display: 'flex', justifyContent: 'end'}}>
 						<Button 
 							variant='contained' 
@@ -208,8 +214,6 @@ const Entradas = () => {
 									titanio: titanio,
 									totalImpurezas: totalImpurezas
 								}
-
-								console.log(resultado)
 							}}
 						>Guardar</Button>
 					</Grid>

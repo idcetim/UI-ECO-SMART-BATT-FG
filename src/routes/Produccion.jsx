@@ -4,6 +4,7 @@ import { TextField, Box, Grid, Button, Select, MenuItem } from '@mui/material';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import Form from 'react-bootstrap/Form'
 
 // export const Produccion = () => {
 // 	const [newCode, setNewCode] = useState('')
@@ -149,6 +150,8 @@ const Produccion = () => {
 	const [hierro, setHierro] = useState('')
 	const [titanio, setTitanio] = useState('')
 	const [totalImpurezas, setTotalImpurezas] = useState('')
+	const [analisis, setAnalisis] = useState('')
+	const [granulometria, setGranulometria] = useState('')
 
 	return (
 		<div style={{ display: 'flex', justifyContent: 'center' }}>
@@ -220,6 +223,10 @@ const Produccion = () => {
 					</Grid>
 
 					<Grid item xs={4} sm={8} md={12}>
+						<Form.Control type="file" style={{maxWidth: "500px"}} onChange={ev => setAnalisis(ev.target.value)} />
+					</Grid>
+
+					<Grid item xs={4} sm={8} md={12}>
 						<h4>Análisis:</h4>
 					</Grid>
 
@@ -241,6 +248,10 @@ const Produccion = () => {
 
 					<Grid item xs={2} sm={4} md={4}>
 						<TextField label="Total impurezas" variant="outlined" value={totalImpurezas} onChange={ev => setTotalImpurezas(ev.target.value)} />
+					</Grid>
+
+					<Grid item xs={4} sm={8} md={12}>
+						<Form.Control type="file" style={{maxWidth: "500px"}} onChange={ev => setAnalisis(ev.target.value)} />
 					</Grid>
 
 					<Grid item xs={4} sm={8} md={12} sx={{ display: 'flex', justifyContent: 'end' }}>

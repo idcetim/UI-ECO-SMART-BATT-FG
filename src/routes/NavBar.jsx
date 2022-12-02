@@ -1,6 +1,6 @@
 
 import { useState } from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink, Link } from 'react-router-dom'
 import AppBar from '@mui/material/AppBar'
 import Box from '@mui/material/Box'
 import Toolbar from '@mui/material/Toolbar'
@@ -10,7 +10,6 @@ import Button from '@mui/material/Button'
 import MenuItem from '@mui/material/MenuItem'
 import IconButton from '@mui/material/IconButton'
 import Menu from '@mui/material/Menu'
-
 import MenuIcon from '@mui/icons-material/Menu'
 
 const NavBar = () => {
@@ -30,7 +29,7 @@ const NavBar = () => {
 					{/* NAVBAR PARA TAMAÑO DE PANTALLA PEQUEÑO */}
 					<Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
 						<IconButton
-							edge= "start"
+							edge="start"
 							size="large"
 							aria-label="account of current user"
 							aria-controls="menu-appbar"
@@ -40,6 +39,13 @@ const NavBar = () => {
 						>
 							<MenuIcon />
 						</IconButton>
+
+						<Box sx={{ display: { xs: 'initial', md: 'none' }, width: '100%', display: 'flex', justifyContent: 'center' }}>
+							<Link to="/">
+								<img src={'ferroglobe500.png'} alt="Logo" style={{ width: '50px', cursor: 'pointer', marginRight: '25px' }} />
+							</Link>
+						</Box>
+
 						<Menu
 							id="menu-appbar"
 							anchorEl={anchorElNav}
@@ -59,27 +65,21 @@ const NavBar = () => {
 							}}
 						>
 							<MenuItem onClick={handleCloseNavMenu}>
-								<NavLink to='/trazabilidad' style={({ isActive }) => isActive ? activeStyle : null}>
-									<Typography textAlign='center'>Trazabilidad</Typography>
-								</NavLink>
+								<Typography textAlign='center' component={NavLink} style={({ isActive }) => isActive ? activeStyle : null} to='/trazabilidad'>Trazabilidad</Typography>
 							</MenuItem>
 
 							<MenuItem onClick={handleCloseNavMenu}>
-								<NavLink to='/gestionstock' style={({ isActive }) => isActive ? activeStyle : null}>
-									<Typography textAlign='center'>Gestion stock</Typography>
-								</NavLink>
+								<Typography textAlign='center' component={NavLink} style={({ isActive }) => isActive ? activeStyle : null} to='/gestionstock'>Gestion stock</Typography>
 							</MenuItem>
 
 							<MenuItem onClick={handleCloseNavMenu}>
-								<NavLink to='/registro' style={({ isActive }) => isActive ? activeStyle : null}>
-									<Typography textAlign='center'>Registro</Typography>
-								</NavLink>
+								<Typography textAlign='center' component={NavLink} style={({ isActive }) => isActive ? activeStyle : null} to='/registro'>Registro</Typography>
 							</MenuItem>
 						</Menu>
 					</Box>
 
-			{/* NAVBAR PARA TAMAÑO DE PANTALLA NORMAL */}
-					<Typography
+					{/* NAVBAR PARA TAMAÑO DE PANTALLA NORMAL */}
+					{/* <Typography
 						variant="h6"
 						noWrap
 						component={NavLink}
@@ -94,6 +94,13 @@ const NavBar = () => {
 							textDecoration: 'none',
 						}}
 					>FERROGLOBE</Typography>
+					 */}
+
+					<Box sx={{ display: { xs: 'none', md: 'initial' } }}>
+						<Link to="/">
+							<img src={'ferroglobe500.png'} alt="Logo" style={{ width: '50px', cursor: 'pointer', marginRight: '25px' }} />
+						</Link>
+					</Box>
 
 					<Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
 						<Button component={NavLink} style={({ isActive }) => isActive ? activeStyle : null} to='/trazabilidad' sx={{ my: 2, color: 'white', display: 'block' }}>Trazabilidad</Button>
