@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import '../styles/global.css'
 import Form from 'react-bootstrap/Form'
-import { TextField, Grid, Paper, Box, Select, Button, MenuItem } from '@mui/material';
+import { TextField, Grid, Box, Select, Button, MenuItem, Typography } from '@mui/material';
 
 const selectOptions = ["Calidad", "2N", "3N", "4N", "5N", "Reciclado"]
 
@@ -27,23 +27,23 @@ const Entradas = () => {
 			<Box sx={{ width: '700px', padding: '20px' }}>
 				<Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
 					<Grid item xs={4} sm={8} md={12}>
-						<h4>Información general:</h4>
+						<Typography variant="h5">Información general</Typography>
 					</Grid>
 
 					<Grid item xs={2} sm={4} md={4}>
-						<TextField label="Código lote" variant='outlined' value={codigoLote} onChange={ev => setCodigoLote(ev.target.value)} />	
+						<TextField label="Código lote" variant='outlined' value={codigoLote} onChange={ev => setCodigoLote(ev.target.value)} />
 					</Grid>
 
 					<Grid item xs={2} sm={4} md={4}>
-						<TextField label="Cantidad (kg)" variant='outlined' value={cantidad} onChange={ev => setCantidad(ev.target.value)} />	
+						<TextField label="Cantidad (kg)" variant='outlined' value={cantidad} onChange={ev => setCantidad(ev.target.value)} />
 					</Grid>
 
 					<Grid item xs={2} sm={4} md={4}>
-						<TextField label="Origen" variant='outlined' value={origen} onChange={ev => setOrigen(ev.target.value)} />	
+						<TextField label="Origen" variant='outlined' value={origen} onChange={ev => setOrigen(ev.target.value)} />
 					</Grid>
 
 					<Grid item xs={2} sm={4} md={4}>
-						<TextField label="Ubicación" variant='outlined' value={ubicacion} onChange={ev => setUbicacion(ev.target.value)} />	
+						<TextField label="Ubicación" variant='outlined' value={ubicacion} onChange={ev => setUbicacion(ev.target.value)} />
 					</Grid>
 
 					<Grid item xs={2} sm={4} md={4}>
@@ -55,19 +55,19 @@ const Entradas = () => {
 					</Grid>
 
 					<Grid item xs={4} sm={8} md={12}>
-						<h4>Granulometría:</h4>
+						<Typography variant="h5">Granulometría</Typography>
 					</Grid>
 
 					<Grid item xs={2} sm={4} md={4}>
-						<TextField label="10" variant='outlined' value={granulometria10} onChange={ev => setGranulometria10(ev.target.value)} />	
+						<TextField label="10" variant='outlined' value={granulometria10} onChange={ev => setGranulometria10(ev.target.value)} />
 					</Grid>
 
 					<Grid item xs={2} sm={4} md={4}>
-						<TextField label="50" variant='outlined' value={granulometria50} onChange={ev => setGranulometria50(ev.target.value)} />	
+						<TextField label="50" variant='outlined' value={granulometria50} onChange={ev => setGranulometria50(ev.target.value)} />
 					</Grid>
 
 					<Grid item xs={2} sm={4} md={4}>
-						<TextField label="90" variant='outlined' value={granulometria90} onChange={ev => setGranulometria90(ev.target.value)} />	
+						<TextField label="90" variant='outlined' value={granulometria90} onChange={ev => setGranulometria90(ev.target.value)} />
 					</Grid>
 
 					<Grid item xs={4} sm={8} md={12}>
@@ -75,7 +75,7 @@ const Entradas = () => {
 					</Grid>
 
 					<Grid item xs={4} sm={8} md={12}>
-						<h4>Análisis:</h4>
+						<Typography variant="h5">Análisis</Typography>
 					</Grid>
 
 					<Grid item xs={2} sm={4} md={4}>
@@ -83,11 +83,11 @@ const Entradas = () => {
 					</Grid>
 
 					<Grid item xs={2} sm={4} md={4}>
-						<TextField label="Calcio" variant='outlined' value={calcio} onChange={ev => setCalcio(ev.target.value)} />	
+						<TextField label="Calcio" variant='outlined' value={calcio} onChange={ev => setCalcio(ev.target.value)} />
 					</Grid>
 
 					<Grid item xs={2} sm={4} md={4}>
-						<TextField label="Hierro" variant='outlined' value={hierro} onChange={ev => setHierro(ev.target.value)} />	
+						<TextField label="Hierro" variant='outlined' value={hierro} onChange={ev => setHierro(ev.target.value)} />
 					</Grid>
 
 					<Grid item xs={2} sm={4} md={4}>
@@ -103,8 +103,8 @@ const Entradas = () => {
 					</Grid>
 
 					<Grid item xs={4} sm={8} md={12} sx={{display: 'flex', justifyContent: 'end'}}>
-						<Button 
-							variant='contained' 
+						<Button
+							variant='contained'
 							size='large'
 							onClick={() => {
 								let resultado = {

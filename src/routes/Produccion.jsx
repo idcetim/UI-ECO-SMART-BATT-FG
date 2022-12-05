@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import '../styles/global.css'
-import { TextField, Box, Grid, Button, Select, MenuItem } from '@mui/material';
+import { TextField, Box, Grid, Button, Select, MenuItem, Typography } from '@mui/material';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -33,7 +33,7 @@ const Produccion = () => {
 			<Box sx={{ width: '700px', padding: '20px' }}>
 				<Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
 					<Grid item xs={4} sm={8} md={12}>
-						<h4>Registrar producto:</h4>
+						<Typography variant="h5">Información general</Typography>
 					</Grid>
 
 					<Grid item xs={2} sm={4} md={4}>
@@ -82,7 +82,7 @@ const Produccion = () => {
 					</Grid>
 
 					<Grid item xs={4} sm={8} md={12}>
-						<h4>Granulometría:</h4>
+						<Typography variant="h5">Granulometría</Typography>
 					</Grid>
 
 					<Grid item xs={2} sm={4} md={4}>
@@ -102,7 +102,7 @@ const Produccion = () => {
 					</Grid>
 
 					<Grid item xs={4} sm={8} md={12}>
-						<h4>Análisis:</h4>
+						<Typography variant="h5">Análisis químico</Typography>
 					</Grid>
 
 					<Grid item xs={2} sm={4} md={4}>
