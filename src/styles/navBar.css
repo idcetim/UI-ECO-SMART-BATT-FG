@@ -1,74 +1,9 @@
-/* .active {
-    color: rgb(255, 7, 226);
-    text-decoration: underline;
-} */
-
-
-/* .nav {
-    background: #004560;
-    height: 85px;
-    display: flex;
-    justify-content: space-between;
-    padding: 0.2rem calc((100vw - 1000px) / 2);
-    padding-left: 30px;
-    z-index: 12;
-}
-
-.navMenu {
-    display: flex;
-    align-items: center;
-    margin-right: -24px;
-    @media screen and (max-width: 768px) {
-        display: none;
-    }
-} */
-
-
-/* .navLink {
-    color: #808080;
-    display: flex;
-    align-items: center;
-    text-decoration: none;
-    padding: 0 1rem;
-    height: 100%;
-    cursor: pointer;
+.navlink:hover {
+    color: rgb(255, 236, 149);
     font-weight: bold;
-    font-size: 28px
 }
 
-.navLink:active {
-    color: #000000;
+.small-navlink:hover {
+    color: rgb(255, 97, 5);
+    font-weight: bold;
 }
-
-.navLink:hover {
-    color: rgb(94, 231, 255)
-}
-
-.navBtn {
-    display: flex;
-    align-items: center;
-    margin-right: 24px;
-    @media screen and (max-width: 768px) {
-        display: none;
-    }
-} */
-
-
-/* .navBtnLink {
-    border-radius: 4px;
-    background: #808080;
-    padding: 10px 22px;
-    color: #000000;
-    outline: none;
-    border: none;
-    cursor: pointer;
-    transition: all 0.2s ease-in-out;
-    text-decoration: none;
-    margin-left: 24px;
-}
-
-.navBtnLink:hover {
-    transition: all 0.2s ease-in-out;
-    background: #fff;
-    color: #808080;
-} */

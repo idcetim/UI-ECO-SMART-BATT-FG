@@ -12,17 +12,27 @@ import IconButton from '@mui/material/IconButton'
 import Menu from '@mui/material/Menu'
 import MenuIcon from '@mui/icons-material/Menu'
 
+import '../styles/navbar.css'
+
 const NavBar = () => {
 	const [anchorElNav, setAnchorElNav] = useState(null);
 
 	const handleOpenNavMenu = (event) => setAnchorElNav(event.currentTarget)
 	const handleCloseNavMenu = () => setAnchorElNav(null)
 
-	const activeStyle = {
-		color: '#c4be01'
+	const activeStyleBig = {
+		color: 'yellow',
+		textDecoration: "underline"
 	}
+
+	const actveStyleSmall = {
+		color: '#7c6901'
+	}
+
+	const smallScreenLinkStyle = { color: "black", textDecoration: "none", textTransform: "uppercase", fontSize: "13px", fontWeight: "bold" }
+
 	return (
-		<AppBar position="static">
+		<AppBar position="static" sx={{background: "grey"}}>
 			<Container maxWidth="xl">
 				<Toolbar disableGutters>
 
@@ -40,9 +50,9 @@ const NavBar = () => {
 							<MenuIcon />
 						</IconButton>
 
-						<Box sx={{ display: { xs: 'initial', md: 'none' }, width: '100%', display: 'flex', justifyContent: 'center' }}>
+						<Box sx={{ display: { xs: 'flex', md: 'none' }, width: '100%', justifyContent: 'center' }}>
 							<Link to="/">
-								<img src={'ferroglobe500.png'} alt="Logo" style={{ width: '50px', cursor: 'pointer', marginRight: '25px' }} />
+								<img src={'ferroglobe500.png'} alt="Logo" style={{ width: '60px', cursor: 'pointer', marginRight: '25px' }} />
 							</Link>
 						</Box>
 
@@ -65,47 +75,31 @@ const NavBar = () => {
 							}}
 						>
 							<MenuItem onClick={handleCloseNavMenu}>
-								<Typography textAlign='center' component={NavLink} style={({ isActive }) => isActive ? activeStyle : null} to='/trazabilidad'>Trazabilidad</Typography>
+								<Typography textAlign='center' component={NavLink} className="small-navlink" style={({ isActive }) => isActive ? actveStyleSmall : null} to='/trazabilidad' sx={smallScreenLinkStyle}>Trazabilidad</Typography>
 							</MenuItem>
 
 							<MenuItem onClick={handleCloseNavMenu}>
-								<Typography textAlign='center' component={NavLink} style={({ isActive }) => isActive ? activeStyle : null} to='/gestionstock'>Gestion stock</Typography>
+								<Typography textAlign='center' component={NavLink} className="small-navlink" style={({ isActive }) => isActive ? actveStyleSmall : null} to='/gestionstock' sx={ smallScreenLinkStyle }>Gestion stock</Typography>
 							</MenuItem>
 
 							<MenuItem onClick={handleCloseNavMenu}>
-								<Typography textAlign='center' component={NavLink} style={({ isActive }) => isActive ? activeStyle : null} to='/registro'>Registro</Typography>
+								<Typography textAlign='center' component={NavLink} className="small-navlink" style={({ isActive }) => isActive ? actveStyleSmall : null} to='/registro' sx={smallScreenLinkStyle}>Registro</Typography>
 							</MenuItem>
 						</Menu>
 					</Box>
 
 					{/* NAVBAR PARA TAMAÑO DE PANTALLA NORMAL */}
-					{/* <Typography
-						variant="h6"
-						noWrap
-						component={NavLink}
-						to="/"
-						sx={{
-							mr: 2,
-							display: { xs: 'none', md: 'flex' },
-							fontFamily: 'monospace',
-							fontWeight: 700,
-							letterSpacing: '.3rem',
-							color: 'inherit',
-							textDecoration: 'none',
-						}}
-					>FERROGLOBE</Typography>
-					 */}
 
 					<Box sx={{ display: { xs: 'none', md: 'initial' } }}>
 						<Link to="/">
-							<img src={'ferroglobe500.png'} alt="Logo" style={{ width: '50px', cursor: 'pointer', marginRight: '25px' }} />
+							<img src={'ferroglobe500.png'} alt="Logo" style={{ width: '60px', cursor: 'pointer', marginRight: '25px' }} />
 						</Link>
 					</Box>
 
 					<Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-						<Button component={NavLink} style={({ isActive }) => isActive ? activeStyle : null} to='/trazabilidad' sx={{ my: 2, color: 'white', display: 'block' }}>Trazabilidad</Button>
-						<Button component={NavLink} style={({ isActive }) => isActive ? activeStyle : null} to='/gestionstock' sx={{ my: 2, color: 'white', display: 'block' }}>Gestion stock</Button>
-						<Button component={NavLink} style={({ isActive }) => isActive ? activeStyle : null} to='/registro' sx={{ my: 2, color: 'white', display: 'block' }}>Registro</Button>
+						<Button component={NavLink} className="navlink" style={({ isActive }) => isActive ? activeStyleBig : null} to='/trazabilidad' sx={{ my: 2, color: 'black', display: 'block' }}>Trazabilidad</Button>
+						<Button component={NavLink} className="navlink" style={({ isActive }) => isActive ? activeStyleBig : null} to='/gestionstock' sx={{ my: 2, color: 'black', display: 'block' }}>Gestion stock</Button>
+						<Button component={NavLink} className="navlink" style={({ isActive }) => isActive ? activeStyleBig : null} to='/registro' sx={{ my: 2, color: 'black', display: 'block' }}>Registro</Button>
 					</Box>
 				</Toolbar>
 			</Container>

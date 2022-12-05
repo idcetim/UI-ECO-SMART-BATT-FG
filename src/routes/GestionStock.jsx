@@ -1,61 +1,24 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import FileUploadButton from '../components/UploadFileButton'
 import Papa from 'papaparse'
 import Modal from 'react-bootstrap/Modal';
 import { getLote, getLotes, updateLote } from '../api/endpoints';
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TableRow,
-    Paper,
-    Box,
-    Tabs,
-    Tab,
-    Skeleton
-} from '@mui/material'
-import {
-    GridRowModes,
-    DataGrid,
-    GridActionsCellItem,
-    GridToolbarContainer,
-    GridToolbarExport,
-    GridToolbarFilterButton
-} from '@mui/x-data-grid';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Box} from '@mui/material'
+import { GridRowModes, DataGrid, GridActionsCellItem, GridToolbarContainer, GridToolbarExport, GridToolbarFilterButton } from '@mui/x-data-grid';
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
 import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Cancel'
 
+import { Resumen } from '../components/GestionStock/Resumen'
+import { StockTabsMenu } from '../components/GestionStock/StockTabsMenu'
+import { TabPanel } from '../components/TabPanel'
+
 const GestionStock = () => {
-    const [currentTab, setCurrentTab] = React.useState(0)
-
-    const tabChanged = (event, newValue) => {
-        setCurrentTab(newValue)
-    }
-
+    const [currentTab, setCurrentTab] = useState(0)
     return (
         <Box sx={{ width: '100%' }}>
-            <Box sx={{ borderBottom: 1, borderColor: 'divider', display: 'flex', justifyContent: 'center' }}>
-                <Tabs
-                    value={currentTab}
-                    onChange={tabChanged}
-                    aria-label="basic tabs example"
-                    variant="scrollable"
-                    scrollButtons
-                    allowScrollButtonsMobile
-                    // sx={{
-                    //     '& .MuiTabs-flexContainer': {
-                    //         flexWrap: 'wrap',
-                    // }}} 
-                >
-                    <Tab label="Materias primas" {...a11yProps(0)} />
-                    <Tab label="Productos" {...a11yProps(0)} />
-                    <Tab label="Resumen" {...a11yProps(0)} />
-                </Tabs>
-            </Box>
+        <StockTabsMenu currentTab= {currentTab} setCurrentTab={setCurrentTab} />
 
             <TabPanel value={currentTab} index={0}>
                 <GestionStockListaLotes />
@@ -72,80 +35,12 @@ const GestionStock = () => {
     )
 }
 
-const Resumen = () => {
-    return (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '10px' }}>
-            <h3>Cantidad de botellas en stock</h3>
-
-            <TableContainer component={Paper} sx={{ width: '300px', marginTop: '10px' }}>
-                <Table aria-label="simple table">
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>Calidad</TableCell>
-                            <TableCell align='right'>Cantidad</TableCell>
-                        </TableRow>
-                    </TableHead>
-
-                    <TableBody>
-                        <TableRow>
-                            <TableCell component='th' scope='row'>2N</TableCell>
-                            <TableCell align='right'>10000 kg</TableCell>
-                        </TableRow>
-
-                        <TableRow>
-                            <TableCell component='th' scope='row'>3N</TableCell>
-                            <TableCell align='right'>20000 kg</TableCell>
-                        </TableRow>
-
-                        <TableRow>
-                            <TableCell component='th' scope='row'>4N</TableCell>
-                            <TableCell align='right'>50000 kg</TableCell>
-                        </TableRow>
-
-                        <TableRow>
-                            <TableCell component='th' scope='row'>5N</TableCell>
-                            <TableCell align='right'>50000 kg</TableCell>
-                        </TableRow>
-                    </TableBody>
-                </Table>
-            </TableContainer>
-        </div>
-    )
-}
-
-const TabPanel = (props) => {
-    const { children, value, index, ...other } = props;
-
-    return (
-        <div
-            role="tabpanel"
-            hidden={value !== index}
-            id={`simple-tabpanel-${index}`}
-            aria-labelledby={`simple-tab-${index}`}
-            {...other}
-        >
-            {value === index && (
-                <Box sx={{ p: 3 }}>
-                    {children}
-                </Box>
-            )}
-        </div>
-    );
-}
-
-const a11yProps = (index) => {
-    return {
-        id: `simple-tab-${index}`,
-        'aria-controls': `simple-tabpanel-${index}`,
-    };
-}
-
 const GestionStockListaLotes = () => {
-    const [lotesBD, setLotesBD] = React.useState(null)
-    const [lotesCSV, setLotesCSV] = React.useState([])
-    const [errorLoadingLotes, setErrorLoadingLotes] = React.useState(false)
+    const [lotesBD, setLotesBD] = useState(null)
+    const [lotesCSV, setLotesCSV] = useState([])
+    const [errorLoadingLotes, setErrorLoadingLotes] = useState(false)
 
-    React.useEffect(() => {
+    useEffect(() => {
         const callback = async () => {
             try {
                 const response = await fetch(getLotes)
