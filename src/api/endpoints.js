@@ -2,34 +2,46 @@
 // export const url = "https://server-stock.azurewebsites.net/"
 
 // export const url = "http://localhost:7071/api/"
-export const url = "https://ferroglobe.azurewebsites.net/api/"
+export const url = "https://ferroglobe.azurewebsites.net/api/";
 
-export const entradas = `${url}entradas`
+export const registroEndpoints = {
+    file: url + "file-example",
+    mmpp: url + "registrar-mmpp",
+    producto: url + "registrar-producto",
+};
 
-export const entradasFile = `${url}entradas/file`
+export const stockEndpoints = {
+    update: url + "entradas/update",
+    getLote: url + "GetEntradaBD",
+    getLotes: url + "GetEntradasBD",
+};
 
-export const entradasAnalisis = `${url}entradas/analisis`
+export const entradas = `${url}entradas`;
 
-export const cantidadEntradas = `${url}cantidad/entradas`
+export const entradasFile = `${url}entradas/file`;
 
-export const produccion = `${url}produccion`
+export const entradasAnalisis = `${url}entradas/analisis`;
 
-export const produccionGra = `${url}produccion/analisis/granulometria`
+export const cantidadEntradas = `${url}cantidad/entradas`;
 
-export const produccionQui = `${url}produccion/analisis/quimico`
+export const produccion = `${url}produccion`;
 
-export const produccionOrden = `${url}produccion/analisis/orden`
+export const produccionGra = `${url}produccion/analisis/granulometria`;
 
-export const produccionOrdenFile = `${url}produccion/orden`
+export const produccionQui = `${url}produccion/analisis/quimico`;
 
-export const produccionQuimicoFile = `${url}produccion/quimico`
+export const produccionOrden = `${url}produccion/analisis/orden`;
 
-export const produccionGranulometricoFile = `${url}produccion/granulometria`
+export const produccionOrdenFile = `${url}produccion/orden`;
 
-export const cantidadProduccion = `${url}cantidad/produccion`
+export const produccionQuimicoFile = `${url}produccion/quimico`;
 
-export const getLote = `${url}GetEntradaBD`
+export const produccionGranulometricoFile = `${url}produccion/granulometria`;
 
-export const getLotes = `${url}GetEntradasBD`
+export const cantidadProduccion = `${url}cantidad/produccion`;
 
-export const updateLote = `${url}entradas/updateLote`
+export const getLote = `${url}GetEntradaBD`;
+
+export const getLotes = `${url}GetEntradasBD`;
+
+export const updateLote = `${url}entradas/updateLote`;

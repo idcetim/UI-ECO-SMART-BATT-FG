@@ -15,15 +15,15 @@ const CustomToolbar = () => {
     </GridToolbarContainer>
   )
 }
-export const TablaLotesBD = (props) => {
+export const TablaLotesBD = ({ lotesBD, errorLoadingLotes }) => {
   const [rows, setRows] = useState([]);
   const [rowModesModel, setRowModesModel] = useState({});
 
   useEffect(() => {
-    if (props.lotesBD != null) {
-      setRows(props.lotesBD)
+    if (lotesBD !== null) {
+      setRows(lotesBD)
     }
-  }, [props.lotesBD])
+  }, [lotesBD])
 
   const handleRowEditStart = (params, event) => {
     event.defaultMuiPrevented = true;
@@ -159,8 +159,8 @@ export const TablaLotesBD = (props) => {
             pageSize: 10
           }
         }}
-        loading={props.lotesBD == null}
-        error={props.errorLoadingLotes === true ? true : undefined}
+        loading={lotesBD == null}
+        error={errorLoadingLotes === true ? true : undefined}
         components={{
           Toolbar: CustomToolbar
         }}

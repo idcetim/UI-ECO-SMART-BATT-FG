@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Box } from '@mui/material'
-import Entradas from './Entradas'
-import Produccion from './Produccion'
+import Entradas from '../components/Registro/Entradas'
+import Produccion from '../components/Registro/Produccion'
 import { TabPanel } from '../components/TabPanel'
 import { RegistroTabsMenu } from '../components/Registro/RegistroTabsMenu'
 
