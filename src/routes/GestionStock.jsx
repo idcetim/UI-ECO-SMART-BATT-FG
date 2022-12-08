@@ -4,6 +4,8 @@ import { Resumen } from '../components/GestionStock/Resumen'
 import { StockTabsMenu } from '../components/GestionStock/StockTabsMenu'
 import { TabPanel } from '../components/TabPanel'
 import { GestionStockMP } from '../components/GestionStock/GestionStockMP'
+import { GestionStockOrdenTrabajo } from '../components/GestionStock/GestionStockOrdenTrabajo'
+import { GestionStockProductos } from '../components/GestionStock/GestionStockProductos'
 
 const GestionStock = () => {
     const [currentTab, setCurrentTab] = useState(0)
@@ -16,10 +18,14 @@ const GestionStock = () => {
             </TabPanel>
 
             <TabPanel value={currentTab} index={1}>
-                <GestionStockMP />
+                <GestionStockOrdenTrabajo />
             </TabPanel>
 
             <TabPanel value={currentTab} index={2}>
+                <GestionStockProductos />
+            </TabPanel>
+
+            <TabPanel value={currentTab} index={3}>
                 <Resumen />
             </TabPanel>
         </Box>

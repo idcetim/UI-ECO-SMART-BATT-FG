@@ -90,9 +90,8 @@ const Produccion = () => {
 		} catch (error) {
 			console.log("Error añadiendo información de Producto: ", error)
 		}
-	
-
 	}
+
 	return (
 		<div style={{ display: 'flex', justifyContent: 'center' }}>
 			<Box sx={{ width: '700px', padding: '20px' }}>

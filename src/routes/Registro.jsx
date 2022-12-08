@@ -7,7 +7,7 @@ import { TabPanel } from '../components/TabPanel'
 import { RegistroTabsMenu } from '../components/Registro/RegistroTabsMenu'
 
 const Registro = () => {
-    const [currenteTab, setCurrentTab] = useState(0);
+    const [currenteTab, setCurrentTab] = useState(0)
     return (
         <Box sx={{ width: '100%' }}>
             <RegistroTabsMenu currentTab={currenteTab} setCurrentTab={setCurrentTab} />
