@@ -22,8 +22,9 @@ export const RegistroTabsMenu = ({ currentTab, setCurrentTab }) => {
         scrollButtons
         allowScrollButtonsMobile
       >
-        <Tab label="Registrar Materias primas" {...a11yProps(0)} />
-        <Tab label="Registrar producto" {...a11yProps(1)} />
+        <Tab label="Materias primas" {...a11yProps(0)} />
+        <Tab label="Órdenes de trabajo" {...a11yProps(1)} />
+        <Tab label="Productos" {...a11yProps(2)} />
       </Tabs>
     </Box>
   )
