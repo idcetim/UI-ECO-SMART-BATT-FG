@@ -12,7 +12,7 @@ import '../../styles/global.css'
 const selectQualityOptions = ["Calidad", "2N", "3N", "4N", "5N", "Reciclado"]
 const selectTamOptions = ["Tamaño", "0.2 - 2 mm", "< 0.5 mm"]
 
-const Produccion = () => {
+export const Productos = () => {
 	const [inputs, setInputs] = useState({
 		codigoProducto: '',
 		codigoOrdenTrabajo: '',
@@ -214,4 +214,3 @@ const Produccion = () => {
 	)
 }
 
-export default Produccion

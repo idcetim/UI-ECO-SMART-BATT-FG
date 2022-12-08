@@ -10,7 +10,7 @@ import '../../styles/global.css'
 
 const selectOptions = ["Calidad", "2N", "3N", "4N", "5N", "Reciclado"]
 
-const Entradas = () => {
+export const MateriasPrimas = () => {
 	const [inputs, setInputs] = useState({
 		codigoLote: '',
 		fecha: null,
@@ -208,5 +208,3 @@ const Entradas = () => {
 		</div>
 	)
 }
-
-export default Entradas
