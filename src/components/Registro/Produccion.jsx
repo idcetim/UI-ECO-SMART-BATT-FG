@@ -1,32 +1,40 @@
-import { useState } from 'react';
-import { TextField, Box, Grid, Button, Select, MenuItem, Typography } from '@mui/material';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { useState, useRef } from 'react'
+import { TextField, Box, Grid, Button, Select, MenuItem, Typography } from '@mui/material'
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
+import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import Form from 'react-bootstrap/Form'
 
 import '../../styles/global.css'
 const selectQualityOptions = ["Calidad", "2N", "3N", "4N", "5N", "Reciclado"]
-const selectProductTypeOptions = ["Tipo de producto", "0.2 - 2 mm", "< 0.5 mm"]
+const selectTamOptions = ["Tamaño", "0.2 - 2 mm", "< 0.5 mm"]
 
 const Produccion = () => {
-	const [codigoLoteOrigen, setCodigoLoteOrigen] = useState('')
-	const [codigoNuevoProducto, setCodigoNuevoProducto] = useState('')
-	const [fecha, setFecha] = useState(null);
-	const [ubicacion, setUbicacion] = useState('')
-	const [cantidad, setCantidad] = useState('')
-	const [calidad, setCalidad] = useState(selectQualityOptions[0])
-	const [tipoProducto, setTipoProducto] = useState(selectProductTypeOptions[0])
-	const [granulometria10, setGranulometria10] = useState('')
-	const [granulometria50, setGranulometria50] = useState('')
-	const [granulometria90, setGranulometria90] = useState('')
-	const [aluminio, setAluminio] = useState('')
-	const [calcio, setCalcio] = useState('')
-	const [hierro, setHierro] = useState('')
-	const [titanio, setTitanio] = useState('')
-	const [totalImpurezas, setTotalImpurezas] = useState('')
-	const [analisis, setAnalisis] = useState('')
-	const [granulometria, setGranulometria] = useState('')
+	const [inputs, setInputs] = useState({
+		codigoProducto: '',
+		codigoOrdenTrabajo: '',
+		fecha: null,
+		cantidad: '',
+		tam: selectTamOptions[0],
+		origen: '',
+		ubicacion: '',
+		calidad: selectQualityOptions[0],
+		granulometria10: '',
+		granulometria50: '',
+		granulometria90: '',
+		granulometriaUrl: '',
+		aluminio: '',
+		calcio: '',
+		hierro: '',
+		titanio: '',
+		total: '',
+		quimicoUrl: ''
+	})
+
+	const [granulometriaFile, setGranulometriaFile] = useState(undefined)
+	const [analisisFile, setAnalisisFile] = useState(undefined)
+	const granuRef = useRef()
+	const analisisRef = useRef()
 
 	return (
 		<div style={{ display: 'flex', justifyContent: 'center' }}>
@@ -37,36 +45,36 @@ const Produccion = () => {
 					</Grid>
 
 					<Grid item xs={2} sm={4} md={4}>
-						<TextField label="Código lote de origen" variant='outlined' value={codigoLoteOrigen} onChange={ev => setCodigoLoteOrigen(ev.target.value)} />
+						<TextField size="small" label="Código lote de origen" variant='outlined' value={inputs.codigoOrdenTrabajo} onChange={ev => setInputs({ ...inputs, codigoOrdenTrabajo: ev.target.value })} />
 					</Grid>
 
 					<Grid item xs={2} sm={4} md={4}>
-						<TextField label="Código nuevo producto" variant='outlined' value={codigoNuevoProducto} onChange={ev => setCodigoNuevoProducto(ev.target.value)} />
+						<TextField size="small" label="Código nuevo producto" variant='outlined' value={inputs.codigoProducto} onChange={ev => setInputs({ ...inputs, codigoProducto: ev.target.value })} />
 					</Grid>
 
 					<Grid item xs={2} sm={4} md={4}>
 						<LocalizationProvider dateAdapter={AdapterDayjs}>
 							<DatePicker
 								label="Fecha"
-								value={fecha}
+								value={inputs.fecha}
 								onChange={(newValue) => {
-									setFecha(newValue);
+									setInputs({...inputs, fecha: newValue});
 								}}
-								renderInput={(params) => <TextField {...params} />}
+								renderInput={(params) => <TextField size="small" {...params} />}
 							/>
 						</LocalizationProvider>
 					</Grid>
 
 					<Grid item xs={2} sm={4} md={4}>
-						<TextField label="Ubicación" variant="outlined" value={ubicacion} onChange={ev => setUbicacion(ev.target.value)} />
+						<TextField size="small" label="Ubicación" variant="outlined" value={inputs.ubicacion} onChange={ev => setInputs({ ...inputs, ubicacion:ev.target.value })} />
 					</Grid>
 
 					<Grid item xs={2} sm={4} md={4}>
-						<TextField label="Cantidad (kg)" variant='outlined' value={cantidad} onChange={ev => setCantidad(ev.target.value)} />
+						<TextField size="small" label="Cantidad (kg)" variant='outlined' value={inputs.cantidad} onChange={ev => setInputs({ ...inputs, cantidad: ev.target.value })} />
 					</Grid>
 
 					<Grid item xs={2} sm={4} md={4}>
-						<Select value={calidad} onChange={ev => setCalidad(ev.target.value)} sx={{width: '100%'}}>
+						<Select size="small" value={inputs.calidad} onChange={ev => setInputs({ ...inputs, calidad: ev.target.value })} sx={{width: '100%'}}>
 							{selectQualityOptions.map(option => {
 								return <MenuItem value={option} key={option}>{option}</MenuItem>
 							})}
@@ -74,8 +82,8 @@ const Produccion = () => {
 					</Grid>
 
 					<Grid item xs={2} sm={4} md={4}>
-						<Select value={tipoProducto} onChange={ev => setTipoProducto(ev.target.value)} sx={{width: '100%'}}>
-							{selectProductTypeOptions.map(option => {
+						<Select size="small" value={inputs.tam} onChange={ev => setInputs({ ...inputs, tam: ev.target.value })} sx={{width: '100%'}}>
+							{selectTamOptions.map(option => {
 								return <MenuItem value={option} key={option}>{option}</MenuItem>
 							})}
 						</Select>
@@ -86,19 +94,19 @@ const Produccion = () => {
 					</Grid>
 
 					<Grid item xs={2} sm={4} md={4}>
-						<TextField label="10" variant='outlined' value={granulometria10} onChange={ev => setGranulometria10(ev.target.value)} />
+						<TextField size="small" label="10" variant='outlined' value={inputs.granulometria10} onChange={ev => setInputs({ ...inputs, granulometria10: ev.target.value })} />
 					</Grid>
 
 					<Grid item xs={2} sm={4} md={4}>
-						<TextField label="50" variant='outlined' value={granulometria50} onChange={ev => setGranulometria50(ev.target.value)} />
+						<TextField size="small" label="50" variant='outlined' value={inputs.granulometria50} onChange={ev => setInputs({ ...inputs, granulometria50: ev.target.value })} />
 					</Grid>
 
 					<Grid item xs={2} sm={4} md={4}>
-						<TextField label="90" variant='outlined' value={granulometria90} onChange={ev => setGranulometria90(ev.target.value)} />
+						<TextField size="small" label="90" variant='outlined' value={inputs.granulometria90} onChange={ev => setInputs({ ...inputs, granulometria90: ev.target.value })} />
 					</Grid>
 
 					<Grid item xs={4} sm={8} md={12}>
-						<Form.Control type="file" style={{maxWidth: "500px"}} onChange={ev => setAnalisis(ev.target.value)} />
+						<Form.Control type="file" style={{maxWidth: "500px"}} ref={analisisRef} onChange={ev => setAnalisisFile(analisisRef.current.files[0])} />
 					</Grid>
 
 					<Grid item xs={4} sm={8} md={12}>
@@ -106,27 +114,27 @@ const Produccion = () => {
 					</Grid>
 
 					<Grid item xs={2} sm={4} md={4}>
-						<TextField label="Aluminio" variant='outlined' value={aluminio} onChange={ev => setAluminio(ev.target.value)} />
+						<TextField size="small" label="Aluminio" variant='outlined' value={inputs.aluminio} onChange={ev => setInputs({ ...inputs, aluminio: ev.target.value })} />
 					</Grid>
 
 					<Grid item xs={2} sm={4} md={4}>
-						<TextField label="Calcio" variant='outlined' value={calcio} onChange={ev => setCalcio(ev.target.value)} />
+						<TextField size="small" label="Calcio" variant='outlined' value={inputs.calcio} onChange={ev => setInputs({ ...inputs, calcio: ev.target.value })} />
 					</Grid>
 
 					<Grid item xs={2} sm={4} md={4}>
-						<TextField label="Hierro" variant='outlined' value={hierro} onChange={ev => setHierro(ev.target.value)} />
+						<TextField size="small" label="Hierro" variant='outlined' value={inputs.hierro} onChange={ev => setInputs({ ...inputs, hierro: ev.target.value })} />
 					</Grid>
 
 					<Grid item xs={2} sm={4} md={4}>
-						<TextField label="Titanio" variant="outlined" value={titanio} onChange={ev => setTitanio(ev.target.value)} />
+						<TextField size="small" label="Titanio" variant="outlined" value={inputs.titanio} onChange={ev => setInputs({ ...inputs, titanio: ev.target.value })} />
 					</Grid>
 
 					<Grid item xs={2} sm={4} md={4}>
-						<TextField label="Total impurezas" variant="outlined" value={totalImpurezas} onChange={ev => setTotalImpurezas(ev.target.value)} />
+						<TextField size="small" label="Total impurezas" variant="outlined" value={inputs.totalImpurezas} onChange={ev => setInputs({ ...inputs, totalImpurezas: ev.target.value })} />
 					</Grid>
 
 					<Grid item xs={4} sm={8} md={12}>
-						<Form.Control type="file" style={{maxWidth: "500px"}} onChange={ev => setAnalisis(ev.target.value)} />
+						<Form.Control type="file" style={{ maxWidth: "500px" }} ref={granuRef} onChange={ev => setGranulometriaFile(analisisRef.current.files[0])} />
 					</Grid>
 
 					<Grid item xs={4} sm={8} md={12} sx={{ display: 'flex', justifyContent: 'end' }}>
@@ -134,23 +142,6 @@ const Produccion = () => {
 							variant='contained'
 							size='large'
 							onClick={() => {
-								let resultado = {
-									codigoLoteOrigen: codigoLoteOrigen,
-									codigoNuevoProducto: codigoNuevoProducto,
-									fecha: fecha,
-									ubicacion: ubicacion,
-									cantidad: cantidad,
-									calidad: calidad,
-									tipoProducto: tipoProducto,
-									granulometria10: granulometria10,
-									granulometria50: granulometria50,
-									granulometria90: granulometria90,
-									aluminio: aluminio,
-									calcio: calcio,
-									hierro: hierro,
-									titanio: titanio,
-									totalImpurezas: totalImpurezas
-								}
 							}}
 						>Guardar</Button>
 					</Grid>
