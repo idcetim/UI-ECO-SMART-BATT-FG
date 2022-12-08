@@ -38,43 +38,55 @@ const Entradas = () => {
 
 	const guardarHandler = async () => {
 		if (granulometriaFile) {
-			const formData = new FormData();
-			formData.append('file', granulometriaFile)
-			const response = await fetch(registroEndpoints.file, {
-				method: "POST",
-				headers: {
-					'Accept': 'application/json',
-					'Access-Control-Allow-Origin': '*',
-					'file-type': BlobStorage['mmpp-gra']
-				},
-				mode: 'cors',
-				body: formData
-			})
-			console.log(await response.json())
+			try {
+				const formData = new FormData();
+				formData.append('file', granulometriaFile)
+				const response = await fetch(registroEndpoints.file, {
+					method: "POST",
+					headers: {
+						'Accept': 'application/json',
+						'Access-Control-Allow-Origin': '*',
+						'file-type': BlobStorage['mmpp-gra']
+					},
+					mode: 'cors',
+					body: formData
+				})
+				console.log(await response.json())
+			} catch (error) {
+				console.log("Error añadiendo archivo MMPP granulometria: ", error)
+			}
 		}
 		if (analisisFile) {
-			const formData = new FormData();
-			formData.append('file', analisisFile)
-			const response = await fetch(registroEndpoints.file, {
+			try {
+				const formData = new FormData();
+				formData.append('file', analisisFile)
+				const response = await fetch(registroEndpoints.file, {
+					method: "POST",
+					headers: {
+						'Accept': 'application/json',
+						'Access-Control-Allow-Origin': '*',
+						'file-type': BlobStorage['mmpp-qui']
+					},
+					mode: 'cors',
+					body: formData
+				})
+				console.log(await response.json())
+			} catch (error) {
+				console.log("Error añadiendo archivo MMPP quimico: ", error)
+			}
+		}
+		try {
+			await fetch("http://localhost:7071/api/registrar-mmpp", {
 				method: "POST",
 				headers: {
 					'Accept': 'application/json',
 					'Access-Control-Allow-Origin': '*',
-					'file-type': BlobStorage['mmpp-qui']
 				},
-				mode: 'cors',
-				body: formData
+				body: JSON.stringify(inputs),
 			})
-			console.log(await response.json())
+		} catch (error) {
+			console.log("Error añadiendo MMPP informacion: ", error)
 		}
-		await fetch("http://localhost:7071/api/registrar-mmpp", {
-			method: "POST",
-			headers: {
-				'Accept': 'application/json',
-				'Access-Control-Allow-Origin': '*',
-			},
-			body: JSON.stringify(inputs),
-		})
 
 	}
 
@@ -189,11 +201,7 @@ const Entradas = () => {
 					</Grid>
 
 					<Grid item xs={4} sm={8} md={12} sx={{ display: 'flex', justifyContent: 'end' }}>
-						<Button
-							variant='contained'
-							size='large'
-							onClick={guardarHandler}
-						>Guardar</Button>
+						<Button variant='contained' size='medium' onClick={guardarHandler}>Guardar</Button>
 					</Grid>
 				</Grid>
 			</Box>
