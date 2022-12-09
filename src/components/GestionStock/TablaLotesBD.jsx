@@ -6,6 +6,18 @@ import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Cancel'
 import { updateLote } from '../../api/endpoints'
 import { Box } from '@mui/system';
+import { Button } from '@mui/material';
+import { useRef } from 'react';
+import { useLayoutEffect } from 'react';
+
+const isValidUrl = urlString=> {
+  try { 
+    return Boolean(new URL(urlString)); 
+  }
+  catch(e){ 
+    return false; 
+  }
+}
 
 const CustomToolbar = () => {
   return (
@@ -15,6 +27,47 @@ const CustomToolbar = () => {
     </GridToolbarContainer>
   )
 }
+
+const RenderAnalisis = (props) => {
+  const { hasFocus, value } = props
+  const buttonElement = useRef(null)
+  const rippleRef = useRef(null)
+
+  useLayoutEffect(() => {
+    if (hasFocus) {
+      const input = buttonElement.current?.querySelector('input')
+      input?.focus()
+    }
+
+    else if (rippleRef.current) {
+      rippleRef.current.stop({})
+    }
+  }, [hasFocus])
+
+  if (isValidUrl(props.row.analisis)) {
+    return (
+      <strong>
+        <Button
+          component="button"
+          ref={buttonElement}
+          touchRippleRef={rippleRef}
+          variant="contained"
+          size="small"
+          tabIndex={hasFocus ? 0 : -1}
+          onClick={() => window.open(props.row.analisis)}
+          onKeyDown={(event) => {
+            if (event.key === ' ') {
+              event.stopPropagation()
+            }
+          }}
+        >Ver análisis</Button>
+      </strong>
+    )
+  }
+
+  return <>No hay análisis</>
+}
+
 export const TablaLotesBD = ({ lotesBD, errorLoadingLotes }) => {
   const [rows, setRows] = useState([]);
   const [rowModesModel, setRowModesModel] = useState({});
@@ -78,7 +131,10 @@ export const TablaLotesBD = ({ lotesBD, errorLoadingLotes }) => {
     { field: 'origen', headerName: 'Origen', width: 100, editable: true },
     { field: 'cantidad', headerName: 'Cantidad', width: 100, type: 'string', editable: true },
     { field: 'calidad', headerName: 'Calidad', width: 100, editable: true },
-    { field: 'analisis', headerName: 'Análisis', width: 350, editable: true },
+    // { field: 'analisis', headerName: 'Análisis', width: 350, editable: true },
+    { field: 'analisis', headerName: 'Analisis', width: 150, editable: false,
+      renderCell: RenderAnalisis
+    },
     {
       field: 'actions',
       type: 'actions',
