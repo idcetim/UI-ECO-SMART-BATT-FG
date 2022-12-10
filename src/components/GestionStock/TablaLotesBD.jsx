@@ -67,7 +67,7 @@ const RenderAnalisis = (props) => {
     )
   }
 
-  return <>- -  -  -  - - - - - -</>
+  return <span style={{marginLeft: "5px"}}>- -  -  -  - - - - - -</span>
 }
 
 export const TablaLotesBD = ({ lotesBD, errorLoadingLotes }) => {

@@ -8,6 +8,7 @@ export const registroEndpoints = {
     file: url + "file-example",
     mmpp: url + "registrar-mmpp",
     producto: url + "registrar-producto",
+    orden: url + "registrar-ot",
 };
 
 export const stockEndpoints = {

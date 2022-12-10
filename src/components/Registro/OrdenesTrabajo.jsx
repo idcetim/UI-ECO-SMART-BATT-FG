@@ -45,6 +45,7 @@ function getStyles(name, materiasPrimas, theme) {
 
 export const OrdenesTrabajo = () => {
     const [inputs, setInputs] = useState({
+        codigoOT: "",
         fecha: null,
         proceso: procesosOptions[0],
         peso: "",
@@ -70,6 +71,10 @@ export const OrdenesTrabajo = () => {
             <Box sx={{ width: '700px', padding: '20px' }}>
                 <Grid item xs={4} sm={8} md={12}>
                     <Typography variant="h5">Nueva orden de trabajo</Typography>
+                </Grid>
+
+                <Grid item xs={2} sm={4} md={4}>
+                    <TextField size="small" label="Código orden trabajo" variant='outlined' value={inputs.codigoOT} onChange={ev => setInputs({ ...inputs, codigoOT: ev.target.value })} />
                 </Grid>
 
                 <Grid item xs={2} sm={4} md={4}>
