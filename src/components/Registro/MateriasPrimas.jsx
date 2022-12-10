@@ -76,7 +76,7 @@ export const MateriasPrimas = () => {
 			}
 		}
 		try {
-			await fetch("http://localhost:7071/api/registrar-mmpp", {
+			const response = await fetch(registroEndpoints.mmpp, {
 				method: "POST",
 				headers: {
 					'Accept': 'application/json',
@@ -84,6 +84,7 @@ export const MateriasPrimas = () => {
 				},
 				body: JSON.stringify(inputs),
 			})
+			console.log(await response.json())
 		} catch (error) {
 			console.log("Error añadiendo MMPP informacion: ", error)
 		}

@@ -1,0 +1,14 @@
+.button-table {
+    text-transform: none;
+    background-color: none;
+    border: none;
+    color: rgba(0, 0, 0, 0.87);
+    font-size: 14px;
+    font-family: roboto;
+    font-weight: 400;
+}
+
+.button-table:hover {
+    font-size: 18px;
+    color: rgb(30, 0, 128)
+}

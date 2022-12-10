@@ -4,18 +4,20 @@ import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
 import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Cancel'
-import { updateLote } from '../../api/endpoints'
+import { stockEndpoints } from '../../api/endpoints'
 import { Box } from '@mui/system';
 import { Button } from '@mui/material';
 import { useRef } from 'react';
 import { useLayoutEffect } from 'react';
 
-const isValidUrl = urlString=> {
-  try { 
-    return Boolean(new URL(urlString)); 
+import '../../styles/stockTables.css'
+
+const isValidUrl = urlString => {
+  try {
+    return Boolean(new URL(urlString));
   }
-  catch(e){ 
-    return false; 
+  catch (e) {
+    return false;
   }
 }
 
@@ -51,7 +53,7 @@ const RenderAnalisis = (props) => {
           component="button"
           ref={buttonElement}
           touchRippleRef={rippleRef}
-          variant="contained"
+          className="button-table"
           size="small"
           tabIndex={hasFocus ? 0 : -1}
           onClick={() => window.open(props.row.analisis)}
@@ -60,12 +62,12 @@ const RenderAnalisis = (props) => {
               event.stopPropagation()
             }
           }}
-        >Ver análisis</Button>
+        >📁 Descargar</Button>
       </strong>
     )
   }
 
-  return <>No hay análisis</>
+  return <>- -  -  -  - - - - - -</>
 }
 
 export const TablaLotesBD = ({ lotesBD, errorLoadingLotes }) => {
@@ -114,7 +116,7 @@ export const TablaLotesBD = ({ lotesBD, errorLoadingLotes }) => {
     const updatedRow = { ...newRow, isNew: false };
     setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
 
-    fetch(updateLote, {
+    fetch(stockEndpoints.update, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -132,7 +134,8 @@ export const TablaLotesBD = ({ lotesBD, errorLoadingLotes }) => {
     { field: 'cantidad', headerName: 'Cantidad', width: 100, type: 'string', editable: true },
     { field: 'calidad', headerName: 'Calidad', width: 100, editable: true },
     // { field: 'analisis', headerName: 'Análisis', width: 350, editable: true },
-    { field: 'analisis', headerName: 'Analisis', width: 150, editable: false,
+    {
+      field: 'analisis', headerName: 'Analisis', width: 150, editable: false,
       renderCell: RenderAnalisis
     },
     {

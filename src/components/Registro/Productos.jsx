@@ -19,7 +19,6 @@ export const Productos = () => {
 		fecha: null,
 		cantidad: '',
 		tam: selectTamOptions[0],
-		origen: '',
 		ubicacion: '',
 		calidad: selectQualityOptions[0],
 		granulometria10: '',
@@ -79,7 +78,7 @@ export const Productos = () => {
 			}
 		}
 		try {
-			await fetch("http://localhost:7071/api/registrar-mmpp", {
+			const response = await fetch(registroEndpoints.producto, {
 				method: "POST",
 				headers: {
 					'Accept': 'application/json',
@@ -87,6 +86,7 @@ export const Productos = () => {
 				},
 				body: JSON.stringify(inputs),
 			})
+			console.log(await response.json())
 		} catch (error) {
 			console.log("Error añadiendo información de Producto: ", error)
 		}
