@@ -11,7 +11,7 @@ const GestionStock = () => {
     const [currentTab, setCurrentTab] = useState(0)
     return (
         <Box sx={{ width: '100%' }}>
-        <StockTabsMenu currentTab= {currentTab} setCurrentTab={setCurrentTab} />
+            <StockTabsMenu currentTab={currentTab} setCurrentTab={setCurrentTab} />
 
             <TabPanel value={currentTab} index={0}>
                 <GestionStockMP />
@@ -30,5 +30,5 @@ const GestionStock = () => {
             </TabPanel>
         </Box>
     )
-    }
+}
 export default GestionStock

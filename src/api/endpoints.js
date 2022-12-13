@@ -46,3 +46,5 @@ export const getLote = `${url}GetEntradaBD`;
 export const getLotes = `${url}GetEntradasBD`;
 
 export const updateLote = `${url}entradas/updateLote`;
+
+export const getCodigosMMPP = `${url}GetMMPPBD`
