@@ -8,7 +8,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import '../../styles/global.css'
 import { useEffect } from 'react';
-
+import toast, { Toaster } from 'react-hot-toast';
 
 export const MateriasPrimas = () => {
 	const [inputs, setInputs] = useState({
@@ -51,46 +51,44 @@ export const MateriasPrimas = () => {
 
 	const guardarHandler = async () => {
 		if (granulometriaFile) {
-			try {
-				const formData = new FormData();
-				formData.append('file', granulometriaFile)
-				const response = await fetch(registroEndpoints.file, {
-					method: "POST",
-					headers: {
-						'Accept': 'application/json',
-						'Access-Control-Allow-Origin': '*',
-						'file-type': BlobStorage['mmpp-gra']
-					},
-					mode: 'cors',
-					body: formData
-				})
-				console.log(await response.json())
-			} catch (error) {
-				console.log(error)
-				alert("Error añadiendo archivo MMPP granulometria")
+			const formData = new FormData();
+			formData.append('file', granulometriaFile)
+			const response = await fetch(registroEndpoints.file, {
+				method: "POST",
+				headers: {
+					'Accept': 'application/json',
+					'Access-Control-Allow-Origin': '*',
+					'file-type': BlobStorage['mmpp-gra']
+				},
+				mode: 'cors',
+				body: formData
+			})
+
+			if (!response.ok) {
+				throw new Error("Error añadiendo archivo MMPP granulometria")
+
 			}
 		}
 		if (analisisFile) {
-			try {
-				const formData = new FormData();
-				formData.append('file', analisisFile)
-				const response = await fetch(registroEndpoints.file, {
-					method: "POST",
-					headers: {
-						'Accept': 'application/json',
-						'Access-Control-Allow-Origin': '*',
-						'file-type': BlobStorage['mmpp-qui']
-					},
-					mode: 'cors',
-					body: formData
-				})
-				console.log(await response.json())
-			} catch (error) {
-				alert("Error añadiendo archivo MMPP quimico: ", error)
+			const formData = new FormData();
+			formData.append('file', analisisFile)
+			const response = await fetch(registroEndpoints.file, {
+				method: "POST",
+				headers: {
+					'Accept': 'application/json',
+					'Access-Control-Allow-Origin': '*',
+					'file-type': BlobStorage['mmpp-qui']
+				},
+				mode: 'cors',
+				body: formData
+			})
+
+			if (!response.ok) {
+				throw new Error("Error añadiendo archivo MMPP quimico")
 			}
 		}
 
-		const response = await fetch(registroEndpoints.mmpp, {
+		let response = await fetch(registroEndpoints.mmpp, {
 			method: "POST",
 			headers: {
 				'Accept': 'application/json',
@@ -100,18 +98,14 @@ export const MateriasPrimas = () => {
 		})
 
 		if (!response.ok) {
-			console.log(await response.text())
-
-			alert("Error añadiendo MMPP informacion: ")
-
-			return
+			throw new Error(await response.text())
 		}
-
-		alert("Guardado correctamente")
 	}
 
 	return (
 		<div style={{ display: 'flex', justifyContent: 'center' }}>
+			<Toaster />
+
 			<Box sx={{ width: '700px', padding: '20px' }}>
 				<Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
 					<Grid item xs={4} sm={8} md={12}>
@@ -129,7 +123,7 @@ export const MateriasPrimas = () => {
 								value={inputs.fecha}
 								inputFormat="DD/MM/YY"
 								onChange={(newDate) => {
-									setInputs({...inputs, fecha: `${newDate.$y}-${Number(newDate["$M"]) + 1}-${newDate["$D"]}`})
+									setInputs({ ...inputs, fecha: `${newDate.$y}-${Number(newDate["$M"]) + 1}-${newDate["$D"]}` })
 								}}
 								renderInput={(params) => <TextField size="small"{...params} />}
 							/>
@@ -226,7 +220,26 @@ export const MateriasPrimas = () => {
 					</Grid>
 
 					<Grid item xs={4} sm={8} md={12} sx={{ display: 'flex', justifyContent: 'end' }}>
-						<Button variant='contained' size='medium' onClick={guardarHandler}>Guardar</Button>
+						<Button variant='contained' size='medium' onClick={() => {
+							const promise = guardarHandler()
+
+							console.log(promise)
+
+							toast.promise(promise, {
+								loading: 'Guardarndo materia prima',
+								success: 'Guardado correctamente',
+								error: 'Hubo un error guardando los datos'
+							},
+								{
+									style: {
+										minWidth: '250px',
+									},
+									success: {
+										duration: 5000,
+										icon: '🔥',
+									},
+								})
+						}}>Guardar</Button>
 					</Grid>
 				</Grid>
 			</Box>
