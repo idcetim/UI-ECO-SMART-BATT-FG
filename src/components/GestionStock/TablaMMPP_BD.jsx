@@ -4,7 +4,7 @@ import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
 import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Cancel'
-import { stockEndpoints } from '../../api/endpoints'
+import { mmppEndpoints } from '../../api/endpoints'
 import { Box } from '@mui/system';
 import { Button } from '@mui/material';
 
@@ -44,7 +44,7 @@ const RenderAnalisis = (props) => {
 	// 	}
 	// }, [hasFocus])
 
-	if (isValidUrl(props.row.analisis)) {
+	if (isValidUrl(props.row.urlAnalisis)) {
 		return (
 			<strong>
 				<Button
@@ -84,7 +84,7 @@ const RenderGranulometria = props => {
 	// 	}
 	// }, [hasFocus])
 
-	if (isValidUrl(props.row.granulometria)) {
+	if (isValidUrl(props.row.urlGranulometria)) {
 		return (
 			<strong>
 				<Button
@@ -108,7 +108,7 @@ const RenderGranulometria = props => {
 	return <span style={{ marginLeft: "5px" }}>- -  -  -  - - - - - -</span>
 }
 
-export const TablaLotesBD = ({ lotesBD, errorLoadingLotes }) => {
+export const TablaMMPP_BD = ({ lotesBD, errorLoadingLotes }) => {
 	const [rows, setRows] = useState([]);
 	const [rowModesModel, setRowModesModel] = useState({});
 
@@ -134,7 +134,9 @@ export const TablaLotesBD = ({ lotesBD, errorLoadingLotes }) => {
 		setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
 	};
 
-	const handleDeleteClick = (id) => () => {
+	const handleDeleteClick = (id) => async () => {
+		fetch(`${mmppEndpoints.deleteMMPP}?id=${id}`)
+
 		setRows(rows.filter((row) => row.id !== id));
 	};
 
@@ -150,11 +152,10 @@ export const TablaLotesBD = ({ lotesBD, errorLoadingLotes }) => {
 		}
 	};
 
-	const processRowUpdate = (newRow) => {
+	const processRowUpdate = async (newRow) => {
 		const updatedRow = { ...newRow, isNew: false };
-		setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
 
-		fetch(stockEndpoints.update, {
+		fetch(mmppEndpoints.updateMMPP, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
@@ -162,25 +163,28 @@ export const TablaLotesBD = ({ lotesBD, errorLoadingLotes }) => {
 			body: JSON.stringify(newRow)
 		})
 
-		return updatedRow;
+		setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
 	};
 
 	const columns = [
-		{ field: 'codigo', headerName: 'Código', width: 180, editable: true },
-		{ field: 'fecha', headerName: 'Fecha', width: 100, editable: true },
+		{ field: 'codigo', headerName: 'Código', width: 130, editable: true },
+		{ field: 'fecha', headerName: 'Fecha', width: 120, editable: true },
+		{ field: 'tamañoId', headerName: 'Tamaño', width: 80, editable: true},
+		{ field: 'calidadId', headerName: 'Calidad', width: 80, editable: true },
 		{ field: 'origen', headerName: 'Origen', width: 100, editable: true },
-		{ field: 'cantidad', headerName: 'Cantidad', width: 100, type: 'string', editable: true },
-		{ field: 'calidad', headerName: 'Calidad', width: 100, editable: true },
-		{ field: 'disponibilidad', headerName: 'Disponibilidad', width: 100, editable: true },
 		{ field: 'ubicacion', headerName: 'Ubicación', width: 100, editable: true },
-		{
-			field: 'analisis', headerName: 'Analisis', width: 150, editable: false,
-			renderCell: RenderAnalisis
-		},
-		{
-			field: 'granulometria', headerName: 'Granulometría', width: 100, editable: true,
-			renderCell: RenderGranulometria
-		},
+		{ field: 'cantidad', headerName: 'Cantidad', width: 100, type: 'string', editable: true },
+		{ field: 'disponibilidad', headerName: 'Disponibilidad', width: 100, editable: true },
+		{ field: 'analisis', headerName: 'Analisis', width: 110, editable: false, renderCell: RenderAnalisis },
+		{ field: 'granulometria', headerName: 'Granulometría', width: 110, editable: true, renderCell: RenderGranulometria },
+		{ field: 'aluninio', headerName: 'Aluminio', width: 60, editable: true },
+		{ field: 'calcio', headerName: 'Calcio', width: 60, editable: true },
+		{ field: 'hierro', headerName: 'Hierro', width: 60, editable: true },
+		{ field: 'titanio', headerName: 'Titanio', width: 60, editable: true },
+		{ field: 'total', headerName: 'Total', width: 60, editable: true },
+		{ field: 'gra10', headerName: 'gra10', width: 60, editable: true },
+		{ field: 'gra50', headerName: 'gra50', width: 60, editable: true },
+		{ field: 'gra90', headerName: 'gra90', width: 60, editable: true },
 		{
 			field: 'actions',
 			type: 'actions',
@@ -252,6 +256,7 @@ export const TablaLotesBD = ({ lotesBD, errorLoadingLotes }) => {
 				onRowEditStart={handleRowEditStart}
 				onRowEditStop={handleRowEditStop}
 				processRowUpdate={processRowUpdate}
+				onProcessRowUpdateError={err => console.log(err)}
 				componentsProps={{
 					toolbar: { setRows, setRowModesModel },
 				}}

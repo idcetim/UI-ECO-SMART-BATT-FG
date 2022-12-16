@@ -11,11 +11,16 @@ export const registroEndpoints = {
     orden: url + "registrar-ot",
 };
 
-export const stockEndpoints = {
-    update: url + "entradas/update",
-    getLote: url + "GetEntradaBD",
-    getLotes: url + "GetEntradasBD",
+export const mmppEndpoints = {
+    getMMPP: url + "GetMMPP",
+    deleteMMPP: url + "DeleteMMPP",
+    updateMMPP: url + "UpdateMMPP"
 };
+
+export const selectListEndpoints = {
+    getCalidades: `${url}GetCalidades`,
+    getSizes: `${url}GetSizes`
+} 
 
 export const entradas = `${url}entradas`;
 
@@ -43,8 +48,7 @@ export const cantidadProduccion = `${url}cantidad/produccion`;
 
 export const getLote = `${url}GetEntradaBD`;
 
-export const getLotes = `${url}GetEntradasBD`;
-
 export const updateLote = `${url}entradas/updateLote`;
 
 export const getCodigosMMPP = `${url}GetMMPPBD`
+
