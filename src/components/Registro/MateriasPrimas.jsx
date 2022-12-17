@@ -236,7 +236,7 @@ export const MateriasPrimas = () => {
 									},
 									success: {
 										duration: 5000,
-										icon: '🔥',
+										icon: '✅',
 									},
 								})
 						}}>Guardar</Button>
