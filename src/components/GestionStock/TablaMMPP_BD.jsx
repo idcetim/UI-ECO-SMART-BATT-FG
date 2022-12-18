@@ -7,6 +7,7 @@ import CancelIcon from '@mui/icons-material/Cancel'
 import { mmppEndpoints } from '../../api/endpoints'
 import { Box } from '@mui/system';
 import { Button } from '@mui/material';
+import { getObjIdToCalidad, getObjIdToTamaño } from '../../helpers/api';
 
 import '../../styles/stockTables.css'
 
@@ -29,37 +30,14 @@ const CustomToolbar = () => {
 }
 
 const RenderAnalisis = (props) => {
-	// const { hasFocus, value } = props
-	// const buttonElement = useRef(null)
-	// const rippleRef = useRef(null)
-
-	// useLayoutEffect(() => {
-	// 	if (hasFocus) {
-	// 		const input = buttonElement.current?.querySelector('input')
-	// 		input?.focus()
-	// 	}
-
-	// 	else if (rippleRef.current) {
-	// 		rippleRef.current.stop({})
-	// 	}
-	// }, [hasFocus])
-
 	if (isValidUrl(props.row.urlAnalisis)) {
 		return (
 			<strong>
 				<Button
 					component="button"
-					// ref={buttonElement}
-					// touchRippleRef={rippleRef}
 					className="button-table"
 					size="small"
-					// tabIndex={hasFocus ? 0 : -1}
 					onClick={() => window.open(props.row.analisis)}
-					// onKeyDown={(event) => {
-					// 	if (event.key === ' ') {
-					// 		event.stopPropagation()
-					// 	}
-					// }}
 				>📁 Descargar</Button>
 			</strong>
 		)
@@ -69,37 +47,14 @@ const RenderAnalisis = (props) => {
 }
 
 const RenderGranulometria = props => {
-	// const { hasFocus, value } = props
-	// const buttonElement = useRef(null)
-	// const rippleRef = useRef(null)
-
-	// useLayoutEffect(() => {
-	// 	if (hasFocus) {
-	// 		const input = buttonElement.current?.querySelector('input')
-	// 		input?.focus()
-	// 	}
-
-	// 	else if (rippleRef.current) {
-	// 		rippleRef.current.stop({})
-	// 	}
-	// }, [hasFocus])
-
 	if (isValidUrl(props.row.urlGranulometria)) {
 		return (
 			<strong>
 				<Button
 					component="button"
-					// ref={buttonElement}
-					// touchRippleRef={rippleRef}
 					className="button-table"
 					size="small"
-					// tabIndex={hasFocus ? 0 : -1}
 					onClick={() => window.open(props.row.granulometria)}
-					// onKeyDown={(event) => {
-					// 	if (event.key === ' ') {
-					// 		event.stopPropagation()
-					// 	}
-					// }}
 				>📁 Descargar</Button>
 			</strong>
 		)
@@ -111,6 +66,16 @@ const RenderGranulometria = props => {
 export const TablaMMPP_BD = ({ lotesBD, errorLoadingLotes }) => {
 	const [rows, setRows] = useState([]);
 	const [rowModesModel, setRowModesModel] = useState({});
+	const [tamaños, setTamaños] = useState({})
+	const [calidades, setCalidades] = useState({})
+
+	useEffect(() => {
+		getObjIdToCalidad()
+			.then(obj => setCalidades(obj))
+		
+		getObjIdToTamaño()
+			.then(obj => setTamaños(obj))
+	})
 
 	useEffect(() => {
 		if (lotesBD !== null) {
@@ -166,11 +131,23 @@ export const TablaMMPP_BD = ({ lotesBD, errorLoadingLotes }) => {
 		setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
 	};
 
+	const RenderTamaño = (props) => {
+		return (
+			<div>{tamaños[props.row.tamañoId]}</div>
+		)
+	}
+	
+	const RenderCalidad = (props) => {
+		return (
+			<div>{calidades[props.row.calidadId]}</div>
+		)
+	}
+
 	const columns = [
 		{ field: 'codigo', headerName: 'Código', width: 130, editable: true },
 		{ field: 'fecha', headerName: 'Fecha', width: 120, editable: true },
-		{ field: 'tamañoId', headerName: 'Tamaño', width: 80, editable: true},
-		{ field: 'calidadId', headerName: 'Calidad', width: 80, editable: true },
+		{ field: 'tamañoId', headerName: 'Tamaño', width: 80, editable: true, renderCell: RenderCalidad },
+		{ field: 'calidadId', headerName: 'Calidad', width: 80, editable: true, renderCell: RenderTamaño },
 		{ field: 'origen', headerName: 'Origen', width: 100, editable: true },
 		{ field: 'ubicacion', headerName: 'Ubicación', width: 100, editable: true },
 		{ field: 'cantidad', headerName: 'Cantidad', width: 100, type: 'string', editable: true },
