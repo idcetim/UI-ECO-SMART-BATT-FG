@@ -1,29 +1,41 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { BlobStorage } from '../../api/blobStorage'
 import { registroEndpoints } from '../../api/endpoints'
-import { TextField, Box, Grid, Button, Select, MenuItem, Typography } from '@mui/material'
+import { TextField, Box, Grid, Button, Select, MenuItem, Typography, OutlinedInput, Chip, InputLabel, FormControl } from '@mui/material'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import Form from 'react-bootstrap/Form'
+import { selectListEndpoints, ordenesTrabajoEndpoints } from '../../api/endpoints'
 
 import '../../styles/global.css'
+import { gridDensityValueSelector } from '@mui/x-data-grid-pro'
+import toast, { Toaster } from 'react-hot-toast';
 
-const selectQualityOptions = ["Calidad", "2N", "3N", "4N", "5N", "Reciclado"]
-const selectTamOptions = ["Tamaño", "0.2 - 2 mm", "< 0.5 mm"]
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+	PaperProps: {
+		style: {
+			maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+			width: 250,
+		},
+	},
+};
 
 export const Productos = () => {
+	//se pone tamañoId 1 para que seleccione el primer elemento del combo
 	const [inputs, setInputs] = useState({
 		codigoProducto: '',
-		codigoOrdenTrabajo: '',
+		codigosOrdenesTrabajo: [],
 		fecha: null,
 		cantidad: '',
-		tam: selectTamOptions[0],
+		tamañoId: 1,
 		ubicacion: '',
-		calidad: selectQualityOptions[0],
-		granulometria10: '',
-		granulometria50: '',
-		granulometria90: '',
+		calidadId: 1,
+		gra10: '',
+		gra50: '',
+		gra90: '',
 		granulometriaUrl: '',
 		aluminio: '',
 		calcio: '',
@@ -35,8 +47,34 @@ export const Productos = () => {
 
 	const [granulometriaFile, setGranulometriaFile] = useState(undefined)
 	const [quimicoFile, setQuimicoFile] = useState(undefined)
+	const [tamaños, setTamaños] = useState([])
+	const [calidades, setCalidades] = useState([])
+	const [ordenesTrabajo, setOrdenesTrabajo] = useState([])
 	const granuRef = useRef()
 	const quimicoRef = useRef()
+
+	useEffect(() => {
+		fetch(selectListEndpoints.getSizes)
+			.then(response => response.json())
+			.then(json => setTamaños(json))
+
+		fetch(selectListEndpoints.getCalidades)
+			.then(response => response.json())
+			.then(json => setCalidades(json))
+
+		fetch(ordenesTrabajoEndpoints.getOrdenesTrabajo)
+			.then(response => response.json())
+			.then(json => setOrdenesTrabajo(json))
+	}, [])
+
+	const handleCodigoOTChange = (event) => {
+		const { target: { value } } = event
+
+		setInputs({
+			...inputs,
+			codigosOrdenesTrabajo: typeof value === 'string' ? value.split(',') : value
+		})
+	}
 
 	const guardarHandler = async () => {
 		if (granulometriaFile) {
@@ -53,7 +91,6 @@ export const Productos = () => {
 					mode: 'cors',
 					body: formData
 				})
-				console.log(await response.json())
 			} catch (error) {
 				console.log("Error añadiendo archivo Producto granulometria: ", error)
 			}
@@ -78,6 +115,7 @@ export const Productos = () => {
 			}
 		}
 		try {
+			console.log(inputs)
 			const response = await fetch(registroEndpoints.producto, {
 				method: "POST",
 				headers: {
@@ -94,14 +132,48 @@ export const Productos = () => {
 
 	return (
 		<div style={{ display: 'flex', justifyContent: 'center' }}>
+			<Toaster />
+
 			<Box sx={{ width: '700px', padding: '20px' }}>
 				<Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
 					<Grid item xs={4} sm={8} md={12}>
 						<Typography variant="h5">Información general</Typography>
 					</Grid>
 
-					<Grid item xs={2} sm={4} md={4}>
+					{/* <Grid item xs={2} sm={4} md={4}>
 						<TextField size="small" label="Código orden de trabajo" variant='outlined' value={inputs.codigoOrdenTrabajo} onChange={ev => setInputs({ ...inputs, codigoOrdenTrabajo: ev.target.value })} />
+					</Grid> */}
+
+					<Grid item xs={2} sm={4} md={4}>
+						<FormControl sx={{ width: '100%' }}>
+							<InputLabel id="demo-multiple-chip-label">Ordenes trabajo</InputLabel>
+							<Select
+								labelId="demo-multiple-chip-label"
+								id="demo-multiple-chip"
+								multiple
+								value={inputs.codigosOrdenesTrabajo}
+								onChange={handleCodigoOTChange}
+								input={<OutlinedInput id="select-multiple-chip" label="Órdenes de trabajo" />}
+								renderValue={(selected) => (
+									<Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+										{selected.map((value) => (
+											<Chip key={value} label={ordenesTrabajo[value - 1].codigoOT} />
+										))}
+									</Box>
+								)}
+								MenuProps={MenuProps}
+							>
+								{ordenesTrabajo.map((ordenTrabajo) => (
+									<MenuItem
+										key={ordenTrabajo.id}
+										value={ordenTrabajo.id}
+									// style={getStyles(name, inputs.materiasPrimas, theme)}
+									>
+										{ordenTrabajo.codigoOT}
+									</MenuItem>
+								))}
+							</Select>
+						</FormControl>
 					</Grid>
 
 					<Grid item xs={2} sm={4} md={4}>
@@ -113,8 +185,9 @@ export const Productos = () => {
 							<DatePicker
 								label="Fecha"
 								value={inputs.fecha}
-								onChange={(newValue) => {
-									setInputs({ ...inputs, fecha: newValue });
+								inputFormat="DD/MM/YY"
+								onChange={(newDate) => {
+									setInputs({ ...inputs, fecha: `${newDate.$y}-${Number(newDate["$M"]) + 1}-${newDate["$D"]}` });
 								}}
 								renderInput={(params) => <TextField size="small" {...params} />}
 							/>
@@ -122,9 +195,9 @@ export const Productos = () => {
 					</Grid>
 
 					<Grid item xs={2} sm={4} md={4}>
-						<Select size="small" value={inputs.tam} onChange={ev => setInputs({ ...inputs, tam: ev.target.value })} sx={{ width: '100%' }}>
-							{selectTamOptions.map(option => {
-								return <MenuItem value={option} key={option}>{option}</MenuItem>
+						<Select size="small" value={inputs.tamañoId} onChange={ev => setInputs({ ...inputs, tamañoId: ev.target.value })} sx={{ width: '100%' }}>
+							{tamaños.map(option => {
+								return <MenuItem value={option.id} key={option.id}>{option.nombre}</MenuItem>
 							})}
 						</Select>
 					</Grid>
@@ -134,9 +207,9 @@ export const Productos = () => {
 					</Grid>
 
 					<Grid item xs={2} sm={4} md={4}>
-						<Select size="small" value={inputs.calidad} onChange={ev => setInputs({ ...inputs, calidad: ev.target.value })} sx={{ width: '100%' }}>
-							{selectQualityOptions.map(option => {
-								return <MenuItem value={option} key={option}>{option}</MenuItem>
+						<Select size="small" value={inputs.calidadId} onChange={ev => setInputs({ ...inputs, calidadId: ev.target.value })} sx={{ width: '100%' }}>
+							{calidades.map(option => {
+								return <MenuItem value={option.id} key={option.id}>{option.nombre}</MenuItem>
 							})}
 						</ Select>
 					</Grid>
@@ -150,15 +223,15 @@ export const Productos = () => {
 					</Grid>
 
 					<Grid item xs={2} sm={4} md={4}>
-						<TextField size="small" label="10" variant='outlined' value={inputs.granulometria10} onChange={ev => setInputs({ ...inputs, granulometria10: ev.target.value })} />
+						<TextField size="small" label="10" variant='outlined' value={inputs.gra10} onChange={ev => setInputs({ ...inputs, gra10: ev.target.value })} />
 					</Grid>
 
 					<Grid item xs={2} sm={4} md={4}>
-						<TextField size="small" label="50" variant='outlined' value={inputs.granulometria50} onChange={ev => setInputs({ ...inputs, granulometria50: ev.target.value })} />
+						<TextField size="small" label="50" variant='outlined' value={inputs.gra50} onChange={ev => setInputs({ ...inputs, gra50: ev.target.value })} />
 					</Grid>
 
 					<Grid item xs={2} sm={4} md={4}>
-						<TextField size="small" label="90" variant='outlined' value={inputs.granulometria90} onChange={ev => setInputs({ ...inputs, granulometria90: ev.target.value })} />
+						<TextField size="small" label="90" variant='outlined' value={inputs.gra90} onChange={ev => setInputs({ ...inputs, gra90: ev.target.value })} />
 					</Grid>
 
 					<Grid item xs={4} sm={8} md={12}>
@@ -206,7 +279,24 @@ export const Productos = () => {
 					</Grid>
 
 					<Grid item xs={4} sm={8} md={12} sx={{ display: 'flex', justifyContent: 'end' }}>
-						<Button variant='contained' size='medium' onClick={guardarHandler} >Guardar</Button>
+						<Button variant='contained' size='medium' onClick={() => {
+							const promise = guardarHandler(inputs)
+
+							toast.promise(promise, {
+								loading: 'Guardando producto',
+								success: 'Guardado correctamente',
+								error: 'Hubo un error guardando los datos'
+							},
+								{
+									style: {
+										minWidth: '250px',
+									},
+									success: {
+										duration: 5000,
+										icon: '✅'
+									}
+								})
+						}} >Guardar</Button>
 					</Grid>
 				</Grid>
 			</Box>

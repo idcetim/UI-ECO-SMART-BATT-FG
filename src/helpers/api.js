@@ -1,4 +1,4 @@
-import { selectListEndpoints } from "../api/endpoints"
+import { selectListEndpoints, ordenesTrabajoEndpoints } from "../api/endpoints"
 
 const getObjIdToCalidad = async () => {
     let calidades = await (await fetch(selectListEndpoints.getCalidades)).json()
@@ -24,7 +24,34 @@ const getObjIdToTamaño = async () => {
     return objIdToTamaño
 }
 
+const getObjIdToProceso = async () => {
+    let procesos = await (await fetch(selectListEndpoints.getProcesos)).json()
+
+    let objIdToProceso = {}
+
+    for (let proceso of procesos) {
+        objIdToProceso[proceso.id] = proceso.nombre
+    }
+
+    return objIdToProceso
+}
+
+const getOrdenesTrabajoIdYCodigo = async () => {
+    let ordenesTrabajo = await (await fetch(ordenesTrabajoEndpoints.getOT)).json()
+
+    let ordenesTrabajoIdYCodigo = []
+
+    for (let ordenTrabajo of ordenesTrabajo) {
+        ordenesTrabajoIdYCodigo.push({
+            id: ordenTrabajo.id,
+            codigo: ordenTrabajo.codigo
+        })
+    }
+}
+
 export {
     getObjIdToCalidad,
-    getObjIdToTamaño
+    getObjIdToTamaño,
+    getObjIdToProceso,
+    getOrdenesTrabajoIdYCodigo
 }

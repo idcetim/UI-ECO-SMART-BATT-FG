@@ -19,7 +19,7 @@ export const GestionStockMP = () => {
           setLotesBD(await response.json())
         }
         else {
-          setErrorLoadingLotes(true)
+          throw new Error(9)
         }
       }
       catch {

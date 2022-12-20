@@ -1,8 +1,8 @@
 // export const url = "http://localhost:5000/"
 // export const url = "https://server-stock.azurewebsites.net/"
 
-// export const url = "http://localhost:7071/api/"
-export const url = "https://ferroglobe.azurewebsites.net/api/";
+export const url = "http://localhost:7071/api/"
+// export const url = "https://ferroglobe.azurewebsites.net/api/";
 
 export const registroEndpoints = {
     file: url + "file-example",
@@ -17,9 +17,18 @@ export const mmppEndpoints = {
     updateMMPP: url + "UpdateMMPP"
 };
 
+export const ordenesTrabajoEndpoints = {
+    getOrdenesTrabajo: `${url}GetOrdenesTrabajo`
+}
+
+export const productosEndpoints = {
+    getProductos: `${url}GetProductos`
+}
+
 export const selectListEndpoints = {
     getCalidades: `${url}GetCalidades`,
-    getSizes: `${url}GetSizes`
+    getSizes: `${url}GetSizes`,
+    getProcesos: `${url}GetProcesos`
 } 
 
 export const entradas = `${url}entradas`;
@@ -50,5 +59,4 @@ export const getLote = `${url}GetEntradaBD`;
 
 export const updateLote = `${url}entradas/updateLote`;
 
-export const getCodigosMMPP = `${url}GetMMPPBD`
 
