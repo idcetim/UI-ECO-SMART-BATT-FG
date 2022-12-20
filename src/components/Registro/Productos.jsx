@@ -283,16 +283,16 @@ export const Productos = () => {
 							const promise = guardarHandler(inputs)
 
 							toast.promise(promise, {
-								loading: 'Guardando producto',
-								success: 'Guardado correctamente',
-								error: 'Hubo un error guardando los datos'
+								loading: 'Registrando producto',
+								success: 'Registro finalizado',
+								error: 'Error en el registro'
 							},
 								{
 									style: {
 										minWidth: '250px',
 									},
 									success: {
-										duration: 5000,
+										duration: 4000,
 										icon: '✅'
 									}
 								})

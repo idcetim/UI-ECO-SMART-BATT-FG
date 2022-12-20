@@ -139,27 +139,27 @@ export const MateriasPrimas = () => {
 					</Grid>
 
 					<Grid item xs={2} sm={4} md={4}>
-						<TextField 
-							type="number" 
-							size="small" 
-							label="Cantidad (kg)" 
-							variant='outlined' 
-							value={inputs.cantidad} 
+						<TextField
+							type="number"
+							size="small"
+							label="Cantidad (kg)"
+							variant='outlined'
+							value={inputs.cantidad}
 							onChange={ev => {
-								if (ev.target.value == "") {
-									setInputs({ 
-										...inputs, 
-										cantidad: "", 
-										disponibilidad: "" 
+								if (ev.target.value === "") {
+									setInputs({
+										...inputs,
+										cantidad: "",
+										disponibilidad: ""
 									})
 
 									return
 								}
 
-								setInputs({ 
-									...inputs, 
-									cantidad: Number(ev.target.value), 
-									disponibilidad: Number(ev.target.value) 
+								setInputs({
+									...inputs,
+									cantidad: Number(ev.target.value),
+									disponibilidad: Number(ev.target.value)
 								})
 							}} />
 					</Grid>
@@ -185,15 +185,15 @@ export const MateriasPrimas = () => {
 					</Grid>
 
 					<Grid item xs={2} sm={4} md={4}>
-						<TextField type="number" size="small" label="Granulometría 10" variant='outlined' value={inputs.gra10} onChange={ev => setInputs({ ...inputs, gra10: ev.target.value == "" ? "" : Number(ev.target.value)})} />
+						<TextField type="number" size="small" label="Granulometría 10" variant='outlined' value={inputs.gra10} onChange={ev => setInputs({ ...inputs, gra10: ev.target.value === "" ? "" : Number(ev.target.value)})} />
 					</Grid>
 
 					<Grid item xs={2} sm={4} md={4}>
-						<TextField type="number" size="small" label="Granulometría 50" variant='outlined' value={inputs.gra50} onChange={ev => setInputs({ ...inputs, gra50: ev.target.value == "" ? "" : Number(ev.target.value) })} />
+						<TextField type="number" size="small" label="Granulometría 50" variant='outlined' value={inputs.gra50} onChange={ev => setInputs({ ...inputs, gra50: ev.target.value === "" ? "" : Number(ev.target.value) })} />
 					</Grid>
 
 					<Grid item xs={2} sm={4} md={4}>
-						<TextField type="number" size="small" label="Granulometría 90" variant='outlined' value={inputs.gra90} onChange={ev => setInputs({ ...inputs, gra90: ev.target.value == "" ? "" : Number(ev.target.value) })} />
+						<TextField type="number" size="small" label="Granulometría 90" variant='outlined' value={inputs.gra90} onChange={ev => setInputs({ ...inputs, gra90: ev.target.value === "" ? "" : Number(ev.target.value) })} />
 					</Grid>
 
 					<Grid item xs={4} sm={8} md={12}>
@@ -211,23 +211,23 @@ export const MateriasPrimas = () => {
 					</Grid>
 
 					<Grid item xs={2} sm={4} md={2}>
-						<TextField type="number" size="small" label="Aluminio" variant='outlined' value={inputs.aluminio} onChange={ev => setInputs({ ...inputs, aluminio: ev.target.value == "" ? "" : Number(ev.target.value) })} />
+						<TextField type="number" size="small" label="Aluminio" variant='outlined' value={inputs.aluminio} onChange={ev => setInputs({ ...inputs, aluminio: ev.target.value === "" ? "" : Number(ev.target.value) })} />
 					</Grid>
 
 					<Grid item xs={2} sm={4} md={2}>
-						<TextField type="number" size="small" label="Calcio" variant='outlined' value={inputs.calcio} onChange={ev => setInputs({ ...inputs, calcio: ev.target.value == "" ? "" : Number(ev.target.value) })} />
+						<TextField type="number" size="small" label="Calcio" variant='outlined' value={inputs.calcio} onChange={ev => setInputs({ ...inputs, calcio: ev.target.value === "" ? "" : Number(ev.target.value) })} />
 					</Grid>
 
 					<Grid item xs={2} sm={4} md={2}>
-						<TextField type="number" size="small" label="Hierro" variant='outlined' value={inputs.hierro} onChange={ev => setInputs({ ...inputs, hierro: ev.target.value == "" ? "" : Number(ev.target.value) })} />
+						<TextField type="number" size="small" label="Hierro" variant='outlined' value={inputs.hierro} onChange={ev => setInputs({ ...inputs, hierro: ev.target.value === "" ? "" : Number(ev.target.value) })} />
 					</Grid>
 
 					<Grid item xs={2} sm={4} md={2}>
-						<TextField type="number" size="small" label="Titanio" variant="outlined" value={inputs.titanio} onChange={ev => setInputs({ ...inputs, titanio: ev.target.value == "" ? "" : Number(ev.target.value) })} />
+						<TextField type="number" size="small" label="Titanio" variant="outlined" value={inputs.titanio} onChange={ev => setInputs({ ...inputs, titanio: ev.target.value === "" ? "" : Number(ev.target.value) })} />
 					</Grid>
 
 					<Grid item xs={2} sm={4} md={3}>
-						<TextField type="number" size="small" label="Total impurezas" variant="outlined" value={inputs.totalImpurezas} onChange={ev => setInputs({ ...inputs, total: ev.target.value == "" ? "" : Number(ev.target.value) })} />
+						<TextField type="number" size="small" label="Total impurezas" variant="outlined" value={inputs.totalImpurezas} onChange={ev => setInputs({ ...inputs, total: ev.target.value === "" ? "" : Number(ev.target.value) })} />
 					</Grid>
 
 					<Grid item xs={4} sm={8} md={12}>
@@ -248,16 +248,16 @@ export const MateriasPrimas = () => {
 							console.log(promise)
 
 							toast.promise(promise, {
-								loading: 'Guardarndo materia prima',
-								success: 'Guardado correctamente',
-								error: 'Hubo un error guardando los datos'
+								loading: 'Registrando materia prima',
+								success: 'Registro finalizado',
+								error: 'Error en el registro'
 							},
 								{
 									style: {
 										minWidth: '250px',
 									},
 									success: {
-										duration: 5000,
+										duration: 4000,
 										icon: '✅',
 									},
 								})
