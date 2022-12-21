@@ -4,7 +4,7 @@ import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
 import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Cancel'
-import { mmppEndpoints } from '../../api/endpoints'
+import { ordenesTrabajoEndpoints } from '../../api/endpoints'
 import { Box } from '@mui/system';
 import { Button } from '@mui/material';
 import { getObjIdToCalidad, getObjIdToProceso, getObjIdToTamaño } from '../../helpers/api';
@@ -44,13 +44,13 @@ export const TablaOrdenesTrabajo = ({ ordenesTrabajo, errorLoadingOrdenesTrabajo
 
         getObjIdToProceso()
             .then(obj => setProcesos(obj))
-    })
+    }, [])
 
     useEffect(() => {
         if (ordenesTrabajo !== null) {
             setRows(ordenesTrabajo)
         }
-    })
+    }, [ordenesTrabajo])
 
     const handleRowEditStart = (params, event) => {
         event.defaultMuiPrevented = true;
@@ -69,9 +69,9 @@ export const TablaOrdenesTrabajo = ({ ordenesTrabajo, errorLoadingOrdenesTrabajo
     };
 
     const handleDeleteClick = (id) => async () => {
-        // fetch(`${mmppEndpoints.deleteMMPP}?id=${id}`)
+        fetch(`${ordenesTrabajoEndpoints.deleteOrdenTrabajo}?id=${id}`)
 
-        // setRows(rows.filter((row) => row.id !== id));
+        setRows(rows.filter((row) => row.id !== id));
     };
 
     const handleCancelClick = (id) => () => {
@@ -89,15 +89,15 @@ export const TablaOrdenesTrabajo = ({ ordenesTrabajo, errorLoadingOrdenesTrabajo
     const processRowUpdate = async (newRow) => {
         const updatedRow = { ...newRow, isNew: false };
 
-        // fetch(mmppEndpoints.updateMMPP, {
-        // 	method: 'POST',
-        // 	headers: {
-        // 		'Content-Type': 'application/json'
-        // 	},
-        // 	body: JSON.stringify(newRow)
-        // })
+        fetch(ordenesTrabajoEndpoints.updateOrdenTrabajo, {
+        	method: 'POST',
+        	headers: {
+        		'Content-Type': 'application/json'
+        	},
+        	body: JSON.stringify(newRow)
+        })
 
-        // setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
+        setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
     };
 
 	const RenderTamaño = (props) => {

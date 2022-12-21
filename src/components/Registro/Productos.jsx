@@ -27,7 +27,7 @@ export const Productos = () => {
 	//se pone tamañoId 1 para que seleccione el primer elemento del combo
 	const [inputs, setInputs] = useState({
 		codigoProducto: '',
-		codigosOrdenesTrabajo: [],
+		ordenesTrabajo: [],
 		fecha: null,
 		cantidad: '',
 		tamañoId: 1,
@@ -67,12 +67,22 @@ export const Productos = () => {
 			.then(json => setOrdenesTrabajo(json))
 	}, [])
 
+	const getOrdenesTrabajoMapping = () => {
+		let mapping = {}
+
+		for (let orden of ordenesTrabajo) {
+			mapping[orden.id] = orden
+		}
+
+		return mapping
+	}
+
 	const handleCodigoOTChange = (event) => {
 		const { target: { value } } = event
 
 		setInputs({
 			...inputs,
-			codigosOrdenesTrabajo: typeof value === 'string' ? value.split(',') : value
+			ordenesTrabajo: typeof value === 'string' ? value.split(',') : value
 		})
 	}
 
@@ -151,13 +161,13 @@ export const Productos = () => {
 								labelId="demo-multiple-chip-label"
 								id="demo-multiple-chip"
 								multiple
-								value={inputs.codigosOrdenesTrabajo}
+								value={inputs.ordenesTrabajo}
 								onChange={handleCodigoOTChange}
 								input={<OutlinedInput id="select-multiple-chip" label="Órdenes de trabajo" />}
 								renderValue={(selected) => (
 									<Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
 										{selected.map((value) => (
-											<Chip key={value} label={ordenesTrabajo[value - 1].codigoOT} />
+											<Chip key={value} label={getOrdenesTrabajoMapping()[value].codigoOT} />
 										))}
 									</Box>
 								)}

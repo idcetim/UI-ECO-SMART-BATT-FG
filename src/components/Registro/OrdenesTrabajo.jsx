@@ -85,7 +85,7 @@ export const OrdenesTrabajo = () => {
 
     const theme = useTheme()
 
-    const handleChange = (event) => {
+    const handleChangeMMPP = (event) => {
         const {
             target: { value },
         } = event;
@@ -96,6 +96,17 @@ export const OrdenesTrabajo = () => {
             materiasPrimas: typeof value === 'string' ? value.split(',') : value,
         });
     };
+
+    const handleChangeOrdenesTrabajo = (event) => {
+        const {
+            target: { value }
+        } = event
+
+        setInputs({
+            ...inputs,
+            ordenesTrabajo: typeof value === 'string' ? value.split(',') : value
+        })
+    }
 
     useEffect(() => {
         fetch(mmppEndpoints.getMMPP)
@@ -129,7 +140,7 @@ export const OrdenesTrabajo = () => {
                     id="demo-multiple-chip"
                     multiple
                     value={inputs.materiasPrimas}
-                    onChange={handleChange}
+                    onChange={handleChangeMMPP}
                     input={<OutlinedInput id="select-multiple-chip" label="MMPP" />}
                     renderValue={(selected) => (
                         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
@@ -163,7 +174,7 @@ export const OrdenesTrabajo = () => {
                     id="demo-multiple-chip"
                     multiple
                     value={inputs.ordenesTrabajo}
-                    onChange={handleChange}
+                    onChange={handleChangeOrdenesTrabajo}
                     input={<OutlinedInput id="select-multiple-chip" label="MMPP" />}
                     renderValue={(selected) => (
                         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>

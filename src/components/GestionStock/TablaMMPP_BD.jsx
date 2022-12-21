@@ -75,7 +75,7 @@ export const TablaMMPP_BD = ({ lotesBD, errorLoadingLotes }) => {
 		
 		getObjIdToTamaño()
 			.then(obj => setTamaños(obj))
-	})
+	}, [])
 
 	useEffect(() => {
 		if (lotesBD !== null) {
@@ -119,6 +119,8 @@ export const TablaMMPP_BD = ({ lotesBD, errorLoadingLotes }) => {
 
 	const processRowUpdate = async (newRow) => {
 		const updatedRow = { ...newRow, isNew: false };
+
+		console.log(newRow)
 
 		fetch(mmppEndpoints.updateMMPP, {
 			method: 'POST',

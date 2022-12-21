@@ -29,7 +29,7 @@ export const GestionStockProductos = () => {
     return (
         <div style={{ display: 'flex', flexDirection: 'column'}}>
             <div style={{display: 'flex', justifyContent: 'center'}}>
-                {/* <TablaProductos productos={productos} errorLoadingProductos={errorLoadingProductos} /> */}
+                <TablaProductos productos={productos} errorLoadingProductos={errorLoadingProductos} />
             </div>
         </div>
     )
