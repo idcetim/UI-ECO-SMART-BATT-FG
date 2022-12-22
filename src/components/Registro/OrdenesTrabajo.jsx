@@ -263,11 +263,11 @@ export const OrdenesTrabajo = () => {
                     </Grid> */}
 
                     <Grid item xs={2} sm={4} md={4}>
-                        <TextField type="number" size="small" label="Cantidad" variant='outlined' value={inputs.cantidadSalida} onChange={ev => setInputs({ ...inputs, cantidadSalida: ev.target.value })} />
+                        <TextField type="number" size="small" label="Cantidad entrada (kg)" variant='outlined' value={inputs.cantidadSalida} onChange={ev => setInputs({ ...inputs, cantidadSalida: ev.target.value })} />
                     </Grid>
 
                     <Grid item xs={2} sm={4} md={4}>
-                        <TextField type="number" size="small" label="Pérdidas" variant='outlined' value={inputs.perdidas} onChange={ev => setInputs({ ...inputs, perdidas: ev.target.value })} />
+                        <TextField type="number" size="small" label="Cantidad salida (kg)" variant='outlined' value={inputs.perdidas} onChange={ev => setInputs({ ...inputs, perdidas: ev.target.value })} />
                     </Grid>
 
                     <Grid item xs={2} sm={4} md={4}>

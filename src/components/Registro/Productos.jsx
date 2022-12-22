@@ -259,23 +259,23 @@ export const Productos = () => {
 					</Grid>
 
 					<Grid item xs={2} sm={4} md={2}>
-						<TextField size="small" label="Aluminio" variant='outlined' value={inputs.aluminio} onChange={ev => setInputs({ ...inputs, aluminio: ev.target.value })} />
+						<TextField size="small" label="Al" variant='outlined' value={inputs.aluminio} onChange={ev => setInputs({ ...inputs, aluminio: ev.target.value })} />
 					</Grid>
 
 					<Grid item xs={2} sm={4} md={2}>
-						<TextField size="small" label="Calcio" variant='outlined' value={inputs.calcio} onChange={ev => setInputs({ ...inputs, calcio: ev.target.value })} />
+						<TextField size="small" label="Ca" variant='outlined' value={inputs.calcio} onChange={ev => setInputs({ ...inputs, calcio: ev.target.value })} />
 					</Grid>
 
 					<Grid item xs={2} sm={4} md={2}>
-						<TextField size="small" label="Hierro" variant='outlined' value={inputs.hierro} onChange={ev => setInputs({ ...inputs, hierro: ev.target.value })} />
+						<TextField size="small" label="Fe" variant='outlined' value={inputs.hierro} onChange={ev => setInputs({ ...inputs, hierro: ev.target.value })} />
 					</Grid>
 
 					<Grid item xs={2} sm={4} md={2}>
-						<TextField size="small" label="Titanio" variant="outlined" value={inputs.titanio} onChange={ev => setInputs({ ...inputs, titanio: ev.target.value })} />
+						<TextField size="small" label="Ti" variant="outlined" value={inputs.titanio} onChange={ev => setInputs({ ...inputs, titanio: ev.target.value })} />
 					</Grid>
 
 					<Grid item xs={2} sm={4} md={3}>
-						<TextField size="small" label="Total impurezas" variant="outlined" value={inputs.totalImpurezas} onChange={ev => setInputs({ ...inputs, totalImpurezas: ev.target.value })} />
+						<TextField size="small" label="Total" variant="outlined" value={inputs.totalImpurezas} onChange={ev => setInputs({ ...inputs, totalImpurezas: ev.target.value })} />
 					</Grid>
 
 					<Grid item xs={4} sm={8} md={12}>

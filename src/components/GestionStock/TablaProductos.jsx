@@ -36,7 +36,7 @@ const RenderAnalisis = (props) => {
                     component="button"
                     className="button-table"
                     size="small"
-                    onClick={() => window.open(props.row.analisis)}
+                    onClick={() => window.open(props.row.urlAnalisis)}
                 >📁 Descargar</Button>
             </strong>
         )
@@ -53,7 +53,7 @@ const RenderGranulometria = props => {
                     component="button"
                     className="button-table"
                     size="small"
-                    onClick={() => window.open(props.row.granulometria)}
+                    onClick={() => window.open(props.row.urlGranulometria)}
                 >📁 Descargar</Button>
             </strong>
         )
@@ -172,23 +172,23 @@ export const TablaProductos = ({ productos, errorLoadingProductos }) => {
         //     editable: true,
         //     renderCell: RenderPrueba
         // },
-        { field: 'fecha', headerName: 'Fecha', width: 120, editable: true },
-        { field: 'cantidad', headerName: 'Cantidad', width: 100, type: 'string', editable: true },
-        { field: 'disponibilidad', headerName: 'Disponibilidad', width: 100, editable: true },
+        { field: 'fecha', headerName: 'Fecha', width: 105, editable: true },
+        { field: 'cantidad', headerName: 'Cantidad (kg)', width: 105, type: 'string', editable: true },
+        { field: 'disponibilidad', headerName: 'Disponible (kg)', width: 110, editable: true },
         { field: 'calidadId', headerName: 'Calidad', width: 80, editable: true, renderCell: RenderTamaño },
         { field: 'tamañoId', headerName: 'Tamaño', width: 80, editable: true, renderCell: RenderCalidad },
         { field: 'ubicacion', headerName: 'Ubicación', width: 100, editable: true },
         { field: 'urlOrdenTrabajo', headerName: 'Orden trabajo', width: 100, editable: true },
         { field: 'urlQuimico', headerName: 'Analisis', width: 110, editable: false, renderCell: RenderAnalisis },
         { field: 'urlGranulometria', headerName: 'Granulometría', width: 110, editable: true, renderCell: RenderGranulometria },
-        { field: 'aluminio', headerName: 'Al', width: 60, editable: true },
-        { field: 'calcio', headerName: 'Ca', width: 60, editable: true },
-        { field: 'hierro', headerName: 'Fe', width: 60, editable: true },
-        { field: 'titanio', headerName: 'Ti', width: 60, editable: true },
-        { field: 'totalImpurezas', headerName: 'Total', width: 60, editable: true },
-        { field: 'gra10', headerName: 'gra10', width: 60, editable: true },
-        { field: 'gra50', headerName: 'gra50', width: 60, editable: true },
-        { field: 'gra90', headerName: 'gra90', width: 60, editable: true },
+        { field: 'aluminio', headerName: 'Al', width: 50, editable: true },
+        { field: 'calcio', headerName: 'Ca', width: 50, editable: true },
+        { field: 'hierro', headerName: 'Fe', width: 50, editable: true },
+        { field: 'titanio', headerName: 'Ti', width: 50, editable: true },
+        { field: 'totalImpurezas', headerName: 'Total', width: 50, editable: true },
+        { field: 'gra10', headerName: 'gra10', width: 50, editable: true },
+        { field: 'gra50', headerName: 'gra50', width: 50, editable: true },
+        { field: 'gra90', headerName: 'gra90', width: 50, editable: true },
         {
             field: 'actions',
             type: 'actions',
