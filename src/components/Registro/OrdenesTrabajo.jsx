@@ -89,7 +89,6 @@ export const OrdenesTrabajo = () => {
         const {
             target: { value },
         } = event;
-
         setInputs({
             ...inputs,
             // On autofill we get a stringified value.
@@ -130,7 +129,6 @@ export const OrdenesTrabajo = () => {
 			.then(json => setTamaños(json))
 
     }, [])
-
     const SelectMMPP = () => {
         return (
             <FormControl sx={{ width: 300 }}>
@@ -215,7 +213,7 @@ export const OrdenesTrabajo = () => {
 
                     <Grid item xs={2} sm={4} md={4}>
                         <FormControl>
-                            <FormLabel id="demo-row-radio-buttons-group-label">Es el primer proceso?</FormLabel>
+                            <FormLabel id="demo-row-radio-buttons-group-label">¿Es el primer proceso?</FormLabel>
                             <RadioGroup
                                 row
                                 aria-labelledby="demo-row-radio-buttons-group-label"

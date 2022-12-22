@@ -37,13 +37,20 @@ const RenderAnalisis = (props) => {
 					component="button"
 					className="button-table"
 					size="small"
-					onClick={() => window.open(props.row.analisis)}
+					sx={{
+						textTransform: "none",
+						color: "rgba(0,0,0,0.87)",
+						fontSize: "12px",
+						fontFamily: "roboto",
+						fontWeight: 400
+					}}
+					onClick={() => window.open(props.row.urlAnalisis)}
 				>📁 Descargar</Button>
 			</strong>
 		)
 	}
 
-	return <span style={{ marginLeft: "5px" }}>- -  -  -  - - - - - -</span>
+	return <span style={{ marginLeft: "5px" }}>- -  -  -  - - - - </span>
 }
 
 const RenderGranulometria = props => {
@@ -52,9 +59,16 @@ const RenderGranulometria = props => {
 			<strong>
 				<Button
 					component="button"
-					className="button-table"
 					size="small"
-					onClick={() => window.open(props.row.granulometria)}
+					className="button-table"
+					sx={{
+						textTransform: "none",
+						color: "rgba(0,0,0,0.87)",
+						fontSize: "12px",
+						fontFamily: "roboto",
+						fontWeight: 400
+					}}
+					onClick={() => window.open(props.row.urlGranulometria) }
 				>📁 Descargar</Button>
 			</strong>
 		)
@@ -152,8 +166,8 @@ export const TablaMMPP_BD = ({ lotesBD, errorLoadingLotes }) => {
 		{ field: 'calidadId', headerName: 'Calidad', width: 80, editable: true, renderCell: RenderTamaño },
 		{ field: 'origen', headerName: 'Origen', width: 100, editable: true },
 		{ field: 'ubicacion', headerName: 'Ubicación', width: 100, editable: true },
-		{ field: 'cantidad', headerName: 'Cantidad', width: 100, type: 'string', editable: true },
-		{ field: 'disponibilidad', headerName: 'Disponibilidad', width: 100, editable: true },
+		{ field: 'cantidad', headerName: 'Cantidad (kg)', width: 100, type: 'string', editable: true },
+		{ field: 'disponibilidad', headerName: 'Disponible (kg)', width: 100, editable: true },
 		{ field: 'analisis', headerName: 'Analisis', width: 110, editable: false, renderCell: RenderAnalisis },
 		{ field: 'granulometria', headerName: 'Granulometría', width: 110, editable: true, renderCell: RenderGranulometria },
 		{ field: 'aluninio', headerName: 'Al', width: 60, editable: true },

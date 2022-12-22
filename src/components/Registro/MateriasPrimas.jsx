@@ -211,23 +211,23 @@ export const MateriasPrimas = () => {
 					</Grid>
 
 					<Grid item xs={2} sm={4} md={2}>
-						<TextField type="number" size="small" label="Aluminio" variant='outlined' value={inputs.aluminio} onChange={ev => setInputs({ ...inputs, aluminio: ev.target.value === "" ? "" : Number(ev.target.value) })} />
+						<TextField type="number" size="small" label="Al" variant='outlined' value={inputs.aluminio} onChange={ev => setInputs({ ...inputs, aluminio: ev.target.value === "" ? "" : Number(ev.target.value) })} />
 					</Grid>
 
 					<Grid item xs={2} sm={4} md={2}>
-						<TextField type="number" size="small" label="Calcio" variant='outlined' value={inputs.calcio} onChange={ev => setInputs({ ...inputs, calcio: ev.target.value === "" ? "" : Number(ev.target.value) })} />
+						<TextField type="number" size="small" label="Ca" variant='outlined' value={inputs.calcio} onChange={ev => setInputs({ ...inputs, calcio: ev.target.value === "" ? "" : Number(ev.target.value) })} />
 					</Grid>
 
 					<Grid item xs={2} sm={4} md={2}>
-						<TextField type="number" size="small" label="Hierro" variant='outlined' value={inputs.hierro} onChange={ev => setInputs({ ...inputs, hierro: ev.target.value === "" ? "" : Number(ev.target.value) })} />
+						<TextField type="number" size="small" label="Fe" variant='outlined' value={inputs.hierro} onChange={ev => setInputs({ ...inputs, hierro: ev.target.value === "" ? "" : Number(ev.target.value) })} />
 					</Grid>
 
 					<Grid item xs={2} sm={4} md={2}>
-						<TextField type="number" size="small" label="Titanio" variant="outlined" value={inputs.titanio} onChange={ev => setInputs({ ...inputs, titanio: ev.target.value === "" ? "" : Number(ev.target.value) })} />
+						<TextField type="number" size="small" label="Ti" variant="outlined" value={inputs.titanio} onChange={ev => setInputs({ ...inputs, titanio: ev.target.value === "" ? "" : Number(ev.target.value) })} />
 					</Grid>
 
 					<Grid item xs={2} sm={4} md={3}>
-						<TextField type="number" size="small" label="Total impurezas" variant="outlined" value={inputs.totalImpurezas} onChange={ev => setInputs({ ...inputs, total: ev.target.value === "" ? "" : Number(ev.target.value) })} />
+						<TextField type="number" size="small" label="Total" variant="outlined" value={inputs.totalImpurezas} onChange={ev => setInputs({ ...inputs, total: ev.target.value === "" ? "" : Number(ev.target.value) })} />
 					</Grid>
 
 					<Grid item xs={4} sm={8} md={12}>
