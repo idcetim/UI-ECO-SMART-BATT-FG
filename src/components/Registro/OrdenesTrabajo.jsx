@@ -19,12 +19,14 @@ import {
     FormLabel,
     RadioGroup,
     FormControlLabel,
-    Radio
+    Radio,
+    Item
 } from '@mui/material'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { mmppEndpoints, ordenesTrabajoEndpoints, registroEndpoints, selectListEndpoints } from '../../api/endpoints';
 import { useEffect } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
+import { Add } from '@mui/icons-material'
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -66,22 +68,17 @@ const guardarHandler = async (orden) => {
 
 export const OrdenesTrabajo = () => {
     const [inputs, setInputs] = useState({
-        codigoOT: "",
+        codigo: "",
         fecha: null,
-        cantidadSalida: null,
-        perdidas: null,
-        tamañoId: 1,
-        calidadId: 1,
-        procesoId: 1,
-        materiasPrimas: [],
-        ordenesTrabajo: []
+        procesosIds: [1],
+        materiasPrimas: [{
+            id: 1,
+            cantidadEntrada: null
+        }],
+        numeroMateriasPrimas: 1
     })
     const [materiasPrimas, setMateriasPrimas] = useState([])
-    const [ordenesTrabajo, setOrdenesTrabajo] = useState([])
     const [procesos, setProcesos] = useState([])
-    const [calidades, setCalidades] = useState([])
-    const [tamaños, setTamaños] = useState([])
-    const [esPrimerProceso, setEsPrimerProceso] = useState(true)
 
     const theme = useTheme()
 
@@ -112,27 +109,153 @@ export const OrdenesTrabajo = () => {
             .then(response => response.json())
             .then(json => setMateriasPrimas(json))
 
-        fetch(ordenesTrabajoEndpoints.getOrdenesTrabajo)
-            .then(response => response.json())
-            .then(json => setOrdenesTrabajo(json))
-
         fetch(selectListEndpoints.getProcesos)
             .then(response => response.json())
             .then(json => setProcesos(json))
-        
-        fetch(selectListEndpoints.getCalidades)
-			.then(response => response.json())
-			.then(json => setCalidades(json))
-
-		fetch(selectListEndpoints.getSizes)
-			.then(response => response.json())
-			.then(json => setTamaños(json))
-
     }, [])
+
+    const CuadrosTextoMMPP = () => {
+        let text = []
+
+        for (let i = 1; i <= inputs.numeroMateriasPrimas; i++) {
+            if (i == inputs.numeroMateriasPrimas) {
+                text.push(
+                    <>
+                        <Grid item xs={5}>
+                            <FormControl fullwidth>
+                                <InputLabel>MMPP</InputLabel>
+                                <Select
+                                    label="MMPP"
+                                    value={inputs.materiasPrimas[i - 1].id}
+                                    onChange={ev => {
+                                        let mmpp = inputs.materiasPrimas
+                                        mmpp[i - 1].id = ev.target.value
+
+                                        setInputs({
+                                            ...inputs,
+                                            materiasPrimas: mmpp
+                                        })
+                                    }}
+                                    sx={{ width: '100%' }}
+                                >
+                                    {materiasPrimas.map((materiaPrima) => {
+                                        return (
+                                            <MenuItem
+                                                key={materiaPrima.id}
+                                                value={materiaPrima.id}
+                                            >
+                                                {materiaPrima.codigo}
+                                            </MenuItem>
+                                        )
+                                    })}
+                                </Select>
+                            </FormControl>
+                        </Grid>
+
+                        <Grid item xs={5}>
+                            <TextField
+                                type="number"
+                                label={"cantidad"}
+                                value={inputs.materiasPrimas[i - 1].cantidadEntrada}
+                                onChange={ev => {
+                                    let mmpp = inputs.materiasPrimas
+
+                                    mmpp[i - 1].cantidadEntrada = ev.target.value
+
+                                    setInputs({
+                                        ...inputs,
+                                        materiasPrimas: mmpp
+                                    })
+                                }}
+                            />
+                        </Grid>
+
+                        <Grid item xs={2} alignContent="center" alignItems="center">
+                            <Add fontSize='large' onClick={() => {
+                                let mmpp = inputs.materiasPrimas
+                                mmpp.push({
+                                    id: 1,
+                                    cantidadEntrada: null
+                                })
+
+                                setInputs({
+                                    ...inputs,
+                                    numeroMateriasPrimas: inputs.numeroMateriasPrimas + 1,
+                                    materiasPrimas: mmpp
+                                })
+                            }} />
+                        </Grid>
+                    </>
+                )
+
+                continue
+            }
+
+            text.push(
+                <>
+                    <Grid item xs={6}>
+                        <FormControl fullWidth>
+                            <InputLabel>MMPP</InputLabel>
+
+                            <Select
+                                label="MMPP"
+                                value={inputs.materiasPrimas[i - 1].id}
+                                onChange={ev => {
+                                    let mmpp = inputs.materiasPrimas
+                                    mmpp[i - 1].id = ev.target.value
+
+                                    setInputs({
+                                        ...inputs,
+                                        materiasPrimas: mmpp
+                                    })
+                                }}
+                                sx={{ width: '100%' }}
+                            >
+                                {materiasPrimas.map((materiaPrima) => {
+                                    return (
+                                        <MenuItem
+                                            key={materiaPrima.id}
+                                            value={materiaPrima.id}
+                                        >
+                                            {materiaPrima.codigo}
+                                        </MenuItem>
+                                    )
+                                })}
+                            </Select>
+                        </FormControl>
+                    </Grid>
+
+                    <Grid item xs={4}>
+                        <TextField
+                            label="cantidad"
+                            type="number"
+                            value={inputs.materiasPrimas[i - 1].cantidadEntrada}
+                            onChange={ev => {
+                                let mmpp = inputs.materiasPrimas
+
+                                mmpp[i - 1].cantidadEntrada = ev.target.value
+
+                                setInputs({
+                                    ...inputs,
+                                    materiasPrimas: mmpp
+                                })
+                            }} />
+                    </Grid>
+                </>
+            )
+        }
+
+        return (
+            <Grid container spacing={2}>
+                {text}
+            </Grid>
+        )
+    }
+
     const SelectMMPP = () => {
         return (
             <FormControl sx={{ width: 300 }}>
-                <InputLabel id="demo-multiple-chip-label">MMPP</InputLabel>
+                {/* <InputLabel id="demo-multiple-chip-label">MMPP</InputLabel>
                 <Select
                     labelId="demo-multiple-chip-label"
                     id="demo-multiple-chip"
@@ -153,46 +276,14 @@ export const OrdenesTrabajo = () => {
                         <MenuItem
                             key={materiaPrima.id}
                             value={materiaPrima.id}
-                        // style={getStyles(name, inputs.materiasPrimas, theme)}
+                        style={getStyles(name, inputs.materiasPrimas, theme)}
                         >
                             {materiaPrima.codigo}
                         </MenuItem>
                     ))}
-                </Select>
-            </FormControl>
-        )
-    }
+                </Select> */}
 
-    const SelectOrdenTrabajo = () => {
-        return (
-            <FormControl sx={{ width: 300 }}>
-                <InputLabel id="demo-multiple-chip-label">Ordenes trabajo</InputLabel>
-                <Select
-                    labelId="demo-multiple-chip-label"
-                    id="demo-multiple-chip"
-                    multiple
-                    value={inputs.ordenesTrabajo}
-                    onChange={handleChangeOrdenesTrabajo}
-                    input={<OutlinedInput id="select-multiple-chip" label="MMPP" />}
-                    renderValue={(selected) => (
-                        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                            {selected.map((value) => (
-                                <Chip key={value} label={ordenesTrabajo[value - 1].codigoOT} />
-                            ))}
-                        </Box>
-                    )}
-                    MenuProps={MenuProps}
-                >
-                    {ordenesTrabajo.map((ordenTrabajo) => (
-                        <MenuItem
-                            key={ordenTrabajo.id}
-                            value={ordenTrabajo.id}
-                        // style={getStyles(name, inputs.materiasPrimas, theme)}
-                        >
-                            {ordenTrabajo.codigoOT}
-                        </MenuItem>
-                    ))}
-                </Select>
+                <CuadrosTextoMMPP />
             </FormControl>
         )
     }
@@ -208,25 +299,11 @@ export const OrdenesTrabajo = () => {
                     </Grid>
 
                     <Grid item xs={2} sm={4} md={4}>
-                        <TextField size="small" label="Código orden trabajo" variant='outlined' value={inputs.codigoOT} onChange={ev => setInputs({ ...inputs, codigoOT: ev.target.value })} />
+                        <TextField size="small" label="Código orden trabajo" variant='outlined' value={inputs.codigo} onChange={ev => setInputs({ ...inputs, codigo: ev.target.value })} />
                     </Grid>
 
                     <Grid item xs={2} sm={4} md={4}>
-                        <FormControl>
-                            <FormLabel id="demo-row-radio-buttons-group-label">¿Es el primer proceso?</FormLabel>
-                            <RadioGroup
-                                row
-                                aria-labelledby="demo-row-radio-buttons-group-label"
-                                name="row-radio-buttons-group"
-                            >
-                                <FormControlLabel checked={esPrimerProceso} onChange={() => setEsPrimerProceso(true)} control={<Radio />} label="Sí" />
-                                <FormControlLabel checked={!esPrimerProceso} onChange={() => setEsPrimerProceso(false)} control={<Radio />} label="No" />
-                            </RadioGroup>
-                        </FormControl>
-                    </Grid>
-
-                    <Grid item xs={2} sm={4} md={4}>
-                        {esPrimerProceso ? <SelectMMPP /> : <SelectOrdenTrabajo />}
+                        <SelectMMPP />
                     </Grid>
 
                     <Grid item xs={2} sm={4} md={4}>
@@ -243,77 +320,37 @@ export const OrdenesTrabajo = () => {
                         </LocalizationProvider>
                     </Grid>
 
-                    {/* <Grid item xs={2} sm={4} md={4}>
-                        <FormControl sx={{ width: '25ch' }} variant="outlined">
-                            <OutlinedInput
-                                id="outlined-adornment-weight"
-                                type="number"
-                                value={inputs.peso}
-                                onChange={ev => {
-                                    setInputs({ ...inputs, peso: ev.target.value == "" ? "" : ev.target.value })
-                                }}
-                                endAdornment={<InputAdornment position="end">kg</InputAdornment>}
-                                aria-describedby="outlined-weight-helper-text"
-                                inputProps={{
-                                    'aria-label': 'weight',
-                                }}
-                            />
-                            <FormHelperText id="outlined-weight-helper-text">Peso</FormHelperText>
+                    <Grid item xs={2} sm={4} md={4}>
+                        <FormControl fullWidth>
+                            <InputLabel>Procesos</InputLabel>
+                            <Select label="procesos" size="small" value={inputs.procesosIds} multiple onChange={ev => { setInputs({ ...inputs, procesosIds: ev.target.value }) }} sx={{ width: '100%' }}>
+                                {procesos.map(proceso => {
+                                    return <MenuItem value={proceso.id} key={proceso.id}>{proceso.nombre}</MenuItem>
+                                })}
+                            </Select>
                         </FormControl>
-                    </Grid> */}
-
-                    <Grid item xs={2} sm={4} md={4}>
-                        <TextField type="number" size="small" label="Cantidad entrada (kg)" variant='outlined' value={inputs.cantidadSalida} onChange={ev => setInputs({ ...inputs, cantidadSalida: ev.target.value })} />
                     </Grid>
-
-                    <Grid item xs={2} sm={4} md={4}>
-                        <TextField type="number" size="small" label="Cantidad salida (kg)" variant='outlined' value={inputs.perdidas} onChange={ev => setInputs({ ...inputs, perdidas: ev.target.value })} />
-                    </Grid>
-
-                    <Grid item xs={2} sm={4} md={4}>
-                        <Select size="small" value={inputs.procesoId} onChange={ev => {setInputs({ ...inputs, procesoId: ev.target.value })}} sx={{ width: '100%' }}>
-                            {procesos.map(proceso => {
-                                return <MenuItem value={proceso.id} key={proceso.id}>{proceso.nombre}</MenuItem>
-                            })}
-                        </Select>
-                    </Grid>
-
-                    <Grid item xs={2} sm={4} md={4}>
-						<Select size="small" value={inputs.calidadId} onChange={ev => setInputs({ ...inputs, calidadId: Number(ev.target.value) })} sx={{ width: '100%' }}>
-							{calidades.map(option => {
-								return <MenuItem value={option.id} key={option.id}>{option.nombre}</MenuItem>
-							})}
-						</Select>
-					</Grid>
-
-                    <Grid item xs={2} sm={4} md={4}>
-						<Select size="small" value={inputs.tamañoId} onChange={ev => setInputs({ ...inputs, tamañoId: Number(ev.target.value) })} sx={{ width: '100%' }}>
-							{tamaños.map(option => {
-								return <MenuItem value={option.id} key={option.id}>{option.nombre}</MenuItem>
-							})}
-						</Select>
-					</Grid>
 
                     <Grid item xs={4} sm={8} md={12} sx={{ display: 'flex', justifyContent: 'end' }}>
-						<Button variant='contained' size='medium' onClick={() => {
-							const promise = guardarHandler(inputs)
+                        <Button variant='contained' size='medium' onClick={() => {
+                            const promise = guardarHandler(inputs)
 
-							toast.promise(promise, {
-								loading: 'Registrando orden',
-								success: 'Registro finalizado',
-								error: 'Error en el registro'
-							},
-								{
-									style: {
-										minWidth: '250px',
-									},
-									success: {
-										duration: 4000,
-										icon: '✅',
-									},
-								})
-						}}>Guardar</Button>
-					</Grid>
+                            toast.promise(promise, {
+                                loading: 'Registrando orden',
+                                success: 'Registro finalizado',
+                                error: 'Error en el registro'
+                            },
+                                {
+                                    style: {
+                                        minWidth: '250px',
+                                    },
+                                    success: {
+                                        duration: 4000,
+                                        icon: '✅',
+                                    },
+                                })
+                        }}>Guardar</Button>
+                    </Grid>
                 </Grid>
             </Box>
         </div>

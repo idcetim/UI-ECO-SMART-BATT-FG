@@ -31,7 +31,7 @@ export const Productos = () => {
 		fecha: null,
 		cantidad: '',
 		tamañoId: 1,
-		ubicacion: '',
+		ubicacionId: 1,
 		calidadId: 1,
 		gra10: '',
 		gra50: '',
@@ -50,6 +50,7 @@ export const Productos = () => {
 	const [tamaños, setTamaños] = useState([])
 	const [calidades, setCalidades] = useState([])
 	const [ordenesTrabajo, setOrdenesTrabajo] = useState([])
+	const [ubicaciones, setUbicaciones] = useState([])
 	const granuRef = useRef()
 	const quimicoRef = useRef()
 
@@ -65,6 +66,10 @@ export const Productos = () => {
 		fetch(ordenesTrabajoEndpoints.getOrdenesTrabajo)
 			.then(response => response.json())
 			.then(json => setOrdenesTrabajo(json))
+
+		fetch(selectListEndpoints.getUbicaciones)
+			.then(response => response.json())
+			.then(json => setUbicaciones(json))
 	}, [])
 
 	const getOrdenesTrabajoMapping = () => {
@@ -101,8 +106,13 @@ export const Productos = () => {
 					mode: 'cors',
 					body: formData
 				})
+
+				if (!response.ok) {
+					throw new Error("Error guardando archivo granulometria")
+				}
 			} catch (error) {
 				console.log("Error añadiendo archivo Producto granulometria: ", error)
+				throw error
 			}
 		}
 		if (quimicoFile) {
@@ -119,13 +129,18 @@ export const Productos = () => {
 					mode: 'cors',
 					body: formData
 				})
-				console.log(await response.json())
+
+				if (!response.ok) {
+					throw new Error("Error guardando archivo quimico")
+				}
+
 			} catch (error) {
 				console.log("Error añadiendo archivo Producto quimico: ", error)
+				throw error
 			}
 		}
+
 		try {
-			console.log(inputs)
 			const response = await fetch(registroEndpoints.producto, {
 				method: "POST",
 				headers: {
@@ -134,9 +149,13 @@ export const Productos = () => {
 				},
 				body: JSON.stringify(inputs),
 			})
-			console.log(await response.json())
+
+			if (!response.ok) {
+				throw new Error("Error guardando datos")
+			}
 		} catch (error) {
 			console.log("Error añadiendo información de Producto: ", error)
+			throw error
 		}
 	}
 
@@ -167,7 +186,7 @@ export const Productos = () => {
 								renderValue={(selected) => (
 									<Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
 										{selected.map((value) => (
-											<Chip key={value} label={getOrdenesTrabajoMapping()[value].codigoOT} />
+											<Chip key={value} label={getOrdenesTrabajoMapping()[value].codigo} />
 										))}
 									</Box>
 								)}
@@ -179,7 +198,7 @@ export const Productos = () => {
 										value={ordenTrabajo.id}
 									// style={getStyles(name, inputs.materiasPrimas, theme)}
 									>
-										{ordenTrabajo.codigoOT}
+										{ordenTrabajo.codigo}
 									</MenuItem>
 								))}
 							</Select>
@@ -205,11 +224,14 @@ export const Productos = () => {
 					</Grid>
 
 					<Grid item xs={2} sm={4} md={4}>
-						<Select size="small" value={inputs.tamañoId} onChange={ev => setInputs({ ...inputs, tamañoId: ev.target.value })} sx={{ width: '100%' }}>
-							{tamaños.map(option => {
-								return <MenuItem value={option.id} key={option.id}>{option.nombre}</MenuItem>
-							})}
-						</Select>
+						<FormControl fullWidth>
+							<InputLabel>Tamaño</InputLabel>
+							<Select label="Tamaño" size="small" value={inputs.tamañoId} onChange={ev => setInputs({ ...inputs, tamañoId: ev.target.value })} sx={{ width: '100%' }}>
+								{tamaños.map(option => {
+									return <MenuItem value={option.id} key={option.id}>{option.nombre}</MenuItem>
+								})}
+							</Select>
+						</FormControl>
 					</Grid>
 
 					<Grid item xs={2} sm={4} md={4}>
@@ -217,15 +239,27 @@ export const Productos = () => {
 					</Grid>
 
 					<Grid item xs={2} sm={4} md={4}>
-						<Select size="small" value={inputs.calidadId} onChange={ev => setInputs({ ...inputs, calidadId: ev.target.value })} sx={{ width: '100%' }}>
-							{calidades.map(option => {
-								return <MenuItem value={option.id} key={option.id}>{option.nombre}</MenuItem>
-							})}
-						</ Select>
+						<FormControl fullWidth>
+							<InputLabel>Calidad</InputLabel>
+
+							<Select label="Calidad" size="small" value={inputs.calidadId} onChange={ev => setInputs({ ...inputs, calidadId: ev.target.value })} sx={{ width: '100%' }}>
+								{calidades.map(option => {
+									return <MenuItem value={option.id} key={option.id}>{option.nombre}</MenuItem>
+								})}
+							</ Select>
+						</FormControl>
 					</Grid>
 
 					<Grid item xs={2} sm={4} md={4}>
-						<TextField size="small" label="Ubicación" variant="outlined" value={inputs.ubicacion} onChange={ev => setInputs({ ...inputs, ubicacion: ev.target.value })} />
+						<FormControl fullWidth>
+							<InputLabel id="demo-simple-select-label">Ubicacion</InputLabel>
+
+							<Select size="small" label='Ubicacion' value={inputs.ubicacionId} onChange={ev => setInputs({ ...inputs, ubicacionId: ev.target.value })} sx={{ width: '100%' }}>
+								{ubicaciones.map(option => {
+									return <MenuItem value={option.id} key={option.id}>{option.nombre}</MenuItem>
+								})}
+							</Select>
+						</FormControl>
 					</Grid>
 
 					<Grid item xs={4} sm={8} md={12}>
@@ -233,15 +267,15 @@ export const Productos = () => {
 					</Grid>
 
 					<Grid item xs={2} sm={4} md={4}>
-						<TextField size="small" label="10" variant='outlined' value={inputs.gra10} onChange={ev => setInputs({ ...inputs, gra10: ev.target.value })} />
+						<TextField size="small" label="Granulometría 10" variant='outlined' value={inputs.gra10} onChange={ev => setInputs({ ...inputs, gra10: ev.target.value })} />
 					</Grid>
 
 					<Grid item xs={2} sm={4} md={4}>
-						<TextField size="small" label="50" variant='outlined' value={inputs.gra50} onChange={ev => setInputs({ ...inputs, gra50: ev.target.value })} />
+						<TextField size="small" label="Granulometría 50" variant='outlined' value={inputs.gra50} onChange={ev => setInputs({ ...inputs, gra50: ev.target.value })} />
 					</Grid>
 
 					<Grid item xs={2} sm={4} md={4}>
-						<TextField size="small" label="90" variant='outlined' value={inputs.gra90} onChange={ev => setInputs({ ...inputs, gra90: ev.target.value })} />
+						<TextField size="small" label="Granulometría 90" variant='outlined' value={inputs.gra90} onChange={ev => setInputs({ ...inputs, gra90: ev.target.value })} />
 					</Grid>
 
 					<Grid item xs={4} sm={8} md={12}>

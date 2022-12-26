@@ -7,8 +7,7 @@ import CancelIcon from '@mui/icons-material/Cancel'
 import { mmppEndpoints } from '../../api/endpoints'
 import { Box } from '@mui/system';
 import { Button } from '@mui/material';
-import { getObjIdToCalidad, getObjIdToTamaño } from '../../helpers/api';
-
+import { getObjIdToCalidad, getObjIdToOrigen, getObjIdToTamaño, getObjIdToUbicacion } from '../../helpers/api';
 import '../../styles/stockTables.css'
 
 const isValidUrl = urlString => {
@@ -82,6 +81,8 @@ export const TablaMMPP_BD = ({ lotesBD, errorLoadingLotes }) => {
 	const [rowModesModel, setRowModesModel] = useState({});
 	const [tamaños, setTamaños] = useState({})
 	const [calidades, setCalidades] = useState({})
+	const [origenes, setOrigenes] = useState({})
+	const [ubicaciones, setUbicaciones] = useState({})
 
 	useEffect(() => {
 		getObjIdToCalidad()
@@ -89,6 +90,13 @@ export const TablaMMPP_BD = ({ lotesBD, errorLoadingLotes }) => {
 		
 		getObjIdToTamaño()
 			.then(obj => setTamaños(obj))
+
+		getObjIdToUbicacion()
+			.then(obj => setUbicaciones(obj))
+
+		getObjIdToOrigen()
+			.then(obj => setOrigenes(obj))
+		
 	}, [])
 
 	useEffect(() => {
@@ -159,13 +167,25 @@ export const TablaMMPP_BD = ({ lotesBD, errorLoadingLotes }) => {
 		)
 	}
 
+	const RenderOrigen = (props) => {
+		return (
+			<div>{origenes[props.row.origenId]}</div>
+		)
+	}
+
+	const RenderUbicacion = (props) => {
+		return (
+			<div>{ubicaciones[props.row.ubicacionId]}</div>
+		)
+	}
+
 	const columns = [
 		{ field: 'codigo', headerName: 'Código', width: 120, editable: true },
 		{ field: 'fecha', headerName: 'Fecha', width: 100, editable: true },
 		{ field: 'tamañoId', headerName: 'Tamaño', width: 80, editable: true, renderCell: RenderCalidad },
 		{ field: 'calidadId', headerName: 'Calidad', width: 90, editable: true, renderCell: RenderTamaño },
-		{ field: 'origen', headerName: 'Origen', width: 100, editable: true },
-		{ field: 'ubicacion', headerName: 'Ubicación', width: 100, editable: true },
+		{ field: 'origen', headerName: 'Origen', width: 100, editable: true, renderCell: RenderOrigen },
+		{ field: 'ubicacion', headerName: 'Ubicación', width: 100, editable: true, renderCell: RenderUbicacion },
 		{ field: 'cantidad', headerName: 'Cantidad (kg)', width: 105, type: 'string', editable: true },
 		{ field: 'disponibilidad', headerName: 'Disponible (kg)', width: 110, editable: true },
 		{ field: 'analisis', headerName: 'Analisis', width: 100, editable: false, renderCell: RenderAnalisis },

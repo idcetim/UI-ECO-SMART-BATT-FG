@@ -6,7 +6,7 @@ import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Cancel'
 import { ordenesTrabajoEndpoints } from '../../api/endpoints'
 import { Box } from '@mui/system';
-import { Button } from '@mui/material';
+import { TextField } from '@mui/material';
 import { getObjIdToCalidad, getObjIdToProceso, getObjIdToTamaño } from '../../helpers/api';
 import '../../styles/stockTables.css'
 
@@ -31,17 +31,9 @@ const CustomToolbar = () => {
 export const TablaOrdenesTrabajo = ({ ordenesTrabajo, errorLoadingOrdenesTrabajo }) => {
     const [rows, setRows] = useState([])
     const [rowModesModel, setRowModesModel] = useState({});
-    const [tamaños, setTamaños] = useState({})
-    const [calidades, setCalidades] = useState({})
     const [procesos, setProcesos] = useState({})
 
     useEffect(() => {
-        getObjIdToCalidad()
-            .then(obj => setCalidades(obj))
-
-        getObjIdToTamaño()
-            .then(obj => setTamaños(obj))
-
         getObjIdToProceso()
             .then(obj => setProcesos(obj))
     }, [])
@@ -100,34 +92,20 @@ export const TablaOrdenesTrabajo = ({ ordenesTrabajo, errorLoadingOrdenesTrabajo
         setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
     };
 
-	const RenderTamaño = (props) => {
-		return (
-			<div>{tamaños[props.row.tamañoId]}</div>
-		)
-	}
-	
-	const RenderCalidad = (props) => {
-		return (
-			<div>{calidades[props.row.calidadId]}</div>
-		)
-	}
-
     const RenderProceso = (props) => {
+        let procesosTexto = props.row.procesosIds.map(element => {
+            return procesos[element]
+        }).join(', ')
+
         return (
-            <div>{procesos[props.row.procesoId]}</div>
+            <div>{procesosTexto}</div>
         )
     }
 
     const columns = [
-        { field: 'codigoOT', headerName: 'Código', width: 130, editable: true },
+        { field: 'codigo', headerName: 'Código', width: 130, editable: true },
         { field: 'fecha', headerName: 'Fecha', width: 130, editable: true },
-        { field: 'cantidadSalida', headerName: 'Cantidad salida', width: 130, editable: true },
-        { field: 'disponible', headerName: 'Disponible', width: 130, editable: true },
-        { field: 'perdidas', headerName: 'Pérdidas', width: 130, editable: true },
-        { field: 'tamañoId', headerName: 'Tamaño', width: 130, editable: true, renderCell: RenderTamaño },
-        { field: 'calidadId', headerName: 'Calidad', width: 130, editable: true, renderCell: RenderCalidad },
-        { field: 'procesoId', headerName: 'Proceso', width: 130, editable: true, renderCell: RenderProceso },
-        { field: 'ordenAnteriorId', headerName: 'Orden anterior', width: 130, editable: true },
+        { field: 'proceso', headerName: 'Proceso', flex: 1, editable: true, renderCell: RenderProceso },
         {
             field: 'actions',
             type: 'actions',

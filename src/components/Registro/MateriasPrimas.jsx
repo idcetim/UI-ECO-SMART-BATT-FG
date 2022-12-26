@@ -2,7 +2,7 @@ import { useState, useRef } from 'react';
 import Form from 'react-bootstrap/Form'
 import { BlobStorage } from '../../api/blobStorage'
 import { registroEndpoints, selectListEndpoints } from '../../api/endpoints'
-import { TextField, Grid, Box, Select, Button, MenuItem, Typography } from '@mui/material'
+import { TextField, Grid, Box, Select, Button, MenuItem, Typography, InputLabel, FormControl } from '@mui/material'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -16,8 +16,8 @@ export const MateriasPrimas = () => {
 		fecha: null,
 		tamañoId: 1,
 		calidadId: 1,
-		origen: '',
-		ubicacion: '',
+		origenId: 1,
+		ubicacionId: 1,
 		cantidad: null,
 		disponibilidad: null,
 		urlAnalisis: "",
@@ -34,6 +34,8 @@ export const MateriasPrimas = () => {
 
 	const [tamaños, setTamaños] = useState([])
 	const [calidades, setCalidades] = useState([])
+	const [origenes, setOrigenes] = useState([])
+	const [ubicaciones, setUbicaciones] = useState([])
 	const [granulometriaFile, setGranulometriaFile] = useState(undefined)
 	const [analisisFile, setAnalisisFile] = useState(undefined)
 	const granuRef = useRef()
@@ -47,6 +49,14 @@ export const MateriasPrimas = () => {
 		fetch(selectListEndpoints.getSizes)
 			.then(response => response.json())
 			.then(json => setTamaños(json))
+
+		fetch(selectListEndpoints.getOrigenes)
+			.then(response => response.json())
+			.then(json => setOrigenes(json))
+
+		fetch(selectListEndpoints.getUbicaciones)
+			.then(response => response.json())
+			.then(json => setUbicaciones(json))
 	}, [])
 
 	const guardarHandler = async () => {
@@ -131,11 +141,15 @@ export const MateriasPrimas = () => {
 					</Grid>
 
 					<Grid item xs={2} sm={4} md={4}>
-						<Select size="small" value={inputs.tamañoId} onChange={ev => setInputs({ ...inputs, tamañoId: Number(ev.target.value) })} sx={{ width: '100%' }}>
-							{tamaños.map(option => {
-								return <MenuItem value={option.id} key={option.id}>{option.nombre}</MenuItem>
-							})}
-						</Select>
+						<FormControl fullWidth>
+							<InputLabel id="demo-simple-select-label">Tamaño</InputLabel>
+
+							<Select size="small" label="Tamaño" value={inputs.tamañoId} onChange={ev => setInputs({ ...inputs, tamañoId: Number(ev.target.value) })} sx={{ width: '100%' }}>
+								{tamaños.map(option => {
+									return <MenuItem value={option.id} key={option.id}>{option.nombre}</MenuItem>
+								})}
+							</Select>
+						</FormControl>
 					</Grid>
 
 					<Grid item xs={2} sm={4} md={4}>
@@ -165,19 +179,39 @@ export const MateriasPrimas = () => {
 					</Grid>
 
 					<Grid item xs={2} sm={4} md={4}>
-						<TextField size="small" label="Origen" variant='outlined' value={inputs.origen} onChange={ev => setInputs({ ...inputs, origen: ev.target.value })} />
+						<FormControl fullWidth>
+							<InputLabel>Origen</InputLabel>
+
+							<Select size="small" label='Origen' value={inputs.origenId} onChange={ev => setInputs({ ...inputs, origenId: ev.target.value })} sx={{ width: '100%' }}>
+								{origenes.map(option => {
+									return <MenuItem value={option.id} key={option.id}>{option.nombre}</MenuItem>
+								})}
+							</Select>
+						</FormControl>
 					</Grid>
 
 					<Grid item xs={2} sm={4} md={4}>
-						<TextField size="small" label="Ubicación" variant='outlined' value={inputs.ubicacion} onChange={ev => setInputs({ ...inputs, ubicacion: ev.target.value })} />
+						<FormControl fullWidth>
+							<InputLabel>Ubicación</InputLabel>
+
+							<Select size="small" label='Ubicacion' value={inputs.ubicacionId} onChange={ev => setInputs({ ...inputs, ubicacionId: ev.target.value })} sx={{ width: '100%' }}>
+								{ubicaciones.map(option => {
+									return <MenuItem value={option.id} key={option.id}>{option.nombre}</MenuItem>
+								})}
+							</Select>
+						</FormControl>
 					</Grid>
 
 					<Grid item xs={2} sm={4} md={4}>
-						<Select size="small" value={inputs.calidadId} onChange={ev => setInputs({ ...inputs, calidadId: Number(ev.target.value) })} sx={{ width: '100%' }}>
-							{calidades.map(option => {
-								return <MenuItem value={option.id} key={option.id}>{option.nombre}</MenuItem>
-							})}
-						</Select>
+						<FormControl fullWidth>
+							<InputLabel>Calidad</InputLabel>
+
+							<Select size="small" label="Calidad" value={inputs.calidadId} onChange={ev => setInputs({ ...inputs, calidadId: Number(ev.target.value) })} sx={{ width: '100%' }}>
+								{calidades.map(option => {
+									return <MenuItem value={option.id} key={option.id}>{option.nombre}</MenuItem>
+								})}
+							</Select>
+						</FormControl>
 					</Grid>
 
 					<Grid item xs={4} sm={8} md={12}>
@@ -185,7 +219,19 @@ export const MateriasPrimas = () => {
 					</Grid>
 
 					<Grid item xs={2} sm={4} md={4}>
-						<TextField type="number" size="small" label="Granulometría 10" variant='outlined' value={inputs.gra10} onChange={ev => setInputs({ ...inputs, gra10: ev.target.value === "" ? "" : Number(ev.target.value)})} />
+						<TextField 
+							type="number" 
+							size="small" 
+							label="Granulometría 10" 
+							variant='outlined' 
+							value={inputs.gra10} 
+							onChange={ev => setInputs({ ...inputs, gra10: ev.target.value })} 
+							inputProps={{
+								min: 0,
+								max: 100
+							}}
+							sx={{width: '100%'}}
+						/>
 					</Grid>
 
 					<Grid item xs={2} sm={4} md={4}>

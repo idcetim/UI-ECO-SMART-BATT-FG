@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { GridRowModes, DataGrid, GridActionsCellItem, GridToolbarContainer, GridToolbarExport, GridToolbarFilterButton } from '@mui/x-data-grid';
+import { GridRowModes, DataGrid, GridActionsCellItem, GridToolbarContainer, GridToolbarExport, GridToolbarFilterButton, useGridApiContext } from '@mui/x-data-grid';
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
 import SaveIcon from '@mui/icons-material/Save';
@@ -7,8 +7,9 @@ import CancelIcon from '@mui/icons-material/Cancel'
 import { productosEndpoints } from '../../api/endpoints'
 import { Box } from '@mui/system';
 import { Button, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
-import { getObjIdToCalidad, getObjIdToTamaño } from '../../helpers/api';
+import { getObjIdToCalidad, getObjIdToTamaño, getObjIdToUbicacion } from '../../helpers/api';
 import '../../styles/stockTables.css'
+import { useGridApiRef } from '@mui/x-data-grid-pro';
 
 const isValidUrl = urlString => {
     try {
@@ -62,33 +63,12 @@ const RenderGranulometria = props => {
     return <span style={{ marginLeft: "5px" }}>- -  -  -  - - - - - -</span>
 }
 
-const RenderPrueba = props => {
-    const handleChange = () => {}
-
-    return (
-        <div>
-            <FormControl fullWidth>
-                <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={10}
-                    onChange={handleChange}
-                    sx={{ boxShadow: 'none', "& fieldset": { border: 'none' }, }}
-                >
-                    <MenuItem value={10}>Ten</MenuItem>
-                    <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem>
-                </Select>
-            </FormControl>
-        </div>
-    )
-}
-
 export const TablaProductos = ({ productos, errorLoadingProductos }) => {
     const [rows, setRows] = useState([])
     const [rowModesModel, setRowModesModel] = useState({});
     const [tamaños, setTamaños] = useState({})
     const [calidades, setCalidades] = useState({})
+    const [ubicaciones, setUbicaciones] = useState({})
 
     useEffect(() => {
         getObjIdToCalidad()
@@ -96,6 +76,9 @@ export const TablaProductos = ({ productos, errorLoadingProductos }) => {
 
         getObjIdToTamaño()
             .then(obj => setTamaños(obj))
+
+        getObjIdToUbicacion()
+            .then(obj => setUbicaciones(obj))
     }, [])
 
     useEffect(() => {
@@ -164,20 +147,49 @@ export const TablaProductos = ({ productos, errorLoadingProductos }) => {
         )
     }
 
+    const RenderUbicacion = (props) => {
+        return (
+            <div>{ubicaciones[props.row.ubicacionId]}</div>
+        )
+    }
+
+    const RenderEditUbicacion = (props) => {
+        const apiRef = useGridApiContext();
+
+        const handleChange = async (ev) => {
+            console.log(ev)
+            // await apiRef.current.setEditCellValue({})
+        }
+
+        console.log(ubicaciones.ids)
+
+        return (
+            <FormControl fullWidth>
+                <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={10}
+                    onChange={handleChange}
+                    sx={{ boxShadow: 'none', "& fieldset": { border: 'none' }, }}
+                >
+                    {ubicaciones.ids.map(element => {
+                        return (
+                            <MenuItem key={element.id} value={element.id}>{ubicaciones[element]}</MenuItem>
+                        )
+                    })}
+                </Select>
+            </FormControl>
+        )
+    }
+
     const columns = [
         { field: 'codigoProducto', headerName: 'Código', width: 130, editable: true },
-        // {
-        //     field: 'prueba',
-        //     headerName: 'Prueba',
-        //     editable: true,
-        //     renderCell: RenderPrueba
-        // },
         { field: 'fecha', headerName: 'Fecha', width: 105, editable: true },
         { field: 'cantidad', headerName: 'Cantidad (kg)', width: 105, type: 'string', editable: true },
         { field: 'disponibilidad', headerName: 'Disponible (kg)', width: 110, editable: true },
         { field: 'calidadId', headerName: 'Calidad', width: 80, editable: true, renderCell: RenderTamaño },
         { field: 'tamañoId', headerName: 'Tamaño', width: 80, editable: true, renderCell: RenderCalidad },
-        { field: 'ubicacion', headerName: 'Ubicación', width: 100, editable: true },
+        { field: 'ubicacion', headerName: 'Ubicación', width: 100, editable: true, renderCell: RenderUbicacion, renderEditCell: RenderEditUbicacion },
         { field: 'urlOrdenTrabajo', headerName: 'Orden trabajo', width: 100, editable: true },
         { field: 'urlQuimico', headerName: 'Analisis', width: 110, editable: false, renderCell: RenderAnalisis },
         { field: 'urlGranulometria', headerName: 'Granulometría', width: 110, editable: true, renderCell: RenderGranulometria },

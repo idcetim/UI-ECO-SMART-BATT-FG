@@ -36,6 +36,34 @@ const getObjIdToProceso = async () => {
     return objIdToProceso
 }
 
+const getObjIdToOrigen = async () => {
+    let origenes = await (await fetch(selectListEndpoints.getOrigenes)).json()
+
+    let objIdToOrigen = {}
+
+    for (let origen of origenes) {
+        objIdToOrigen[origen.id] = origen.nombre
+    }
+
+    return objIdToOrigen
+}
+
+const getObjIdToUbicacion = async () => {
+    let ubicaciones = await (await fetch(selectListEndpoints.getUbicaciones)).json()
+
+    let objIdToUbicacion = {}
+    objIdToUbicacion.ids = []
+
+    for (let ubicacion of ubicaciones) {
+        objIdToUbicacion[ubicacion.id] = ubicacion.nombre
+        objIdToUbicacion.ids.push({
+            id: ubicacion.id
+        })
+    }
+
+    return objIdToUbicacion
+}
+
 const getOrdenesTrabajoIdYCodigo = async () => {
     let ordenesTrabajo = await (await fetch(ordenesTrabajoEndpoints.getOT)).json()
 
@@ -53,5 +81,7 @@ export {
     getObjIdToCalidad,
     getObjIdToTamaño,
     getObjIdToProceso,
+    getObjIdToUbicacion,
+    getObjIdToOrigen,
     getOrdenesTrabajoIdYCodigo
 }
