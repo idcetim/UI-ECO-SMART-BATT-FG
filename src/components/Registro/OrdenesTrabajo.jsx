@@ -20,7 +20,8 @@ import {
     RadioGroup,
     FormControlLabel,
     Radio,
-    Item
+    Item,
+    Paper
 } from '@mui/material'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { mmppEndpoints, ordenesTrabajoEndpoints, registroEndpoints, selectListEndpoints } from '../../api/endpoints';
@@ -303,7 +304,10 @@ export const OrdenesTrabajo = () => {
                     </Grid>
 
                     <Grid item xs={2} sm={4} md={4}>
-                        <SelectMMPP />
+                        <Typography variant="h6">Materias primas:</Typography>
+                        <Paper variant="outlined" sx={{padding: '20px', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+                            <SelectMMPP />
+                        </Paper>
                     </Grid>
 
                     <Grid item xs={2} sm={4} md={4}>

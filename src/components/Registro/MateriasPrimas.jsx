@@ -291,8 +291,6 @@ export const MateriasPrimas = () => {
 						<Button variant='contained' size='medium' onClick={() => {
 							const promise = guardarHandler()
 
-							console.log(promise)
-
 							toast.promise(promise, {
 								loading: 'Registrando materia prima',
 								success: 'Registro finalizado',

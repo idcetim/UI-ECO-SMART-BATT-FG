@@ -1,14 +1,35 @@
 import { useState, useEffect } from 'react'
-import { GridRowModes, DataGrid, GridActionsCellItem, GridToolbarContainer, GridToolbarExport, GridToolbarFilterButton } from '@mui/x-data-grid';
+import {
+    GridRowModes,
+    DataGrid,
+    GridActionsCellItem,
+    GridToolbarContainer,
+    GridToolbarExport,
+    GridToolbarFilterButton,
+    useGridApiContext
+} from '@mui/x-data-grid';
+import {
+    Button,
+    FormControl,
+    Select,
+    MenuItem,
+    DialogTitle,
+    Dialog,
+    DialogActions,
+    TextField
+} from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
 import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Cancel'
 import { ordenesTrabajoEndpoints } from '../../api/endpoints'
 import { Box } from '@mui/system';
-import { TextField } from '@mui/material';
 import { getObjIdToCalidad, getObjIdToProceso, getObjIdToTamaño } from '../../helpers/api';
 import '../../styles/stockTables.css'
+import toast, { Toaster } from 'react-hot-toast';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker'
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 
 const isValidUrl = urlString => {
     try {
@@ -32,6 +53,10 @@ export const TablaOrdenesTrabajo = ({ ordenesTrabajo, errorLoadingOrdenesTrabajo
     const [rows, setRows] = useState([])
     const [rowModesModel, setRowModesModel] = useState({});
     const [procesos, setProcesos] = useState({})
+    const [deleteState, setDeleteState] = useState({
+        idToDelete: null,
+        modalOpen: false
+    })
 
     useEffect(() => {
         getObjIdToProceso()
@@ -43,6 +68,38 @@ export const TablaOrdenesTrabajo = ({ ordenesTrabajo, errorLoadingOrdenesTrabajo
             setRows(ordenesTrabajo)
         }
     }, [ordenesTrabajo])
+
+    const deleteOrdenTrabajo = id => {
+        setDeleteState({ ...deleteState, modalOpen: false })
+
+        let promise = new Promise((resolve, reject) => {
+            fetch(`${ordenesTrabajoEndpoints.deleteOrdenTrabajo}?id=${id}`)
+                .then(result => {
+                    if (result.ok) {
+                        setRows(rows.filter((row) => row.id !== id))
+                        resolve(result)
+                    }
+
+                    reject(result)
+                })
+                .catch(error => reject(error))
+        })
+
+        toast.promise(promise, {
+            loading: 'Eliminando orden...',
+            success: 'Orden eliminada',
+            error: 'Ha habido un error'
+        },
+            {
+                style: {
+                    minWidth: '250px',
+                },
+                success: {
+                    duration: 4000,
+                    icon: '✅',
+                },
+            })
+    }
 
     const handleRowEditStart = (params, event) => {
         event.defaultMuiPrevented = true;
@@ -61,9 +118,7 @@ export const TablaOrdenesTrabajo = ({ ordenesTrabajo, errorLoadingOrdenesTrabajo
     };
 
     const handleDeleteClick = (id) => async () => {
-        fetch(`${ordenesTrabajoEndpoints.deleteOrdenTrabajo}?id=${id}`)
-
-        setRows(rows.filter((row) => row.id !== id));
+        setDeleteState({ idToDelete: id, modalOpen: true })
     };
 
     const handleCancelClick = (id) => () => {
@@ -81,16 +136,71 @@ export const TablaOrdenesTrabajo = ({ ordenesTrabajo, errorLoadingOrdenesTrabajo
     const processRowUpdate = async (newRow) => {
         const updatedRow = { ...newRow, isNew: false };
 
-        fetch(ordenesTrabajoEndpoints.updateOrdenTrabajo, {
-        	method: 'POST',
-        	headers: {
-        		'Content-Type': 'application/json'
-        	},
-        	body: JSON.stringify(newRow)
+        let promise = new Promise((resolve, reject) => {
+            fetch(ordenesTrabajoEndpoints.updateOrdenTrabajo, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(newRow)
+            })
+                .then(result => {
+                    if (result.ok) {
+                        resolve(result)
+                    }
+
+                    reject(result)
+                })
+                .catch(error => reject(error))
         })
 
+        toast.promise(promise, {
+            loading: 'Actualizando orden...',
+            success: 'Orden actualizada',
+            error: 'Ha habido un error'
+        },
+        {
+            style: {
+                minWidth: '250px',
+            },
+            success: {
+                duration: 4000,
+                icon: '✅',
+            },
+        }
+        )
+
         setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
+
+        return updatedRow
     };
+
+    const RenderFecha = (props) => {
+        return (
+            <div>{(new Date(props.row.fecha)).toLocaleDateString()}</div>
+        )
+    }
+
+    const RenderEditFecha = props => {
+        const { id, value, field } = props;
+        const apiRef = useGridApiContext();
+
+        const handleValueChange = (newDate) => {
+            apiRef.current.setEditCellValue({ id, field, value: `${newDate.$y}-${Number(newDate["$M"]) + 1}-${newDate["$D"]}` });
+        };
+
+        return (
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DatePicker
+                    label="Fecha"
+                    value={value}
+                    inputFormat="DD/MM/YY"
+                    onChange={handleValueChange}
+                    renderInput={(params) => <TextField size="small" {...params} />}
+                />
+            </LocalizationProvider>
+        )
+    }
 
     const RenderProceso = (props) => {
         let procesosTexto = props.row.procesosIds.map(element => {
@@ -104,7 +214,7 @@ export const TablaOrdenesTrabajo = ({ ordenesTrabajo, errorLoadingOrdenesTrabajo
 
     const columns = [
         { field: 'codigo', headerName: 'Código', width: 130, editable: true },
-        { field: 'fecha', headerName: 'Fecha', width: 130, editable: true },
+        { field: 'fecha', headerName: 'Fecha', width: 130, editable: true, renderCell: RenderFecha, renderEditCell: RenderEditFecha },
         { field: 'proceso', headerName: 'Proceso', flex: 1, editable: true, renderCell: RenderProceso },
         {
             field: 'actions',
@@ -167,26 +277,41 @@ export const TablaOrdenesTrabajo = ({ ordenesTrabajo, errorLoadingOrdenesTrabajo
                 marginBottom: '40px'
             }}
         >
+            <Toaster />
+
+            <Dialog
+                open={deleteState.modalOpen}
+                onClose={() => setDeleteState({ ...deleteState, modalOpen: false })}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle>Se va a efectuar el borrado de la orden con id {deleteState.idToDelete}. ¿Quieres continuar?</DialogTitle>
+                <DialogActions>
+                    <Button onClick={() => setDeleteState({ ...deleteState, modalOpen: false })}>Cancelar</Button>
+                    <Button onClick={() => deleteOrdenTrabajo(deleteState.idToDelete)} autoFocus>Aceptar</Button>
+                </DialogActions>
+            </Dialog>
+
             <DataGrid
                 rows={rows}
                 rowsPerPageOptions={[10, 25, 50, 100]}
                 columns={columns}
                 editMode="row"
                 rowModesModel={rowModesModel}
-				onRowModesModelChange={(newModel) => setRowModesModel(newModel)}
-				onRowEditStart={handleRowEditStart}
-				onRowEditStop={handleRowEditStop}
-				processRowUpdate={processRowUpdate}
-				onProcessRowUpdateError={err => console.log(err)}
-				componentsProps={{
-					toolbar: { setRows, setRowModesModel },
-				}}
-				experimentalFeatures={{ newEditingApi: true }}
-				initialState={{
-					pagination: {
-						pageSize: 10
-					}
-				}}
+                onRowModesModelChange={(newModel) => setRowModesModel(newModel)}
+                onRowEditStart={handleRowEditStart}
+                onRowEditStop={handleRowEditStop}
+                processRowUpdate={processRowUpdate}
+                onProcessRowUpdateError={err => console.log(err)}
+                componentsProps={{
+                    toolbar: { setRows, setRowModesModel },
+                }}
+                experimentalFeatures={{ newEditingApi: true }}
+                initialState={{
+                    pagination: {
+                        pageSize: 10
+                    }
+                }}
                 loading={ordenesTrabajo == null}
                 error={errorLoadingOrdenesTrabajo === true ? true : undefined}
                 components={{

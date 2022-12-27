@@ -11,7 +11,12 @@ import MenuItem from '@mui/material/MenuItem'
 import IconButton from '@mui/material/IconButton'
 import Menu from '@mui/material/Menu'
 import MenuIcon from '@mui/icons-material/Menu'
-
+import Badge from '@mui/icons-material/Badge'
+import MailIcon from '@mui/icons-material/Mail';
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import MoreIcon from '@mui/icons-material/MoreVert';
+import AccountCircle from '@mui/icons-material/AccountCircle';
+import SettingsIcon from '@mui/icons-material/Settings';
 import '../styles/navbar.css'
 
 const NavBar = () => {
@@ -32,7 +37,7 @@ const NavBar = () => {
 	const smallScreenLinkStyle = { color: "black", textDecoration: "none", textTransform: "uppercase", fontSize: "13px", fontWeight: "bold" }
 
 	return (
-		<AppBar position="static" sx={{background: "grey"}}>
+		<AppBar position="static" sx={{ background: "grey" }}>
 			<Container maxWidth="xl">
 				<Toolbar disableGutters>
 
@@ -79,7 +84,7 @@ const NavBar = () => {
 							</MenuItem>
 
 							<MenuItem onClick={handleCloseNavMenu}>
-								<Typography textAlign='center' component={NavLink} className="small-navlink" style={({ isActive }) => isActive ? actveStyleSmall : null} to='/gestionstock' sx={ smallScreenLinkStyle }>Gestion stock</Typography>
+								<Typography textAlign='center' component={NavLink} className="small-navlink" style={({ isActive }) => isActive ? actveStyleSmall : null} to='/gestionstock' sx={smallScreenLinkStyle}>Gestion stock</Typography>
 							</MenuItem>
 
 							<MenuItem onClick={handleCloseNavMenu}>
@@ -100,6 +105,29 @@ const NavBar = () => {
 						<Button component={NavLink} className="navlink" style={({ isActive }) => isActive ? activeStyleBig : null} to='/trazabilidad' sx={{ my: 2, color: 'black', display: 'block' }}>Trazabilidad</Button>
 						<Button component={NavLink} className="navlink" style={({ isActive }) => isActive ? activeStyleBig : null} to='/gestionstock' sx={{ my: 2, color: 'black', display: 'block' }}>Gestion stock</Button>
 						<Button component={NavLink} className="navlink" style={({ isActive }) => isActive ? activeStyleBig : null} to='/registro' sx={{ my: 2, color: 'black', display: 'block' }}>Registro</Button>
+					</Box>
+
+					<Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+						<IconButton
+							size="large"
+							edge="end"
+							aria-label="account of current user"
+							aria-haspopup="true"
+							color="inherit"
+						>
+							<SettingsIcon />
+						</IconButton>
+					</Box>
+
+					<Box sx={{ display: { xs: 'flex', md: 'none' } }}>
+						<IconButton
+							size="large"
+							aria-label="show more"
+							aria-haspopup="true"
+							color="inherit"
+						>
+							<SettingsIcon />
+						</IconButton>
 					</Box>
 				</Toolbar>
 			</Container>

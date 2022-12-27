@@ -4,9 +4,13 @@ const getObjIdToCalidad = async () => {
     let calidades = await (await fetch(selectListEndpoints.getCalidades)).json()
 
     let objIdToCalidad = {}
+    objIdToCalidad.ids = []
 
     for (let calidad of calidades) {
         objIdToCalidad[calidad.id] = calidad.nombre
+        objIdToCalidad.ids.push({
+            id: calidad.id
+        })
     }
 
     return objIdToCalidad
@@ -16,9 +20,13 @@ const getObjIdToTamaño = async () => {
     let tamaños = await (await fetch(selectListEndpoints.getSizes)).json()
 
     let objIdToTamaño = {}
+    objIdToTamaño.ids = []
 
     for (let tamaño of tamaños) {
         objIdToTamaño[tamaño.id] = tamaño.nombre
+        objIdToTamaño.ids.push({
+            id: tamaño.id
+        })
     }
 
     return objIdToTamaño
@@ -28,9 +36,13 @@ const getObjIdToProceso = async () => {
     let procesos = await (await fetch(selectListEndpoints.getProcesos)).json()
 
     let objIdToProceso = {}
+    objIdToProceso.ids = []
 
     for (let proceso of procesos) {
         objIdToProceso[proceso.id] = proceso.nombre
+        objIdToProceso.ids.push({
+            id: proceso.id
+        })
     }
 
     return objIdToProceso
@@ -40,9 +52,13 @@ const getObjIdToOrigen = async () => {
     let origenes = await (await fetch(selectListEndpoints.getOrigenes)).json()
 
     let objIdToOrigen = {}
+    objIdToOrigen.ids = []
 
     for (let origen of origenes) {
         objIdToOrigen[origen.id] = origen.nombre
+        objIdToOrigen.ids.push({
+            id: origen.id
+        })
     }
 
     return objIdToOrigen
