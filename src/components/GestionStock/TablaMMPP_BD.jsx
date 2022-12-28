@@ -21,6 +21,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
+import { validarMateriasPrimas } from '../../helpers/validadores';
 
 const isValidUrl = urlString => {
 	try {
@@ -63,6 +64,7 @@ const RenderAnalisis = (props) => {
 
 	return <span style={{ marginLeft: "5px" }}>- -  -  -  - - - - </span>
 }
+
 
 const RenderGranulometria = props => {
 	if (isValidUrl(props.row.urlGranulometria)) {
@@ -195,6 +197,14 @@ export const TablaMMPP_BD = ({ lotesBD, errorLoadingLotes }) => {
 	const processRowUpdate = async (newRow) => {
 		const updatedRow = { ...newRow, isNew: false };
 
+		let resultadoValidacion = validarMateriasPrimas(newRow)
+
+		if (resultadoValidacion.errorValidacion) {
+			alert(resultadoValidacion.mensajeError)
+
+			return
+		}
+
 		let promise = new Promise((resolve, reject) => {
 			fetch(mmppEndpoints.updateMMPP, {
 				method: 'POST',
@@ -283,6 +293,7 @@ export const TablaMMPP_BD = ({ lotesBD, errorLoadingLotes }) => {
 					onChange={handleValueChange}
 					sx={{ boxShadow: 'none', "& fieldset": { border: 'none' }, }}
 				>
+					<MenuItem value={null}></MenuItem>
 					{tamaños.ids.map(element => {
 						return (
 							<MenuItem key={element.id} value={element.id}>{tamaños[element.id]}</MenuItem>
@@ -398,22 +409,22 @@ export const TablaMMPP_BD = ({ lotesBD, errorLoadingLotes }) => {
 	const columns = [
 		{ field: 'codigo', headerName: 'Código', width: 120, editable: true },
 		{ field: 'fecha', headerName: 'Fecha', width: 100, editable: true, renderCell: RenderFecha, renderEditCell: RenderEditFecha },
-		{ field: 'tamañoId', headerName: 'Tamaño', width: 80, editable: true, renderCell: RenderCalidad, renderEditCell: RenderEditCalidad },
-		{ field: 'calidadId', headerName: 'Calidad', width: 100, editable: true, renderCell: RenderTamaño, renderEditCell: RenderEditTamaño },
+		{ field: 'tamañoId', headerName: 'Tamaño', width: 80, editable: true, renderCell: RenderTamaño, renderEditCell: RenderEditTamaño },
+		{ field: 'calidadId', headerName: 'Calidad', width: 100, editable: true, renderCell: RenderCalidad, renderEditCell: RenderEditCalidad },
 		{ field: 'origenId', headerName: 'Origen', width: 100, editable: true, renderCell: RenderOrigen, renderEditCell: RenderEditOrigen },
 		{ field: 'ubicacionId', headerName: 'Ubicación', width: 100, editable: true, renderCell: RenderUbicacion, renderEditCell: RenderEditUbicacion },
-		{ field: 'cantidad', headerName: 'Cantidad (kg)', width: 105, type: 'string', editable: true },
-		{ field: 'disponibilidad', headerName: 'Disponible (kg)', width: 110, editable: true },
-		{ field: 'analisis', headerName: 'Analisis', width: 100, editable: false, renderCell: RenderAnalisis },
-		{ field: 'granulometria', headerName: 'Granulometría', width: 110, editable: true, renderCell: RenderGranulometria },
-		{ field: 'aluninio', headerName: 'Al', width: 50, editable: true },
-		{ field: 'calcio', headerName: 'Ca', width: 50, editable: true },
-		{ field: 'hierro', headerName: 'Fe', width: 50, editable: true },
-		{ field: 'titanio', headerName: 'Ti', width: 50, editable: true },
-		{ field: 'total', headerName: 'Total', width: 50, editable: true },
-		{ field: 'gra10', headerName: 'gra10', width: 50, editable: true },
-		{ field: 'gra50', headerName: 'gra50', width: 50, editable: true },
-		{ field: 'gra90', headerName: 'gra90', width: 50, editable: true },
+		{ field: 'cantidad', type: 'number',eaderName: 'Cantidad (kg)', width: 105, editable: true },
+		{ field: 'disponibilidad', type: 'number', headerName: 'Disponible (kg)', width: 110, editable: true },
+		{ field: 'urlAnalisis', headerName: 'Analisis', width: 100, editable: true, renderCell: RenderAnalisis },
+		{ field: 'urlGranulometria', headerName: 'Granulometría', width: 110, editable: true, renderCell: RenderGranulometria },
+		{ field: 'aluminio', type: 'number', headerName: 'Al', width: 75, editable: true },
+		{ field: 'calcio', type: 'number', headerName: 'Ca', width: 75, editable: true },
+		{ field: 'hierro', type: 'number', headerName: 'Fe', width: 75, editable: true },
+		{ field: 'titanio', type: 'number', headerName: 'Ti', width: 75, editable: true },
+		{ field: 'total', type: 'number', headerName: 'Total', width: 75, editable: true },
+		{ field: 'gra10', type: 'number', headerName: 'gra10', width: 75, editable: true },
+		{ field: 'gra50', type: 'number', headerName: 'gra50', width: 75, editable: true },
+		{ field: 'gra90', type: 'number', headerName: 'gra90', width: 75, editable: true },
 		{
 			field: 'actions',
 			type: 'actions',

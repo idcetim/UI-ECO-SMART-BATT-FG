@@ -10,13 +10,13 @@ import {
 } from '@mui/x-data-grid';
 import {
     Button,
-    FormControl,
-    Select,
-    MenuItem,
     DialogTitle,
     Dialog,
     DialogActions,
-    TextField
+    TextField,
+    FormControl,
+    Select,
+    MenuItem
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
@@ -56,7 +56,7 @@ export const TablaOrdenesTrabajo = ({ ordenesTrabajo, errorLoadingOrdenesTrabajo
     const [deleteState, setDeleteState] = useState({
         idToDelete: null,
         modalOpen: false
-    })
+    })    
 
     useEffect(() => {
         getObjIdToProceso()
@@ -74,10 +74,14 @@ export const TablaOrdenesTrabajo = ({ ordenesTrabajo, errorLoadingOrdenesTrabajo
 
         let promise = new Promise((resolve, reject) => {
             fetch(`${ordenesTrabajoEndpoints.deleteOrdenTrabajo}?id=${id}`)
-                .then(result => {
+                .then(async(result) => {
                     if (result.ok) {
                         setRows(rows.filter((row) => row.id !== id))
                         resolve(result)
+                    }
+
+                    if ((await result.text()) == "Tiene descendientes") {
+                        alert('No se ha podido borrar la orden ya que hay productos asociados a ella')
                     }
 
                     reject(result)
@@ -212,10 +216,34 @@ export const TablaOrdenesTrabajo = ({ ordenesTrabajo, errorLoadingOrdenesTrabajo
         )
     }
 
+    const RenderEditProceso = props => {
+        const { id, value, field } = props
+        const apiRef = useGridApiContext()
+
+        const handleValueChange = event => {
+            console.log(event.target.value)
+            apiRef.current.setEditCellValue({ id, field, value: event.target.value })
+        }
+
+        return (
+            <FormControl fullWidth>
+                <Select 
+                    value={value} 
+                    multiple
+                    onChange={handleValueChange}
+                >
+                    {procesos.ids.map(proceso => {
+                        return <MenuItem value={proceso.id} key={proceso.id}>{procesos[proceso.id]}</MenuItem>
+                    })}
+                </Select>
+            </FormControl>
+        )
+    }
+
     const columns = [
         { field: 'codigo', headerName: 'Código', width: 130, editable: true },
         { field: 'fecha', headerName: 'Fecha', width: 130, editable: true, renderCell: RenderFecha, renderEditCell: RenderEditFecha },
-        { field: 'proceso', headerName: 'Proceso', flex: 1, editable: true, renderCell: RenderProceso },
+        { field: 'procesosIds', headerName: 'Proceso', flex: 1, editable: true, renderCell: RenderProceso, renderEditCell: RenderEditProceso },
         {
             field: 'actions',
             type: 'actions',

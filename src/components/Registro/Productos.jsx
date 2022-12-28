@@ -7,10 +7,9 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import Form from 'react-bootstrap/Form'
 import { selectListEndpoints, ordenesTrabajoEndpoints } from '../../api/endpoints'
-
 import '../../styles/global.css'
-import { gridDensityValueSelector } from '@mui/x-data-grid-pro'
 import toast, { Toaster } from 'react-hot-toast';
+import { validarProducto } from '../../helpers/validadores'
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -92,6 +91,14 @@ export const Productos = () => {
 	}
 
 	const guardarHandler = async () => {
+		let resultadoValidacion = validarProducto(inputs)
+
+		if (resultadoValidacion.errorValidacion) {
+			alert(resultadoValidacion.mensajeError)
+
+			throw new Error()
+		}
+
 		if (granulometriaFile) {
 			try {
 				const formData = new FormData();
@@ -267,15 +274,15 @@ export const Productos = () => {
 					</Grid>
 
 					<Grid item xs={2} sm={4} md={4}>
-						<TextField size="small" label="Granulometría 10" variant='outlined' value={inputs.gra10} onChange={ev => setInputs({ ...inputs, gra10: ev.target.value })} />
+						<TextField type="number" size="small" label="Granulometría 10" variant='outlined' value={inputs.gra10} onChange={ev => setInputs({ ...inputs, gra10: ev.target.value })} />
 					</Grid>
 
 					<Grid item xs={2} sm={4} md={4}>
-						<TextField size="small" label="Granulometría 50" variant='outlined' value={inputs.gra50} onChange={ev => setInputs({ ...inputs, gra50: ev.target.value })} />
+						<TextField type="number" size="small" label="Granulometría 50" variant='outlined' value={inputs.gra50} onChange={ev => setInputs({ ...inputs, gra50: ev.target.value })} />
 					</Grid>
 
 					<Grid item xs={2} sm={4} md={4}>
-						<TextField size="small" label="Granulometría 90" variant='outlined' value={inputs.gra90} onChange={ev => setInputs({ ...inputs, gra90: ev.target.value })} />
+						<TextField type="number" size="small" label="Granulometría 90" variant='outlined' value={inputs.gra90} onChange={ev => setInputs({ ...inputs, gra90: ev.target.value })} />
 					</Grid>
 
 					<Grid item xs={4} sm={8} md={12}>
@@ -293,23 +300,23 @@ export const Productos = () => {
 					</Grid>
 
 					<Grid item xs={2} sm={4} md={2}>
-						<TextField size="small" label="Al" variant='outlined' value={inputs.aluminio} onChange={ev => setInputs({ ...inputs, aluminio: ev.target.value })} />
+						<TextField type="number" size="small" label="Al" variant='outlined' value={inputs.aluminio} onChange={ev => setInputs({ ...inputs, aluminio: ev.target.value })} />
 					</Grid>
 
 					<Grid item xs={2} sm={4} md={2}>
-						<TextField size="small" label="Ca" variant='outlined' value={inputs.calcio} onChange={ev => setInputs({ ...inputs, calcio: ev.target.value })} />
+						<TextField type="number" size="small" label="Ca" variant='outlined' value={inputs.calcio} onChange={ev => setInputs({ ...inputs, calcio: ev.target.value })} />
 					</Grid>
 
 					<Grid item xs={2} sm={4} md={2}>
-						<TextField size="small" label="Fe" variant='outlined' value={inputs.hierro} onChange={ev => setInputs({ ...inputs, hierro: ev.target.value })} />
+						<TextField type="number" size="small" label="Fe" variant='outlined' value={inputs.hierro} onChange={ev => setInputs({ ...inputs, hierro: ev.target.value })} />
 					</Grid>
 
 					<Grid item xs={2} sm={4} md={2}>
-						<TextField size="small" label="Ti" variant="outlined" value={inputs.titanio} onChange={ev => setInputs({ ...inputs, titanio: ev.target.value })} />
+						<TextField type="number" size="small" label="Ti" variant="outlined" value={inputs.titanio} onChange={ev => setInputs({ ...inputs, titanio: ev.target.value })} />
 					</Grid>
 
 					<Grid item xs={2} sm={4} md={3}>
-						<TextField size="small" label="Total" variant="outlined" value={inputs.totalImpurezas} onChange={ev => setInputs({ ...inputs, totalImpurezas: ev.target.value })} />
+						<TextField type="number" size="small" label="Total" variant="outlined" value={inputs.totalImpurezas} onChange={ev => setInputs({ ...inputs, totalImpurezas: ev.target.value })} />
 					</Grid>
 
 					<Grid item xs={4} sm={8} md={12}>

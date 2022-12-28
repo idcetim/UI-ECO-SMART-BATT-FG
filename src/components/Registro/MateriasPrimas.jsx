@@ -9,12 +9,13 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import '../../styles/global.css'
 import { useEffect } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
+import { validarMateriasPrimas } from '../../helpers/validadores';
 
 export const MateriasPrimas = () => {
 	const [inputs, setInputs] = useState({
 		codigo: '',
 		fecha: null,
-		tamañoId: 1,
+		tamañoId: null,
 		calidadId: 1,
 		origenId: 1,
 		ubicacionId: 1,
@@ -60,6 +61,14 @@ export const MateriasPrimas = () => {
 	}, [])
 
 	const guardarHandler = async () => {
+		let resultadoValidacion = validarMateriasPrimas(inputs)
+
+		if (resultadoValidacion.errorValidacion) {
+			alert(resultadoValidacion.mensajeError)
+
+			throw new Error()
+		}
+
 		if (granulometriaFile) {
 			const formData = new FormData();
 			formData.append('file', granulometriaFile)
@@ -145,6 +154,8 @@ export const MateriasPrimas = () => {
 							<InputLabel id="demo-simple-select-label">Tamaño</InputLabel>
 
 							<Select size="small" label="Tamaño" value={inputs.tamañoId} onChange={ev => setInputs({ ...inputs, tamañoId: Number(ev.target.value) })} sx={{ width: '100%' }}>
+								<MenuItem value={null}></MenuItem>
+								
 								{tamaños.map(option => {
 									return <MenuItem value={option.id} key={option.id}>{option.nombre}</MenuItem>
 								})}

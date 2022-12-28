@@ -21,6 +21,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
+import { validarProducto } from '../../helpers/validadores'
 
 const isValidUrl = urlString => {
     try {
@@ -169,6 +170,14 @@ export const TablaProductos = ({ productos, errorLoadingProductos }) => {
 
     const processRowUpdate = async (newRow) => {
         const updatedRow = { ...newRow, isNew: false };
+
+        let resultadoValidacion = validarProducto(newRow)
+
+        if (resultadoValidacion.errorValidacion) {
+            alert(resultadoValidacion.mensajeError)
+
+            return
+        }
 
         let promise = new Promise((resolve, reject) => {
             fetch(productosEndpoints.updateProducto, {
@@ -339,22 +348,22 @@ export const TablaProductos = ({ productos, errorLoadingProductos }) => {
     const columns = [
         { field: 'codigoProducto', headerName: 'Código', width: 130, editable: true },
         { field: 'fecha', headerName: 'Fecha', width: 105, editable: true, renderCell: RenderFecha, renderEditCell: RenderEditFecha },
-        { field: 'cantidad', headerName: 'Cantidad (kg)', width: 105, type: 'string', editable: true },
+        { field: 'cantidad', type: 'number', headerName: 'Cantidad (kg)', width: 105, editable: true },
         { field: 'disponibilidad', headerName: 'Disponible (kg)', width: 110, editable: true },
         { field: 'calidadId', headerName: 'Calidad', width: 80, editable: true, renderCell: RenderTamaño, renderEditCell: RenderEditTamaño },
         { field: 'tamañoId', headerName: 'Tamaño', width: 80, editable: true, renderCell: RenderCalidad, renderEditCell: RenderEditCalidad },
         { field: 'ubicacionId', headerName: 'Ubicación', width: 100, editable: true, renderCell: RenderUbicacion, renderEditCell: RenderEditUbicacion },
-        { field: 'urlOrdenTrabajo', headerName: 'Orden trabajo', width: 100, editable: true },
-        { field: 'urlQuimico', headerName: 'Analisis', width: 110, editable: false, renderCell: RenderAnalisis },
-        { field: 'urlGranulometria', headerName: 'Granulometría', width: 110, editable: true, renderCell: RenderGranulometria },
-        { field: 'aluminio', headerName: 'Al', width: 50, editable: true },
-        { field: 'calcio', headerName: 'Ca', width: 50, editable: true },
-        { field: 'hierro', headerName: 'Fe', width: 50, editable: true },
-        { field: 'titanio', headerName: 'Ti', width: 50, editable: true },
-        { field: 'totalImpurezas', headerName: 'Total', width: 50, editable: true },
-        { field: 'gra10', headerName: 'gra10', width: 50, editable: true },
-        { field: 'gra50', headerName: 'gra50', width: 50, editable: true },
-        { field: 'gra90', headerName: 'gra90', width: 50, editable: true },
+        { field: 'ordenTrabajoUrl', headerName: 'Orden trabajo', width: 100, editable: true },
+        { field: 'quimicoUrl', headerName: 'Analisis', width: 110, editable: true, renderCell: RenderAnalisis },
+        { field: 'granulometriaUrl', headerName: 'Granulometría', width: 110, editable: true, renderCell: RenderGranulometria },
+        { field: 'aluminio', type: 'number', headerName: 'Al', width: 75, editable: true },
+        { field: 'calcio', type: 'number', headerName: 'Ca', width: 75, editable: true },
+        { field: 'hierro', type: 'number', headerName: 'Fe', width: 75, editable: true },
+        { field: 'titanio', type: 'number', headerName: 'Ti', width: 75, editable: true },
+        { field: 'totalImpurezas', type: 'number', headerName: 'Total', width: 75, editable: true },
+        { field: 'gra10', type: 'number', headerName: 'gra10', width: 75, editable: true },
+        { field: 'gra50', type: 'number', headerName: 'gra50', width: 75, editable: true },
+        { field: 'gra90', type: 'number', headerName: 'gra90', width: 75, editable: true },
         {
             field: 'actions',
             type: 'actions',
