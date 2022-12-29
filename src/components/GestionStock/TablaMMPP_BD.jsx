@@ -16,7 +16,16 @@ import { mmppEndpoints } from '../../api/endpoints'
 import { Box } from '@mui/system';
 import { getObjIdToCalidad, getObjIdToOrigen, getObjIdToTamaño, getObjIdToUbicacion } from '../../helpers/api';
 import '../../styles/stockTables.css'
-import { Button, FormControl, Select, MenuItem, DialogTitle, Dialog, DialogActions, TextField } from '@mui/material';
+import { 
+	Button, 
+	FormControl, 
+	Select, 
+	MenuItem, 
+	DialogTitle, 
+	Dialog, 
+	DialogActions, 
+	TextField 
+} from '@mui/material';
 import toast, { Toaster } from 'react-hot-toast';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
@@ -412,7 +421,7 @@ export const TablaMMPP_BD = ({ lotesBD, errorLoadingLotes }) => {
 		{ field: 'tamañoId', headerName: 'Tamaño', width: 80, editable: true, renderCell: RenderTamaño, renderEditCell: RenderEditTamaño },
 		{ field: 'calidadId', headerName: 'Calidad', width: 100, editable: true, renderCell: RenderCalidad, renderEditCell: RenderEditCalidad },
 		{ field: 'origenId', headerName: 'Origen', width: 100, editable: true, renderCell: RenderOrigen, renderEditCell: RenderEditOrigen },
-		{ field: 'ubicacionId', headerName: 'Ubicación', width: 100, editable: true, renderCell: RenderUbicacion, renderEditCell: RenderEditUbicacion },
+		{ field: 'ubicacionId', align: 'right', headerName: 'Ubicación', width: 100, editable: true, renderCell: RenderUbicacion, renderEditCell: RenderEditUbicacion },
 		{ field: 'cantidad', type: 'number',eaderName: 'Cantidad (kg)', width: 105, editable: true },
 		{ field: 'disponibilidad', type: 'number', headerName: 'Disponible (kg)', width: 110, editable: true },
 		{ field: 'urlAnalisis', headerName: 'Analisis', width: 100, editable: true, renderCell: RenderAnalisis },
@@ -519,6 +528,11 @@ export const TablaMMPP_BD = ({ lotesBD, errorLoadingLotes }) => {
 				initialState={{
 					pagination: {
 						pageSize: 10
+					},
+					filter: {
+						filterModel: {
+							items: [{ columnField: 'disponibilidad', operatorValue: '>', value: 0 }]
+						}
 					}
 				}}
 				loading={lotesBD == null}

@@ -31,10 +31,25 @@ export const productosEndpoints = {
 
 export const selectListEndpoints = {
     getCalidades: `${url}GetCalidades`,
+    addCalidad: `${url}AddCalidad`,
+    updateCalidad: `${url}UpdateCalidad`,
+    deleteCalidad: `${url}DeleteCalidad`,
     getSizes: `${url}GetSizes`,
+    addSize: `${url}AddSize`,
+    updateSize: `${url}UpdateSize`,
+    deleteSize: `${url}DeleteSize`,
     getProcesos: `${url}GetProcesos`,
+    addProceso: `${url}AddProceso`,
+    updateProceso: `${url}UpdateProceso`,
+    deleteProceso: `${url}DeleteProceso`,
     getOrigenes: `${url}GetOrigenes`,
-    getUbicaciones: `${url}GetUbicaciones`
+    addOrigen: `${url}AddOrigen`,
+    updateOrigen: `${url}UpdateOrigen`,
+    deleteOrigen: `${url}DeleteOrigen`,
+    getUbicaciones: `${url}GetUbicaciones`,
+    addUbicacion: `${url}AddUbicacion`,
+    updateUbicacion: `${url}UpdateUbicacion`,
+    deleteUbicacion: `${url}DeleteUbicacion`
 }
 
 export const entradas = `${url}entradas`;

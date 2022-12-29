@@ -5,24 +5,32 @@ import NavBar from "./routes/NavBar";
 import LeerLotes from "./routes/LeerLotes";
 import GestionStock from "./routes/GestionStock"
 import Registro from "./routes/Registro"
+import EditarTipos from "./routes/EditarTipos"
+import { QueryClient, QueryClientProvider } from "react-query";
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles/global.css'
 
+const queryClient = new QueryClient()
+
 function App() {
   return (
     < div >
-      <BrowserRouter >
-        <NavBar />
-        <Routes >
-          <Route path="/" element={< Home />} />
-          <Route path="/trazabilidad" element={< Trazabilidad />} />
-          <Route path="/gestionstock" element={< GestionStock />} />
-          <Route path="/leerlotes" element={< LeerLotes />} />
-          <Route path="/registro" element={< Registro />} />
-        </Routes>
-      </BrowserRouter>
+      <QueryClientProvider client={queryClient}>
+        <BrowserRouter >
+          <NavBar />
+          <Routes >
+            <Route path="/" element={< Home />} />
+            <Route path="/trazabilidad" element={< Trazabilidad />} />
+            <Route path="/gestionstock" element={< GestionStock />} />
+            <Route path="/leerlotes" element={< LeerLotes />} />
+            <Route path="/registro" element={< Registro />} />
+            <Route path="/EditarTipos" element={< EditarTipos />} />
+          </Routes>
+        </BrowserRouter>
+      </QueryClientProvider >
     </div>
+
   );
 }
 

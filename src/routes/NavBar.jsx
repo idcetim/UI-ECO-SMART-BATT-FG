@@ -108,15 +108,17 @@ const NavBar = () => {
 					</Box>
 
 					<Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-						<IconButton
-							size="large"
-							edge="end"
-							aria-label="account of current user"
-							aria-haspopup="true"
-							color="inherit"
-						>
-							<SettingsIcon />
-						</IconButton>
+						<Link to="EditarTipos">
+							<IconButton
+								size="large"
+								edge="end"
+								aria-label="account of current user"
+								aria-haspopup="true"
+								color="white"
+							>
+								<SettingsIcon />
+							</IconButton>
+						</Link>
 					</Box>
 
 					<Box sx={{ display: { xs: 'flex', md: 'none' } }}>
