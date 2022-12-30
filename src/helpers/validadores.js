@@ -70,10 +70,10 @@ const validarProducto = (producto) => {
         errorValidacion: false
     }
 
-    if (!producto.ordenesTrabajo || !producto.ordenesTrabajo.length || producto.ordenesTrabajo.length < 1) {
-        resultado.mensajeError += "Debe seleccionar al menos una orden de trabajo \n"
-        resultado.errorValidacion = true
-    }
+    // if (!producto.ordenesTrabajo || !producto.ordenesTrabajo.length || producto.ordenesTrabajo.length < 1) {
+    //     resultado.mensajeError += "Debe seleccionar al menos una orden de trabajo \n"
+    //     resultado.errorValidacion = true
+    // }
 
     if (!producto.codigoProducto || producto.codigoProducto == "") {
         resultado.mensajeError += "Debe introducir un codigo \n"
@@ -110,7 +110,7 @@ const validarProducto = (producto) => {
         resultado.errorValidacion = true
     }
 
-    if (!esPorcentaje(producto.total)) {
+    if (!esPorcentaje(producto.totalImpurezas)) {
         resultado.mensajeError += "El total debe ser un valor de porcentaje \n"
         resultado.errorValidacion = true
     }

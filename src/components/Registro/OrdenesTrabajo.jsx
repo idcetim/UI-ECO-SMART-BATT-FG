@@ -119,79 +119,6 @@ export const OrdenesTrabajo = () => {
         let text = []
 
         for (let i = 1; i <= inputs.numeroMateriasPrimas; i++) {
-            if (i == inputs.numeroMateriasPrimas) {
-                text.push(
-                    <>
-                        <Grid item xs={5}>
-                            <FormControl fullwidth>
-                                <InputLabel>MMPP</InputLabel>
-                                <Select
-                                    label="MMPP"
-                                    value={inputs.materiasPrimas[i - 1].id}
-                                    onChange={ev => {
-                                        let mmpp = inputs.materiasPrimas
-                                        mmpp[i - 1].id = ev.target.value
-
-                                        setInputs({
-                                            ...inputs,
-                                            materiasPrimas: mmpp
-                                        })
-                                    }}
-                                    sx={{ width: '100%' }}
-                                >
-                                    {materiasPrimas.map((materiaPrima) => {
-                                        return (
-                                            <MenuItem
-                                                key={materiaPrima.id}
-                                                value={materiaPrima.id}
-                                            >
-                                                {materiaPrima.codigo}
-                                            </MenuItem>
-                                        )
-                                    })}
-                                </Select>
-                            </FormControl>
-                        </Grid>
-
-                        <Grid item xs={5}>
-                            <TextField
-                                type="number"
-                                label={"cantidad"}
-                                value={inputs.materiasPrimas[i - 1].cantidadEntrada}
-                                onChange={ev => {
-                                    let mmpp = inputs.materiasPrimas
-
-                                    mmpp[i - 1].cantidadEntrada = ev.target.value
-
-                                    setInputs({
-                                        ...inputs,
-                                        materiasPrimas: mmpp
-                                    })
-                                }}
-                            />
-                        </Grid>
-
-                        <Grid item xs={2} alignContent="center" alignItems="center">
-                            <Add fontSize='large' onClick={() => {
-                                let mmpp = inputs.materiasPrimas
-                                mmpp.push({
-                                    id: 1,
-                                    cantidadEntrada: null
-                                })
-
-                                setInputs({
-                                    ...inputs,
-                                    numeroMateriasPrimas: inputs.numeroMateriasPrimas + 1,
-                                    materiasPrimas: mmpp
-                                })
-                            }} />
-                        </Grid>
-                    </>
-                )
-
-                continue
-            }
-
             text.push(
                 <>
                     <Grid item xs={6}>
@@ -244,6 +171,26 @@ export const OrdenesTrabajo = () => {
                     </Grid>
                 </>
             )
+
+            if (i == inputs.numeroMateriasPrimas) {
+                text.push(
+                    <Grid item xs={12} alignContent="center" alignItems="center">
+                        <Add fontSize='large' onClick={() => {
+                            let mmpp = inputs.materiasPrimas
+                            mmpp.push({
+                                id: 1,
+                                cantidadEntrada: null
+                            })
+
+                            setInputs({
+                                ...inputs,
+                                numeroMateriasPrimas: inputs.numeroMateriasPrimas + 1,
+                                materiasPrimas: mmpp
+                            })
+                        }} />
+                    </Grid>
+                )
+            }
         }
 
         return (
@@ -305,7 +252,7 @@ export const OrdenesTrabajo = () => {
 
                     <Grid item xs={2} sm={4} md={4}>
                         <Typography variant="h6">Materias primas:</Typography>
-                        <Paper variant="outlined" sx={{padding: '20px', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+                        <Paper variant="outlined" sx={{ padding: '20px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                             <SelectMMPP />
                         </Paper>
                     </Grid>
@@ -327,7 +274,16 @@ export const OrdenesTrabajo = () => {
                     <Grid item xs={2} sm={4} md={4}>
                         <FormControl fullWidth>
                             <InputLabel>Procesos</InputLabel>
-                            <Select label="procesos" size="small" value={inputs.procesosIds} multiple onChange={ev => { setInputs({ ...inputs, procesosIds: ev.target.value }) }} sx={{ width: '100%' }}>
+                            <Select
+                                label="procesos"
+                                size="small"
+                                value={inputs.procesosIds}
+                                multiple
+                                onChange={ev => { setInputs({ ...inputs, procesosIds: ev.target.value }) }}
+                                sx={{
+                                    width: '600px',
+                                    maxWidth: '90%'
+                                }}>
                                 {procesos.map(proceso => {
                                     return <MenuItem value={proceso.id} key={proceso.id}>{proceso.nombre}</MenuItem>
                                 })}

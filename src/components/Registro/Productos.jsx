@@ -26,21 +26,22 @@ export const Productos = () => {
 	//se pone tamañoId 1 para que seleccione el primer elemento del combo
 	const [inputs, setInputs] = useState({
 		codigoProducto: '',
-		ordenesTrabajo: [],
+		// ordenesTrabajo: [],
+		ordenTrabajoId: 1,
 		fecha: null,
 		cantidad: '',
 		tamañoId: 1,
 		ubicacionId: 1,
 		calidadId: 1,
-		gra10: '',
-		gra50: '',
-		gra90: '',
+		gra10: null,
+		gra50: null,
+		gra90: null,
 		granulometriaUrl: '',
-		aluminio: '',
-		calcio: '',
-		hierro: '',
-		titanio: '',
-		total: '',
+		aluminio: null,
+		calcio: null,
+		hierro: null,
+		titanio: null,
+		totalImpurezas: null,
 		quimicoUrl: ''
 	})
 
@@ -182,8 +183,8 @@ export const Productos = () => {
 
 					<Grid item xs={2} sm={4} md={4}>
 						<FormControl sx={{ width: '100%' }}>
-							<InputLabel id="demo-multiple-chip-label">Ordenes trabajo</InputLabel>
-							<Select
+							{/* <InputLabel id="demo-multiple-chip-label">Ordenes trabajo</InputLabel> */}
+							{/* <Select
 								labelId="demo-multiple-chip-label"
 								id="demo-multiple-chip"
 								multiple
@@ -204,6 +205,22 @@ export const Productos = () => {
 										key={ordenTrabajo.id}
 										value={ordenTrabajo.id}
 									// style={getStyles(name, inputs.materiasPrimas, theme)}
+									>
+										{ordenTrabajo.codigo}
+									</MenuItem>
+								))}
+							</Select> */}
+
+							<InputLabel>Orden trabajo</InputLabel>
+							<Select
+								label="Orden trabajo"
+								value={inputs.OrdenTrabajoId}
+								onChange={ev => setInputs({...inputs, ordenTrabajoId: ev.target.value})}
+							>
+								{ordenesTrabajo.map((ordenTrabajo) => (
+									<MenuItem
+										key={ordenTrabajo.id}
+										value={ordenTrabajo.id}
 									>
 										{ordenTrabajo.codigo}
 									</MenuItem>
