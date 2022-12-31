@@ -28,6 +28,7 @@ import { mmppEndpoints, ordenesTrabajoEndpoints, registroEndpoints, selectListEn
 import { useEffect } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { Add } from '@mui/icons-material'
+import { validarOrdenTrabajo } from '../../helpers/validadores';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -51,7 +52,13 @@ const MenuProps = {
 
 //no se puede hacer try catch ya que si no el toaster no funciona
 const guardarHandler = async (orden) => {
-    console.log(orden)
+    let resultadoValidacion = validarOrdenTrabajo(orden)
+    
+    if (resultadoValidacion.errorValidacion) {
+        alert(resultadoValidacion.mensajeError)
+
+        throw new Error()
+    }
 
     let response = await fetch(registroEndpoints.orden, {
         method: "POST",

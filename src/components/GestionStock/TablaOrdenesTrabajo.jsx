@@ -30,6 +30,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
+import { validarOrdenTrabajo } from '../../helpers/validadores';
 
 const isValidUrl = urlString => {
     try {
@@ -57,6 +58,8 @@ export const TablaOrdenesTrabajo = ({ ordenesTrabajo, errorLoadingOrdenesTrabajo
         idToDelete: null,
         modalOpen: false
     })    
+
+    console.log(rows)
 
     useEffect(() => {
         getObjIdToProceso()
@@ -140,6 +143,14 @@ export const TablaOrdenesTrabajo = ({ ordenesTrabajo, errorLoadingOrdenesTrabajo
     const processRowUpdate = async (newRow) => {
         const updatedRow = { ...newRow, isNew: false };
 
+        let resultadoValidacion = validarOrdenTrabajo(newRow)
+
+        if (resultadoValidacion.errorValidacion) {
+            alert(resultadoValidacion.errorValidacion)
+
+            return
+        }
+
         let promise = new Promise((resolve, reject) => {
             fetch(ordenesTrabajoEndpoints.updateOrdenTrabajo, {
                 method: 'POST',
@@ -207,6 +218,8 @@ export const TablaOrdenesTrabajo = ({ ordenesTrabajo, errorLoadingOrdenesTrabajo
     }
 
     const RenderProceso = (props) => {
+        console.log(props.row)
+
         let procesosTexto = props.row.procesosIds.map(element => {
             return procesos[element]
         }).join(', ')
