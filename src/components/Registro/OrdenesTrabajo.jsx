@@ -41,19 +41,9 @@ const MenuProps = {
     },
 };
 
-// function getStyles(name, materiasPrimas, theme) {
-//     return {
-//         fontWeight:
-//             materiasPrimas.indexOf(name) === -1
-//                 ? theme.typography.fontWeightRegular
-//                 : theme.typography.fontWeightMedium,
-//     };
-// }
-
-//no se puede hacer try catch ya que si no el toaster no funciona
 const guardarHandler = async (orden) => {
     let resultadoValidacion = validarOrdenTrabajo(orden)
-    
+
     if (resultadoValidacion.errorValidacion) {
         alert(resultadoValidacion.mensajeError)
 
@@ -83,7 +73,8 @@ export const OrdenesTrabajo = () => {
             id: 1,
             cantidadEntrada: null
         }],
-        numeroMateriasPrimas: 1
+        numeroMateriasPrimas: 1,
+        prueba: ""
     })
     const [materiasPrimas, setMateriasPrimas] = useState([])
     const [procesos, setProcesos] = useState([])
@@ -122,127 +113,6 @@ export const OrdenesTrabajo = () => {
             .then(json => setProcesos(json))
     }, [])
 
-    const CuadrosTextoMMPP = () => {
-        let text = []
-
-        for (let i = 1; i <= inputs.numeroMateriasPrimas; i++) {
-            text.push(
-                <>
-                    <Grid item xs={6}>
-                        <FormControl fullWidth>
-                            <InputLabel>MMPP</InputLabel>
-
-                            <Select
-                                label="MMPP"
-                                value={inputs.materiasPrimas[i - 1].id}
-                                onChange={ev => {
-                                    let mmpp = inputs.materiasPrimas
-                                    mmpp[i - 1].id = ev.target.value
-
-                                    setInputs({
-                                        ...inputs,
-                                        materiasPrimas: mmpp
-                                    })
-                                }}
-                                sx={{ width: '100%' }}
-                            >
-                                {materiasPrimas.map((materiaPrima) => {
-                                    return (
-                                        <MenuItem
-                                            key={materiaPrima.id}
-                                            value={materiaPrima.id}
-                                        >
-                                            {materiaPrima.codigo}
-                                        </MenuItem>
-                                    )
-                                })}
-                            </Select>
-                        </FormControl>
-                    </Grid>
-
-                    <Grid item xs={4}>
-                        <TextField
-                            label="cantidad"
-                            type="number"
-                            value={inputs.materiasPrimas[i - 1].cantidadEntrada}
-                            onChange={ev => {
-                                let mmpp = inputs.materiasPrimas
-
-                                mmpp[i - 1].cantidadEntrada = ev.target.value
-
-                                setInputs({
-                                    ...inputs,
-                                    materiasPrimas: mmpp
-                                })
-                            }} />
-                    </Grid>
-                </>
-            )
-
-            if (i == inputs.numeroMateriasPrimas) {
-                text.push(
-                    <Grid item xs={12} alignContent="center" alignItems="center">
-                        <Add fontSize='large' onClick={() => {
-                            let mmpp = inputs.materiasPrimas
-                            mmpp.push({
-                                id: 1,
-                                cantidadEntrada: null
-                            })
-
-                            setInputs({
-                                ...inputs,
-                                numeroMateriasPrimas: inputs.numeroMateriasPrimas + 1,
-                                materiasPrimas: mmpp
-                            })
-                        }} />
-                    </Grid>
-                )
-            }
-        }
-
-        return (
-            <Grid container spacing={2}>
-                {text}
-            </Grid>
-        )
-    }
-
-    const SelectMMPP = () => {
-        return (
-            <FormControl sx={{ width: 300 }}>
-                {/* <InputLabel id="demo-multiple-chip-label">MMPP</InputLabel>
-                <Select
-                    labelId="demo-multiple-chip-label"
-                    id="demo-multiple-chip"
-                    multiple
-                    value={inputs.materiasPrimas}
-                    onChange={handleChangeMMPP}
-                    input={<OutlinedInput id="select-multiple-chip" label="MMPP" />}
-                    renderValue={(selected) => (
-                        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                            {selected.map((value) => (
-                                <Chip key={value} label={materiasPrimas[value - 1].codigo} />
-                            ))}
-                        </Box>
-                    )}
-                    MenuProps={MenuProps}
-                >
-                    {materiasPrimas.map((materiaPrima) => (
-                        <MenuItem
-                            key={materiaPrima.id}
-                            value={materiaPrima.id}
-                        style={getStyles(name, inputs.materiasPrimas, theme)}
-                        >
-                            {materiaPrima.codigo}
-                        </MenuItem>
-                    ))}
-                </Select> */}
-
-                <CuadrosTextoMMPP />
-            </FormControl>
-        )
-    }
-
     return (
         <div style={{ display: 'flex', justifyContent: 'center' }}>
             <Toaster />
@@ -260,7 +130,85 @@ export const OrdenesTrabajo = () => {
                     <Grid item xs={2} sm={4} md={4}>
                         <Typography variant="h6">Materias primas:</Typography>
                         <Paper variant="outlined" sx={{ padding: '20px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                            <SelectMMPP />
+                            {/* <SelectMMPP /> */}
+                            <FormControl sx={{ width: "100%" }}>
+                                <Grid container spacing={2}>
+                                    {Array.from({ length: inputs.numeroMateriasPrimas }, (_, i) => i + 1).map(i => {
+                                        return (
+                                            <>
+                                                <Grid item xs={6}>
+                                                    <FormControl fullWidth>
+                                                        <InputLabel>MMPP</InputLabel>
+
+                                                        <Select
+                                                            label="MMPP"
+                                                            value={inputs.materiasPrimas[i - 1].id}
+                                                            onChange={ev => {
+                                                                let mmpp = inputs.materiasPrimas
+                                                                mmpp[i - 1].id = ev.target.value
+
+                                                                setInputs({
+                                                                    ...inputs,
+                                                                    materiasPrimas: mmpp
+                                                                })
+                                                            }}
+                                                            sx={{ width: '100%' }}
+                                                        >
+                                                            {materiasPrimas.map((materiaPrima) => {
+                                                                return (
+                                                                    <MenuItem
+                                                                        key={materiaPrima.id}
+                                                                        value={materiaPrima.id}
+                                                                    >
+                                                                        {materiaPrima.codigo}
+                                                                    </MenuItem>
+                                                                )
+                                                            })}
+                                                        </Select>
+                                                    </FormControl>
+                                                </Grid>
+
+                                                <Grid item xs={6}>
+                                                    <FormControl fullWidth>
+                                                        <TextField
+                                                            label="cantidad"
+                                                            type="number"
+                                                            value={inputs.materiasPrimas[i - 1].cantidadEntrada}
+                                                            onChange={ev => {
+                                                                let mmpp = inputs.materiasPrimas
+
+                                                                mmpp[i - 1].cantidadEntrada = ev.target.value
+
+                                                                setInputs({
+                                                                    ...inputs,
+                                                                    materiasPrimas: mmpp
+                                                                })
+                                                            }} />
+                                                    </FormControl>
+                                                </Grid>
+                                            </>
+                                        )
+                                    })}
+
+                                    <Grid item xs={12}>
+                                        <div style={{ display: 'flex', justifyContent: 'center' }}>
+                                            <Add fontSize='large' sx={{cursor: 'pointer'}} onClick={() => {
+                                                let mmpp = inputs.materiasPrimas
+                                                mmpp.push({
+                                                    id: 1,
+                                                    cantidadEntrada: null
+                                                })
+
+                                                setInputs({
+                                                    ...inputs,
+                                                    numeroMateriasPrimas: inputs.numeroMateriasPrimas + 1,
+                                                    materiasPrimas: mmpp
+                                                })
+                                            }} />
+                                        </div>
+                                    </Grid>
+                                </Grid>
+                            </FormControl>
                         </Paper>
                     </Grid>
 
