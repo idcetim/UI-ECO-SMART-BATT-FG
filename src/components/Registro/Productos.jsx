@@ -29,7 +29,7 @@ export const Productos = () => {
 		// ordenesTrabajo: [],
 		ordenTrabajoId: 1,
 		fecha: null,
-		cantidad: '',
+		cantidad: null,
 		tamañoId: 1,
 		ubicacionId: 1,
 		calidadId: 1,
@@ -259,7 +259,14 @@ export const Productos = () => {
 					</Grid>
 
 					<Grid item xs={2} sm={4} md={4}>
-						<TextField size="small" label="Cantidad (kg)" variant='outlined' value={inputs.cantidad} onChange={ev => setInputs({ ...inputs, cantidad: ev.target.value })} />
+						<TextField 
+							size="small" 
+							type="number"
+							label="Cantidad (kg)" 
+							variant='outlined' 
+							value={inputs.cantidad} 
+							onChange={ev => setInputs({ ...inputs, cantidad: ev.target.value })} 
+						/>
 					</Grid>
 
 					<Grid item xs={2} sm={4} md={4}>

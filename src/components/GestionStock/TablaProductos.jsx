@@ -1,18 +1,18 @@
 import { useState, useEffect } from 'react'
-import { 
-    GridRowModes, 
-    DataGrid, 
-    GridActionsCellItem, 
-    GridToolbarContainer, 
-    GridToolbarExport, 
-    GridToolbarFilterButton, 
-    useGridApiContext 
+import {
+    GridRowModes,
+    DataGrid,
+    GridActionsCellItem,
+    GridToolbarContainer,
+    GridToolbarExport,
+    GridToolbarFilterButton,
+    useGridApiContext
 } from '@mui/x-data-grid';
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
 import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Cancel'
-import { productosEndpoints } from '../../api/endpoints'
+import { productosEndpoints, ordenesTrabajoEndpoints } from '../../api/endpoints'
 import { Box } from '@mui/system';
 import { Button, FormControl, Select, MenuItem, DialogTitle, Dialog, DialogActions, TextField } from '@mui/material';
 import { getObjIdToCalidad, getObjIdToTamaño, getObjIdToUbicacion } from '../../helpers/api';
@@ -81,6 +81,7 @@ export const TablaProductos = ({ productos, errorLoadingProductos }) => {
     const [tamaños, setTamaños] = useState({})
     const [calidades, setCalidades] = useState({})
     const [ubicaciones, setUbicaciones] = useState({})
+    const [ordenesTrabajo, setOrdenesTrabajo] = useState([])
     const [deleteState, setDeleteState] = useState({
         idToDelete: null,
         modalOpen: false
@@ -95,6 +96,10 @@ export const TablaProductos = ({ productos, errorLoadingProductos }) => {
 
         getObjIdToUbicacion()
             .then(obj => setUbicaciones(obj))
+
+        fetch(ordenesTrabajoEndpoints.getOrdenesTrabajo)
+            .then(response => response.json())
+            .then(json => setOrdenesTrabajo(json))
     }, [])
 
     useEffect(() => {
@@ -102,6 +107,16 @@ export const TablaProductos = ({ productos, errorLoadingProductos }) => {
             setRows(productos)
         }
     }, [productos])
+
+    const getOrdenesTrabajoMapping = () => {
+        let mapping = {}
+
+        for (let orden of ordenesTrabajo) {
+            mapping[orden.id] = orden
+        }
+
+        return mapping
+    }
 
     const deleteProducto = (id) => {
         setDeleteState({ ...deleteState, modalOpen: false })
@@ -329,8 +344,6 @@ export const TablaProductos = ({ productos, errorLoadingProductos }) => {
         return (
             <FormControl fullWidth>
                 <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
                     value={value}
                     onChange={handleValueChange}
                     sx={{ boxShadow: 'none', "& fieldset": { border: 'none' }, }}
@@ -345,8 +358,47 @@ export const TablaProductos = ({ productos, errorLoadingProductos }) => {
         )
     }
 
+    const RenderOrdenTrabajo = (props) => {
+        if (getOrdenesTrabajoMapping()[props.row.ordenTrabajoId]) {
+            return <div>{getOrdenesTrabajoMapping()[props.row.ordenTrabajoId].codigo}</div>
+        }
+        return null
+    } 
+
+    const RenderEditOrdenTrabajo = (props) => {
+        const { id, value, field } = props
+        const apiRef = useGridApiContext()
+
+        const handleValueChange = (event) => {
+            const newValue = event.target.value
+            apiRef.current.setEditCellValue({ id, field, value: newValue })
+        }
+
+        return (
+            <FormControl fullWidth>
+                <Select
+                    value={value}
+                    onChange={handleValueChange}
+                    sx={{ boxShadow: 'none', "& fieldset": { border: 'none' }, }}
+                >
+                    {ordenesTrabajo.map((ordenTrabajo) => {
+                        return (
+                            <MenuItem   
+                            key={ordenTrabajo.id}
+                            value={ordenTrabajo.id}
+                        >
+                            {ordenTrabajo.codigo}
+                        </MenuItem>
+                        )
+                    })}
+                </Select>
+            </FormControl>
+        )
+    }
+
     const columns = [
         { field: 'codigoProducto', headerName: 'Código', width: 130, editable: true },
+        { field: 'ordenTrabajoId', headerName: 'Orden trabajo', width: 200, editable: true, renderCell: RenderOrdenTrabajo, renderEditCell: RenderEditOrdenTrabajo },
         { field: 'fecha', headerName: 'Fecha', width: 105, editable: true, renderCell: RenderFecha, renderEditCell: RenderEditFecha },
         { field: 'cantidad', type: 'number', headerName: 'Cantidad (kg)', width: 105, editable: true },
         { field: 'disponibilidad', headerName: 'Disponible (kg)', width: 110, editable: true },
