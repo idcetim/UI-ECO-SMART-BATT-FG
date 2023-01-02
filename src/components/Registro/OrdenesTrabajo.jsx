@@ -21,7 +21,8 @@ import {
     FormControlLabel,
     Radio,
     Item,
-    Paper
+    Paper,
+    Tooltip
 } from '@mui/material'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { mmppEndpoints, ordenesTrabajoEndpoints, registroEndpoints, selectListEndpoints } from '../../api/endpoints';
@@ -41,29 +42,6 @@ const MenuProps = {
     },
 };
 
-const guardarHandler = async (orden) => {
-    let resultadoValidacion = validarOrdenTrabajo(orden)
-
-    if (resultadoValidacion.errorValidacion) {
-        alert(resultadoValidacion.mensajeError)
-
-        throw new Error()
-    }
-
-    let response = await fetch(registroEndpoints.orden, {
-        method: "POST",
-        headers: {
-            'Accept': 'application/json',
-            'Access-Control-Allow-Origin': '*',
-        },
-        body: JSON.stringify(orden),
-    })
-
-    if (!response.ok) {
-        throw new Error(await response.text)
-    }
-}
-
 export const OrdenesTrabajo = () => {
     const [inputs, setInputs] = useState({
         codigo: "",
@@ -79,7 +57,61 @@ export const OrdenesTrabajo = () => {
     const [materiasPrimas, setMateriasPrimas] = useState([])
     const [procesos, setProcesos] = useState([])
 
+    // useEffect(() => {
+    //     console.log(materiasPrimas.length)
+    //     console.log(!inputs.materiasPrimas[0].id)
+    //     consoel.log(inputs.materiasPrimas.length == 1)
+
+    //     if (materiasPrimas.length > 0 && !inputs.materiasPrimas[0].id && inputs.materiasPrimas.length == 1) {
+    //         setInputs({...inputs, materiasPrimas: [{id: materiasPrimas[0].id}]})
+    //     }
+    // }, [materiasPrimas])
+
     const theme = useTheme()
+
+    const getMMPPMapping = () => {
+        let mapping = {}
+
+        for (let mmpp of materiasPrimas) {
+            mapping[mmpp.id] = mmpp
+        }
+
+        return mapping
+    }
+
+    const guardarHandler = async (orden) => {
+        let resultadoValidacion = validarOrdenTrabajo(orden)
+
+        let objMateriasPrimas = getMMPPMapping()
+
+        for (let mmpp of inputs.materiasPrimas) {
+            if (mmpp.cantidadEntrada > objMateriasPrimas[mmpp.id].disponibilidad) {
+                resultadoValidacion.mensajeError += "La materia prima seleccionada no tiene suficientes existencias disponibles para satisfacer la cantidad indicada \n"
+                resultadoValidacion.errorValidacion = true
+
+                break
+            }
+        }
+
+        if (resultadoValidacion.errorValidacion) {
+            alert(resultadoValidacion.mensajeError)
+
+            throw new Error()
+        }
+
+        let response = await fetch(registroEndpoints.orden, {
+            method: "POST",
+            headers: {
+                'Accept': 'application/json',
+                'Access-Control-Allow-Origin': '*',
+            },
+            body: JSON.stringify(orden),
+        })
+
+        if (!response.ok) {
+            throw new Error(await response.text)
+        }
+    }
 
     const handleChangeMMPP = (event) => {
         const {
@@ -155,14 +187,18 @@ export const OrdenesTrabajo = () => {
                                                             sx={{ width: '100%' }}
                                                         >
                                                             {materiasPrimas.map((materiaPrima) => {
-                                                                return (
-                                                                    <MenuItem
-                                                                        key={materiaPrima.id}
-                                                                        value={materiaPrima.id}
-                                                                    >
-                                                                        {materiaPrima.codigo}
-                                                                    </MenuItem>
-                                                                )
+                                                                if (materiaPrima.disponibilidad > 0.01) {
+                                                                    return (
+                                                                        <MenuItem
+                                                                            key={materiaPrima.id}
+                                                                            value={materiaPrima.id}
+                                                                        >
+                                                                            {materiaPrima.codigo}
+                                                                        </MenuItem>
+                                                                    )
+                                                                }
+
+                                                                return null
                                                             })}
                                                         </Select>
                                                     </FormControl>
@@ -192,19 +228,21 @@ export const OrdenesTrabajo = () => {
 
                                     <Grid item xs={12}>
                                         <div style={{ display: 'flex', justifyContent: 'center' }}>
-                                            <Add fontSize='large' sx={{cursor: 'pointer'}} onClick={() => {
-                                                let mmpp = inputs.materiasPrimas
-                                                mmpp.push({
-                                                    id: 1,
-                                                    cantidadEntrada: null
-                                                })
+                                            <Tooltip title="Añadir otra materia prima">
+                                                <Add fontSize='large' sx={{ cursor: 'pointer' }} onClick={() => {
+                                                    let mmpp = inputs.materiasPrimas
+                                                    mmpp.push({
+                                                        id: 1,
+                                                        cantidadEntrada: null
+                                                    })
 
-                                                setInputs({
-                                                    ...inputs,
-                                                    numeroMateriasPrimas: inputs.numeroMateriasPrimas + 1,
-                                                    materiasPrimas: mmpp
-                                                })
-                                            }} />
+                                                    setInputs({
+                                                        ...inputs,
+                                                        numeroMateriasPrimas: inputs.numeroMateriasPrimas + 1,
+                                                        materiasPrimas: mmpp
+                                                    })
+                                                }} />
+                                            </Tooltip>
                                         </div>
                                     </Grid>
                                 </Grid>

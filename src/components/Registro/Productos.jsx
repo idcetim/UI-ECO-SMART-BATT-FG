@@ -94,6 +94,13 @@ export const Productos = () => {
 	const guardarHandler = async () => {
 		let resultadoValidacion = validarProducto(inputs)
 
+		let ordenTrabajo = getOrdenesTrabajoMapping()[inputs.ordenTrabajoId]
+
+		if (inputs.cantidad > (ordenTrabajo.cantidadMaterias - ordenTrabajo.cantidadProductos)) {
+			resultadoValidacion.mensajeError += "La orden seleccionada no tiene suficientes existencias para satisfacer la cantidad indicada \n"
+			resultadoValidacion.errorValidacion = true
+		}
+
 		if (resultadoValidacion.errorValidacion) {
 			alert(resultadoValidacion.mensajeError)
 
@@ -215,16 +222,22 @@ export const Productos = () => {
 							<Select
 								label="Orden trabajo"
 								value={inputs.OrdenTrabajoId}
-								onChange={ev => setInputs({...inputs, ordenTrabajoId: ev.target.value})}
+								onChange={ev => setInputs({ ...inputs, ordenTrabajoId: ev.target.value })}
 							>
-								{ordenesTrabajo.map((ordenTrabajo) => (
-									<MenuItem
-										key={ordenTrabajo.id}
-										value={ordenTrabajo.id}
-									>
-										{ordenTrabajo.codigo}
-									</MenuItem>
-								))}
+								{ordenesTrabajo.map((ordenTrabajo) => {
+									if ((ordenTrabajo.cantidadMaterias - ordenTrabajo.cantidadProductos) > 0.01) {
+										return (
+											<MenuItem
+												key={ordenTrabajo.id}
+												value={ordenTrabajo.id}
+											>
+												{ordenTrabajo.codigo}
+											</MenuItem>
+										)
+									}
+
+									return null
+								})}
 							</Select>
 						</FormControl>
 					</Grid>
@@ -259,13 +272,13 @@ export const Productos = () => {
 					</Grid>
 
 					<Grid item xs={2} sm={4} md={4}>
-						<TextField 
-							size="small" 
+						<TextField
+							size="small"
 							type="number"
-							label="Cantidad (kg)" 
-							variant='outlined' 
-							value={inputs.cantidad} 
-							onChange={ev => setInputs({ ...inputs, cantidad: ev.target.value })} 
+							label="Cantidad (kg)"
+							variant='outlined'
+							value={inputs.cantidad}
+							onChange={ev => setInputs({ ...inputs, cantidad: ev.target.value })}
 						/>
 					</Grid>
 

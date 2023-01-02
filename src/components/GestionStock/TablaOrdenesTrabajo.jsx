@@ -59,8 +59,6 @@ export const TablaOrdenesTrabajo = ({ ordenesTrabajo, errorLoadingOrdenesTrabajo
         modalOpen: false
     })    
 
-    console.log(rows)
-
     useEffect(() => {
         getObjIdToProceso()
             .then(obj => setProcesos(obj))
@@ -217,16 +215,18 @@ export const TablaOrdenesTrabajo = ({ ordenesTrabajo, errorLoadingOrdenesTrabajo
         )
     }
 
-    const RenderProceso = (props) => {
-        console.log(props.row)
+    const RenderProceso = (props) => {  
+        if (props.row.procesosIds) {
+            let procesosTexto = props.row.procesosIds.map(element => {
+                return procesos[element]
+            }).join(', ')
+    
+            return (
+                <div>{procesosTexto}</div>
+            )
+        }
 
-        let procesosTexto = props.row.procesosIds.map(element => {
-            return procesos[element]
-        }).join(', ')
-
-        return (
-            <div>{procesosTexto}</div>
-        )
+        return null
     }
 
     const RenderEditProceso = props => {
@@ -253,9 +253,23 @@ export const TablaOrdenesTrabajo = ({ ordenesTrabajo, errorLoadingOrdenesTrabajo
         )
     }
 
+
     const columns = [
         { field: 'codigo', headerName: 'Código', width: 130, editable: true },
         { field: 'fecha', headerName: 'Fecha', width: 130, editable: true, renderCell: RenderFecha, renderEditCell: RenderEditFecha },
+        { field: 'cantidadMaterias', headerName: 'Cantidad', width: 130, editable: false, valueFormatter: (params) => {
+            if (!isNaN(params.value)) {
+                return parseFloat(params.value.toFixed(2)).toString()
+            }
+
+            return ''
+        }},
+        // { field: 'cantidadProductos', headerName: 'Perdidas', type: "number", width: 130, editable: false, renderCell: RenderPerdidas },
+        { field: 'perdidasODisponible', headerName: 'Perdidas/Disponible', type: "number", width: 130, editable: false, valueFormatter: (params) => {
+            if (!isNaN(params.value)) {
+                return parseFloat(params.value.toFixed(2)).toString()
+            }
+        }},
         { field: 'procesosIds', headerName: 'Proceso', flex: 1, editable: true, renderCell: RenderProceso, renderEditCell: RenderEditProceso },
         {
             field: 'actions',
@@ -351,7 +365,12 @@ export const TablaOrdenesTrabajo = ({ ordenesTrabajo, errorLoadingOrdenesTrabajo
                 initialState={{
                     pagination: {
                         pageSize: 10
-                    }
+                    },
+                    // filter: {
+                    //     filterModel: {
+                    //         items: [{ columnField: 'perdidasODisponible', operadorValue: '>', value: 0.01 }]
+                    //     }
+                    // }
                 }}
                 loading={ordenesTrabajo == null}
                 error={errorLoadingOrdenesTrabajo === true ? true : undefined}

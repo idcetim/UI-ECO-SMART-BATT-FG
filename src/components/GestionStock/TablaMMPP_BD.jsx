@@ -422,8 +422,20 @@ export const TablaMMPP_BD = ({ lotesBD, errorLoadingLotes }) => {
 		{ field: 'calidadId', headerName: 'Calidad', width: 100, editable: true, renderCell: RenderCalidad, renderEditCell: RenderEditCalidad },
 		{ field: 'origenId', headerName: 'Origen', width: 100, editable: true, renderCell: RenderOrigen, renderEditCell: RenderEditOrigen },
 		{ field: 'ubicacionId', align: 'right', headerName: 'Ubicación', width: 100, editable: true, renderCell: RenderUbicacion, renderEditCell: RenderEditUbicacion },
-		{ field: 'cantidad', type: 'number',eaderName: 'Cantidad (kg)', width: 105, editable: true },
-		{ field: 'disponibilidad', type: 'number', headerName: 'Disponible (kg)', width: 110, editable: true },
+		{ field: 'cantidad', type: 'number', headerName: 'Cantidad (kg)', width: 120, editable: true, valueFormatter: (params) => {
+			if (!isNaN(params.value)) {
+				return parseFloat(params.value.toFixed(2)).toString()
+			}
+
+			return ''
+		} },
+		{ field: 'disponibilidad', type: 'number', headerName: 'Disponible (kg)', width: 120, editable: false, valueFormatter: (params) => {
+			if (!isNaN(params.value)) {
+				return parseFloat(params.value.toFixed(2)).toString()
+			}
+
+			return ''
+		}},
 		{ field: 'urlAnalisis', headerName: 'Analisis', width: 100, editable: true, renderCell: RenderAnalisis },
 		{ field: 'urlGranulometria', headerName: 'Granulometría', width: 110, editable: true, renderCell: RenderGranulometria },
 		{ field: 'aluminio', type: 'number', headerName: 'Al', width: 75, editable: true },
@@ -531,7 +543,7 @@ export const TablaMMPP_BD = ({ lotesBD, errorLoadingLotes }) => {
 					},
 					filter: {
 						filterModel: {
-							items: [{ columnField: 'disponibilidad', operatorValue: '>', value: 0 }]
+							items: [{ columnField: 'disponibilidad', operatorValue: '>', value: 0.01 }]
 						}
 					}
 				}}
