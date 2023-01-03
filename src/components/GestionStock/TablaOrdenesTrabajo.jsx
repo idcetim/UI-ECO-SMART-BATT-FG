@@ -70,6 +70,18 @@ export const TablaOrdenesTrabajo = ({ ordenesTrabajo, errorLoadingOrdenesTrabajo
         }
     }, [ordenesTrabajo])
 
+    const getCodigoOrdenTrabajo = (id) => {
+        if (ordenesTrabajo) {
+            for (let orden of ordenesTrabajo) {
+                if (orden.id == id) {
+                    return orden.codigo
+                }
+            }
+        }
+
+        return null
+    }
+
     const deleteOrdenTrabajo = id => {
         setDeleteState({ ...deleteState, modalOpen: false })
 
@@ -340,7 +352,7 @@ export const TablaOrdenesTrabajo = ({ ordenesTrabajo, errorLoadingOrdenesTrabajo
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >
-                <DialogTitle>Se va a efectuar el borrado de la orden con id {deleteState.idToDelete}. ¿Quieres continuar?</DialogTitle>
+                <DialogTitle>Se va a efectuar el borrado de la orden {getCodigoOrdenTrabajo(deleteState.idToDelete)}. ¿Quieres continuar?</DialogTitle>
                 <DialogActions>
                     <Button onClick={() => setDeleteState({ ...deleteState, modalOpen: false })}>Cancelar</Button>
                     <Button onClick={() => deleteOrdenTrabajo(deleteState.idToDelete)} autoFocus>Aceptar</Button>

@@ -117,6 +117,18 @@ export const TablaProductos = ({ productos, errorLoadingProductos }) => {
 
         return mapping
     }
+    
+    const getCodigoProducto = id => {
+        if (productos) {
+            for (let producto of productos) {
+                if (id === producto.id) {
+                    return producto.codigoProducto
+                }
+            }
+        }
+
+        return null
+    }
 
     const deleteProducto = (id) => {
         setDeleteState({ ...deleteState, modalOpen: false })
@@ -484,7 +496,7 @@ export const TablaProductos = ({ productos, errorLoadingProductos }) => {
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >
-                <DialogTitle>Se va a efectuar el borrado del producto con id {deleteState.idToDelete}. ¿Quieres continuar?</DialogTitle>
+                <DialogTitle>Se va a efectuar el borrado del producto {getCodigoProducto(deleteState.idToDelete)}. ¿Quieres continuar?</DialogTitle>
                 <DialogActions>
                     <Button onClick={() => setDeleteState({ ...deleteState, modalOpen: false })}>Cancelar</Button>
                     <Button onClick={() => {

@@ -28,23 +28,6 @@ export const GestionStockOrdenTrabajo = () => {
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column' }}>
-            {/* <div style={{ display: 'flex', justifyContent: 'flex-end', marginRight: '5%' }}>
-            <FileUploadButton
-              handleFileUpload={handleFileChange}
-              title={'Leer lotes de fichero'}
-              callback={() => setLotesCSV([])}
-            />
-          </div>
-    
-          <div style={{ display: 'flex', justifyContent: 'center' }}>
-            {
-              lotesCSV.length > 0 ?
-                <TablaLotesCSV lotesData={lotesCSV} />
-                :
-                <TablaMMPP_BD lotesBD={lotesBD} errorLoadingLotes={errorLoadingLotes} />
-            }
-          </div> */}
-
             <div style={{ display: 'flex', justifyContent: 'center' }}>
                 <TablaOrdenesTrabajo ordenesTrabajo={ordenesTrabajo} errorLoadingOrdenesTrabajo={errorLoadingOrdenesTrabajo} />
             </div>

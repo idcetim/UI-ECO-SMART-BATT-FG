@@ -99,7 +99,7 @@ const RenderGranulometria = props => {
 	return <span style={{ marginLeft: "5px" }}>- -  -  -  - - - - - -</span>
 }
 
-export const TablaMMPP_BD = ({ lotesBD, errorLoadingLotes }) => {
+export const TablaMMPP = ({ materiasPrimas, errorLoadingLotes }) => {
 	const [rows, setRows] = useState([]);
 	const [rowModesModel, setRowModesModel] = useState({});
 	const [tamaños, setTamaños] = useState({})
@@ -126,11 +126,23 @@ export const TablaMMPP_BD = ({ lotesBD, errorLoadingLotes }) => {
 
 	}, [])
 
-	useEffect(() => {
-		if (lotesBD !== null) {
-			setRows(lotesBD)
+	const getCodigoMMPP = (id) => {
+		if (materiasPrimas) {
+			for (let mmpp of materiasPrimas) {
+				if (mmpp.id == id) {
+					return mmpp.codigo
+				}
+			}
 		}
-	}, [lotesBD])
+
+		return null
+	}
+
+	useEffect(() => {
+		if (materiasPrimas !== null) {
+			setRows(materiasPrimas)
+		}
+	}, [materiasPrimas])
 
 	const deleteMateriaPrima = async(id) => {
 		setDeleteState({...deleteState, modalOpen: false})
@@ -513,7 +525,7 @@ export const TablaMMPP_BD = ({ lotesBD, errorLoadingLotes }) => {
 				aria-labelledby="alert-dialog-title"
 				aria-describedby="alert-dialog-description"
 			>
-				<DialogTitle>Se va a efectuar el borrado de la materia prima con id {deleteState.idToDelete}. ¿Quieres continuar?</DialogTitle>
+				<DialogTitle>Se va a efectuar el borrado de la materia prima {getCodigoMMPP(deleteState.idToDelete)}. ¿Quieres continuar?</DialogTitle>
 				<DialogActions>
 					<Button onClick={() => setDeleteState({ ...deleteState, modalOpen: false })}>Cancelar</Button>
 					<Button onClick={() => deleteMateriaPrima(deleteState.idToDelete)} autoFocus>Aceptar</Button>
@@ -547,7 +559,7 @@ export const TablaMMPP_BD = ({ lotesBD, errorLoadingLotes }) => {
 						}
 					}
 				}}
-				loading={lotesBD == null}
+				loading={materiasPrimas == null}
 				error={errorLoadingLotes === true ? true : undefined}
 				components={{
 					Toolbar: CustomToolbar

@@ -2,11 +2,11 @@ import { useState, useEffect } from 'react'
 import FileUploadButton from '../UploadFileButton'
 import { mmppEndpoints } from '../../api/endpoints'
 import { TablaLotesCSV } from './TablaLotesCSV'
-import { TablaMMPP_BD } from './TablaMMPP_BD'
+import { TablaMMPP } from './TablaMMPP'
 import { readLotesFromCSV } from '../../helpers/readLotesFromCSV'
 
 export const GestionStockMP = () => {
-  const [lotesBD, setLotesBD] = useState(null)
+  const [materiasPrimas, setMateriasPrimas] = useState(null)
   const [lotesCSV, setLotesCSV] = useState([])
   const [errorLoadingLotes, setErrorLoadingLotes] = useState(false)
 
@@ -16,7 +16,7 @@ export const GestionStockMP = () => {
         const response = await fetch(mmppEndpoints.getMMPP)
 
         if (response.ok) {
-          setLotesBD(await response.json())
+          setMateriasPrimas(await response.json())
         }
         else {
           throw new Error(9)
@@ -63,7 +63,11 @@ export const GestionStockMP = () => {
           lotesCSV.length > 0 ?
             <TablaLotesCSV lotesData={lotesCSV} />
             :
-            <TablaMMPP_BD lotesBD={lotesBD} errorLoadingLotes={errorLoadingLotes} />
+            <TablaMMPP 
+              materiasPrimas={materiasPrimas} 
+              errorLoadingLotes={errorLoadingLotes} 
+              setMateriasPrimas={setMateriasPrimas}
+            />
         }
       </div>
     </div>
