@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { Box } from '@mui/system'
-import { Resumen } from '../components/GestionStock/Resumen'
 import { StockTabsMenu } from '../components/GestionStock/StockTabsMenu'
 import { TabPanel } from '../components/TabPanel'
 import { GestionStockMP } from '../components/GestionStock/GestionStockMP'
@@ -23,10 +22,6 @@ const GestionStock = () => {
 
             <TabPanel value={currentTab} index={2}>
                 <GestionStockProductos />
-            </TabPanel>
-
-            <TabPanel value={currentTab} index={3}>
-                <Resumen />
             </TabPanel>
         </Box>
     )

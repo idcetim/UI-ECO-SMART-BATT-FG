@@ -25,7 +25,6 @@ export const StockTabsMenu = ({ currentTab, setCurrentTab }) => {
         <Tab label="Materias primas" {...a11yProps(0)} />
         <Tab label="Órdenes de trabajo" {...a11yProps(1)} />
         <Tab label="Productos" {...a11yProps(2)} />
-        <Tab label="Resumen" {...a11yProps(3)} />
       </Tabs>
     </Box>
   )

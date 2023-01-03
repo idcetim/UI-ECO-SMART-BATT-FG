@@ -10,6 +10,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles/global.css'
+import Resumen from './routes/Resumen'
 
 const queryClient = new QueryClient()
 
@@ -21,6 +22,7 @@ function App() {
           <NavBar />
           <Routes >
             <Route path="/" element={< Home />} />
+            <Route path="/resumen" element={<Resumen />} />
             <Route path="/trazabilidad" element={< Trazabilidad />} />
             <Route path="/gestionstock" element={< GestionStock />} />
             <Route path="/leerlotes" element={< LeerLotes />} />
