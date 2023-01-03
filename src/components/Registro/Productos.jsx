@@ -23,10 +23,8 @@ const MenuProps = {
 };
 
 export const Productos = () => {
-	//se pone tamañoId 1 para que seleccione el primer elemento del combo
 	const [inputs, setInputs] = useState({
 		codigoProducto: '',
-		// ordenesTrabajo: [],
 		ordenTrabajoId: 1,
 		fecha: null,
 		cantidad: null,
@@ -184,40 +182,8 @@ export const Productos = () => {
 						<Typography variant="h5">Información general</Typography>
 					</Grid>
 
-					{/* <Grid item xs={2} sm={4} md={4}>
-						<TextField size="small" label="Código orden de trabajo" variant='outlined' value={inputs.codigoOrdenTrabajo} onChange={ev => setInputs({ ...inputs, codigoOrdenTrabajo: ev.target.value })} />
-					</Grid> */}
-
 					<Grid item xs={2} sm={4} md={4}>
-						<FormControl sx={{ width: '100%' }}>
-							{/* <InputLabel id="demo-multiple-chip-label">Ordenes trabajo</InputLabel> */}
-							{/* <Select
-								labelId="demo-multiple-chip-label"
-								id="demo-multiple-chip"
-								multiple
-								value={inputs.ordenesTrabajo}
-								onChange={handleCodigoOTChange}
-								input={<OutlinedInput id="select-multiple-chip" label="Órdenes de trabajo" />}
-								renderValue={(selected) => (
-									<Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-										{selected.map((value) => (
-											<Chip key={value} label={getOrdenesTrabajoMapping()[value].codigo} />
-										))}
-									</Box>
-								)}
-								MenuProps={MenuProps}
-							>
-								{ordenesTrabajo.map((ordenTrabajo) => (
-									<MenuItem
-										key={ordenTrabajo.id}
-										value={ordenTrabajo.id}
-									// style={getStyles(name, inputs.materiasPrimas, theme)}
-									>
-										{ordenTrabajo.codigo}
-									</MenuItem>
-								))}
-							</Select> */}
-
+						<FormControl sx={{ width: '100%' }} size="small">
 							<InputLabel>Orden trabajo</InputLabel>
 							<Select
 								label="Orden trabajo"

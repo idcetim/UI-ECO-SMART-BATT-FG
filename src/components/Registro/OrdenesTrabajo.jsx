@@ -149,7 +149,7 @@ export const OrdenesTrabajo = () => {
         <div style={{ display: 'flex', justifyContent: 'center' }}>
             <Toaster />
 
-            <Box sx={{ width: '700px', padding: '20px' }}>
+            <Box sx={{ width: '700px', maxWidth: "90%", padding: '20px' }}>
                 <Grid container spacing={{ xs: 2, md: 3 }} columns={1}>
                     <Grid item xs={4} sm={8} md={12}>
                         <Typography variant="h5">Nueva orden de trabajo</Typography>
@@ -273,10 +273,8 @@ export const OrdenesTrabajo = () => {
                                 value={inputs.procesosIds}
                                 multiple
                                 onChange={ev => { setInputs({ ...inputs, procesosIds: ev.target.value }) }}
-                                sx={{
-                                    width: '600px',
-                                    maxWidth: '90%'
-                                }}>
+                                sx={{width: { xs: '300px', sm: '500px'} }}
+                            >
                                 {procesos.map(proceso => {
                                     return <MenuItem value={proceso.id} key={proceso.id}>{proceso.nombre}</MenuItem>
                                 })}
