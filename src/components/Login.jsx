@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import { useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Alert from '@mui/material/Alert'
@@ -10,16 +10,19 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { authorizationEndpoints } from "../api/endpoints";
+import { CircularProgress } from "@mui/material";
 
 const theme = createTheme();
 
 const Login = (props) => {
     const [codigo, setCodigo] = useState("")
     const [codigoErroneo, setCodigoErroneo] = useState(false)
+    const [haciendoSubmit, setHaciendoSubmit] = useState(false)
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        
+        setHaciendoSubmit(true)
+
         if (codigoErroneo) setCodigoErroneo(false)
 
         let response = await fetch(authorizationEndpoints.authentificate, {
@@ -27,17 +30,19 @@ const Login = (props) => {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({code: codigo})
+            body: JSON.stringify({ code: codigo })
         })
 
         if (response.ok) {
             props.setToken(await response.text())
             props.setLogeado()
+            setHaciendoSubmit(false)
 
             return
         }
 
         setCodigoErroneo(true)
+        setHaciendoSubmit(false)
     };
 
     return (
@@ -62,7 +67,6 @@ const Login = (props) => {
                     <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
                         <TextField
                             margin="normal"
-                            required
                             fullWidth
                             label="Codigo"
                             type="password"
@@ -75,16 +79,22 @@ const Login = (props) => {
 
                         {codigoErroneo ?
                             <Alert severity="error">El código introducido no es válido</ Alert>
-                        : null}
+                            : null}
 
-                        <Button
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            sx={{ mt: 3, mb: 2 }}
-                        >
-                            Sign In
-                        </Button>
+                        {haciendoSubmit ?
+                            <div style={{ width: '100%', display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
+                                <CircularProgress />
+                            </div>
+                            :
+                            <Button
+                                type="submit"
+                                fullWidth
+                                variant="contained"
+                                sx={{ mt: 3, mb: 2 }}
+                            >
+                                Iniciar sesión
+                            </Button>
+                        }
                     </Box>
                 </Box>
             </Container>
