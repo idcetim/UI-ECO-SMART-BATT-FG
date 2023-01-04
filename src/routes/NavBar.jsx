@@ -18,9 +18,11 @@ import MoreIcon from '@mui/icons-material/MoreVert';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import SettingsIcon from '@mui/icons-material/Settings';
 import '../styles/navbar.css'
+import { useCookies } from 'react-cookie';
 
 const NavBar = () => {
 	const [anchorElNav, setAnchorElNav] = useState(null);
+	const [cookies, setCookie] = useCookies();
 
 	const handleOpenNavMenu = (event) => setAnchorElNav(event.currentTarget)
 	const handleCloseNavMenu = () => setAnchorElNav(null)
@@ -35,6 +37,21 @@ const NavBar = () => {
 	}
 
 	const smallScreenLinkStyle = { color: "black", textDecoration: "none", textTransform: "uppercase", fontSize: "13px", fontWeight: "bold" }
+
+	const [anchorEl, setAnchorEl] = useState(null);
+
+
+	const handleMenu = (event) => {
+		setAnchorEl(event.currentTarget);
+	};
+
+	const handleClose = () => setAnchorEl(null)
+
+	const cerrarSesion = () => {
+		setAnchorEl(null);
+		setCookie("jwt", "")
+		window.location.replace(window.location.origin)
+	};
 
 	return (
 		<AppBar position="static" sx={{ background: "grey" }}>
@@ -124,6 +141,36 @@ const NavBar = () => {
 								<SettingsIcon />
 							</IconButton>
 						</Link>
+
+						<div>
+							<IconButton
+								size="large"
+								aria-label="account of current user"
+								aria-controls="menu-appbar"
+								aria-haspopup="true"
+								onClick={handleMenu}
+								color="inherit"
+							>
+								<AccountCircle />
+							</IconButton>
+							<Menu
+								id="menu-appbar"
+								anchorEl={anchorEl}
+								anchorOrigin={{
+									vertical: 'top',
+									horizontal: 'right',
+								}}
+								keepMounted
+								transformOrigin={{
+									vertical: 'top',
+									horizontal: 'right',
+								}}
+								open={Boolean(anchorEl)}
+								onClose={handleClose}
+							>
+								<MenuItem onClick={cerrarSesion}>Cerrar sesión</MenuItem>
+							</Menu>
+						</div>
 					</Box>
 
 					<Box sx={{ display: { xs: 'flex', md: 'none' } }}>
@@ -135,6 +182,36 @@ const NavBar = () => {
 						>
 							<SettingsIcon />
 						</IconButton>
+
+						<div>
+							<IconButton
+								size="large"
+								aria-label="account of current user"
+								aria-controls="menu-appbar"
+								aria-haspopup="true"
+								onClick={handleMenu}
+								color="inherit"
+							>
+								<AccountCircle />
+							</IconButton>
+							<Menu
+								id="menu-appbar"
+								anchorEl={anchorEl}
+								anchorOrigin={{
+									vertical: 'top',
+									horizontal: 'right',
+								}}
+								keepMounted
+								transformOrigin={{
+									vertical: 'top',
+									horizontal: 'right',
+								}}
+								open={Boolean(anchorEl)}
+								onClose={handleClose}
+							>
+								<MenuItem onClick={cerrarSesion}>Cerrar sesión</MenuItem>
+							</Menu>
+						</div>
 					</Box>
 				</Toolbar>
 			</Container>
