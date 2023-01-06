@@ -10,6 +10,8 @@ import { selectListEndpoints, ordenesTrabajoEndpoints } from '../../api/endpoint
 import '../../styles/global.css'
 import toast, { Toaster } from 'react-hot-toast';
 import { validarProducto } from '../../helpers/validadores'
+import AlertModal from '../AlertModal'
+import { formatTextToAlert } from '../../helpers/alertTextFormatter'
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -49,6 +51,10 @@ export const Productos = () => {
 	const [calidades, setCalidades] = useState([])
 	const [ordenesTrabajo, setOrdenesTrabajo] = useState([])
 	const [ubicaciones, setUbicaciones] = useState([])
+	const [openAlertModal, setOpenAlertModal] = useState({
+		status: false,
+		text: ''
+	})
 	const granuRef = useRef()
 	const quimicoRef = useRef()
 
@@ -94,13 +100,18 @@ export const Productos = () => {
 
 		let ordenTrabajo = getOrdenesTrabajoMapping()[inputs.ordenTrabajoId]
 
-		if (inputs.cantidad > (ordenTrabajo.cantidadMaterias - ordenTrabajo.cantidadProductos)) {
-			resultadoValidacion.mensajeError += "La orden seleccionada no tiene suficientes existencias para satisfacer la cantidad indicada \n"
-			resultadoValidacion.errorValidacion = true
+		if (ordenTrabajo) {
+			if (inputs.cantidad > (ordenTrabajo.cantidadMaterias - ordenTrabajo.cantidadProductos)) {
+				resultadoValidacion.mensajeError += "La orden seleccionada no tiene suficientes existencias para satisfacer la cantidad indicada \n"
+				resultadoValidacion.errorValidacion = true
+			}
 		}
 
 		if (resultadoValidacion.errorValidacion) {
-			alert(resultadoValidacion.mensajeError)
+			setOpenAlertModal({
+				status: true,
+				text: formatTextToAlert(resultadoValidacion.mensajeError)
+			})
 
 			throw new Error()
 		}
@@ -175,7 +186,7 @@ export const Productos = () => {
 	return (
 		<div style={{ display: 'flex', justifyContent: 'center' }}>
 			<Toaster />
-
+			<AlertModal setOpenAlertModal={setOpenAlertModal} openAlertModal={openAlertModal} />
 			<Box sx={{ width: '700px', padding: '20px' }}>
 				<Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
 					<Grid item xs={4} sm={8} md={12}>
