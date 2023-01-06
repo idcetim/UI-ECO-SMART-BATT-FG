@@ -10,6 +10,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import PieMMPP from './PieMMPP';
+import { Loading } from '../Loading';
 
 const getDatos = (materiasPrimas, calidades) => {
     let data = {}
@@ -53,7 +54,7 @@ const getDatos = (materiasPrimas, calidades) => {
 }
 
 const PanelResumenMMPP = () => {
-    const [data, setData] = useState({})
+    const [data, setData] = useState(null)
 
     useEffect(() => {
         const callback = async () => {
@@ -70,6 +71,9 @@ const PanelResumenMMPP = () => {
     }, [])
 
     return (
+        <>
+            {data === null && <Loading text={"Cargando"} />}
+            {data !== null &&
         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: { xs: 'column', sm: 'row' }, marginTop: '20px' }}>
             <Box sx={{ width: '500px', maxWidth: '90%' }}>
                 <TableContainer component={Paper}>
@@ -77,7 +81,7 @@ const PanelResumenMMPP = () => {
                         <TableHead>
                             <TableRow>
                                 <TableCell>Calidad</TableCell>
-                                <TableCell align="right">Cantidad adquirida (kg)</TableCell>
+                                <TableCell align="right">Cantidad (kg)</TableCell>
                                 <TableCell align="right">Disponibilidad (kg)</TableCell>
                                 <TableCell align="right">Disponible %</TableCell>
                             </TableRow>
@@ -112,6 +116,8 @@ const PanelResumenMMPP = () => {
                 {data.totales && data.totales.disponibilidad ? <PieMMPP data={data} /> : null}
             </Box>
         </ Box>
+}
+        </>
     )
 }
 

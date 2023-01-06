@@ -8,6 +8,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import { Loading } from '../Loading';
 
 const getDatos = (ordenes, procesos) => {
     if (ordenes) {
@@ -30,7 +31,7 @@ const getDatos = (ordenes, procesos) => {
 }
 
 const PanelResumenOrdenes = () => {
-    const [data, setData] = useState([])
+    const [data, setData] = useState(null)
     const [procesos, setProcesos] = useState({})
 
     useEffect(() => {
@@ -49,42 +50,47 @@ const PanelResumenOrdenes = () => {
     }, [])
 
     return (
-        <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', paddingTop: '20px'}}>
-            <h3 style={{ marginBottom: '30px'}}>Ultimos 10 procesos con pérdidas:</h3>
+        <>
+            {data === null && <Loading text={"Cargando"} />}
+            {data !== null &&
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', paddingTop: '20px' }}>
+                    <h3 style={{ marginBottom: '30px' }}>Ultimos 10 procesos con pérdidas:</h3>
 
-            <TableContainer component={Paper} sx={{ width: '500px', maxWidth: '90%', height: 'fit-content' }}>
-                <Table aria-label="simple table">
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>Código</TableCell>
-                            <TableCell align="right">Procesos</TableCell>
-                            <TableCell align="right">Pérdidas (kg)</TableCell>
-                        </TableRow>
-                    </TableHead>
-
-                    <TableBody>
-                        {data ? data
-                            .map((row) => (
-                                <TableRow
-                                    key={row.codigo}
-                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                >
-                                    <TableCell component="th" scope="row">
-                                        {row.codigo}
-                                    </TableCell>
-
-                                    <TableCell align="right">{row.procesosIds.map(element => {
-                                            return procesos[element]
-                                        }).join(', ')}
-                                    </TableCell>
-
-                                    <TableCell align="right">{row.perdidasODisponible}</TableCell>
+                    <TableContainer component={Paper} sx={{ width: '500px', maxWidth: '90%', height: 'fit-content' }}>
+                        <Table aria-label="simple table">
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell>Código</TableCell>
+                                    <TableCell align="right">Procesos</TableCell>
+                                    <TableCell align="right">Pérdidas (kg)</TableCell>
                                 </TableRow>
-                            )) : null}
-                    </TableBody>
-                </Table>
-            </TableContainer>
-        </ div>
+                            </TableHead>
+
+                            <TableBody>
+                                {data ? data
+                                    .map((row) => (
+                                        <TableRow
+                                            key={row.codigo}
+                                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                        >
+                                            <TableCell component="th" scope="row">
+                                                {row.codigo}
+                                            </TableCell>
+
+                                            <TableCell align="right">{row.procesosIds.map(element => {
+                                                return procesos[element]
+                                            }).join(', ')}
+                                            </TableCell>
+
+                                            <TableCell align="right">{row.perdidasODisponible}</TableCell>
+                                        </TableRow>
+                                    )) : null}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                </ div>
+            }
+        </>
     )
 }
 
