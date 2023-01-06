@@ -47,9 +47,12 @@ const Login = (props) => {
 
     return (
         <ThemeProvider theme={theme}>
+            <div style={{ background: "grey", width: "100%", height: "80px", display: "flex", justifyContent: "center", alignItems: "center" }}>
+                <img src={'ferroglobe500.png'} alt="Logo" style={{ width: '70px', display: 'pointer' }} />
+                <span style={{ fontFamily: "Roboto", fontWeight: "bold", fontSize: "25px" }}>Ferroglobe</span>
+            </div>
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
-
                 <Box
                     sx={{
                         marginTop: 8,
