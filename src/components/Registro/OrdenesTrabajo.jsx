@@ -30,6 +30,8 @@ import { useEffect } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { Add } from '@mui/icons-material'
 import { validarOrdenTrabajo } from '../../helpers/validadores';
+import AlertModal from '../AlertModal'
+import { formatTextToAlert } from '../../helpers/alertTextFormatter'
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -56,6 +58,10 @@ export const OrdenesTrabajo = () => {
     })
     const [materiasPrimas, setMateriasPrimas] = useState([])
     const [procesos, setProcesos] = useState([])
+    const [openAlertModal, setOpenAlertModal] = useState({
+        status: false,
+        text: ''
+    })
 
     // useEffect(() => {
     //     console.log(materiasPrimas.length)
@@ -81,20 +87,22 @@ export const OrdenesTrabajo = () => {
 
     const guardarHandler = async (orden) => {
         let resultadoValidacion = validarOrdenTrabajo(orden)
-
         let objMateriasPrimas = getMMPPMapping()
+        if(inputs.materiasPrimas[0].cantidadEntrada !== null) {
+            for (let mmpp of inputs.materiasPrimas) {
+                if (mmpp.cantidadEntrada > objMateriasPrimas[mmpp.id].disponibilidad) {
+                    resultadoValidacion.mensajeError += "La materia prima seleccionada no tiene suficientes existencias disponibles para satisfacer la cantidad indicada \n"
+                    resultadoValidacion.errorValidacion = true
 
-        for (let mmpp of inputs.materiasPrimas) {
-            if (mmpp.cantidadEntrada > objMateriasPrimas[mmpp.id].disponibilidad) {
-                resultadoValidacion.mensajeError += "La materia prima seleccionada no tiene suficientes existencias disponibles para satisfacer la cantidad indicada \n"
-                resultadoValidacion.errorValidacion = true
-
-                break
+                    break
+                }
             }
         }
-
         if (resultadoValidacion.errorValidacion) {
-            alert(resultadoValidacion.mensajeError)
+            setOpenAlertModal({
+                status: true,
+                text: formatTextToAlert(resultadoValidacion.mensajeError)
+            })
 
             throw new Error()
         }
@@ -148,7 +156,7 @@ export const OrdenesTrabajo = () => {
     return (
         <div style={{ display: 'flex', justifyContent: 'center' }}>
             <Toaster />
-
+            <AlertModal setOpenAlertModal={setOpenAlertModal} openAlertModal={openAlertModal} />
             <Box sx={{ width: '700px', maxWidth: "90%", padding: '20px' }}>
                 <Grid container spacing={{ xs: 2, md: 3 }} columns={1}>
                     <Grid item xs={4} sm={8} md={12}>
@@ -273,7 +281,7 @@ export const OrdenesTrabajo = () => {
                                 value={inputs.procesosIds}
                                 multiple
                                 onChange={ev => { setInputs({ ...inputs, procesosIds: ev.target.value }) }}
-                                sx={{width: { xs: '300px', sm: '500px'} }}
+                                sx={{ width: { xs: '300px', sm: '500px' } }}
                             >
                                 {procesos.map(proceso => {
                                     return <MenuItem value={proceso.id} key={proceso.id}>{proceso.nombre}</MenuItem>

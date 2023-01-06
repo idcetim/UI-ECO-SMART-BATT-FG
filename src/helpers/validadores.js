@@ -138,22 +138,22 @@ const validarOrdenTrabajo = (ordenTrabajo) => {
     }
 
     if (!ordenTrabajo.codigo || ordenTrabajo.codigo === "") {
-        resultado.mensajeError += "Debe introducir un código \n"
+        resultado.mensajeError += "Debe introducir un código. \n"
         resultado.errorValidacion = true
     }
 
     if (!ordenTrabajo.fecha || ordenTrabajo.fecha === "") {
-        resultado.mensajeError += "Debe introducir una fecha \n"
+        resultado.mensajeError += "Debe introducir una fecha. \n"
         resultado.errorValidacion = true
     }
 
     if (!ordenTrabajo.procesosIds || ordenTrabajo.procesosIds.length === 0) {
-        resultado.mensajeError += "Debe seleccionar al menos un proceso \n"
+        resultado.mensajeError += "Debe seleccionar al menos un proceso. \n"
         resultado.errorValidacion = true
     }
 
-    if (!ordenTrabajo.materiasPrimas || ordenTrabajo.materiasPrimas.length === 0) {
-        resultado.mensajeError += "Debe introducir al menos una materia prima \n"
+    if (!ordenTrabajo.materiasPrimas[0].cantidadEntrada || ordenTrabajo.materiasPrimas.length === 0) {
+        resultado.mensajeError += "Debe introducir al menos una materia prima. \n"
         resultado.errorValidacion = true
     }
 
