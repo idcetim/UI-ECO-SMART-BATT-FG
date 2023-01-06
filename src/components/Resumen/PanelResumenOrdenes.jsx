@@ -54,7 +54,7 @@ const PanelResumenOrdenes = () => {
             {data === null && <Loading text={"Cargando"} />}
             {data !== null &&
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', paddingTop: '20px' }}>
-                    <h3 style={{ marginBottom: '30px' }}>Ultimos 10 procesos con pérdidas:</h3>
+                    <h3 style={{ marginBottom: '30px' }}>Últimas 10 órdenes de trabajo:</h3>
 
                     <TableContainer component={Paper} sx={{ width: '500px', maxWidth: '90%', height: 'fit-content' }}>
                         <Table aria-label="simple table">
