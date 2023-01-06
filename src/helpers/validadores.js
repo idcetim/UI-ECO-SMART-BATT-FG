@@ -6,58 +6,58 @@ const validarMateriasPrimas = (materiaPrima) => {
         errorValidacion: false
     }
 
-    if (!materiaPrima.codigo || materiaPrima.codigo == "") {
-        resultado.mensajeError += "Debe introducir un codigo \n"
+    if (!materiaPrima.codigo || materiaPrima.codigo === "") {
+        resultado.mensajeError += "Debe introducir un codigo. \n"
         resultado.errorValidacion = true
     }
 
-    if (!materiaPrima.fecha || materiaPrima.fecha == "") {
-        resultado.mensajeError += "Debe introducir una fecha \n"
+    if (!materiaPrima.fecha || materiaPrima.fecha === "") {
+        resultado.mensajeError += "Debe introducir una fecha. \n"
         resultado.errorValidacion = true
     }
 
     if (!materiaPrima.cantidad) {
-        resultado.mensajeError += "Debe introducir la cantidad \n"
+        resultado.mensajeError += "Debe introducir la cantidad. \n"
         resultado.errorValidacion = true
     }
 
     if (!esPorcentaje(materiaPrima.aluminio)) {
-        resultado.mensajeError += "El aluminio debe ser un valor de porcentaje \n"
+        resultado.mensajeError += "Al debe ser <= 100%. \n"
         resultado.errorValidacion = true
     }
 
     if (!esPorcentaje(materiaPrima.calcio)) {
-        resultado.mensajeError += "El calcio debe ser un valor de porcentaje \n"
+        resultado.mensajeError += "Ca debe ser <= 100%. \n";
         resultado.errorValidacion = true
     }
 
     if (!esPorcentaje(materiaPrima.hierro)) {
-        resultado.mensajeError += "El hierro debe ser un valor de porcentaje \n"
+        resultado.mensajeError += "Fe debe ser <= 100%. \n";
         resultado.errorValidacion = true
     }
 
     if (!esPorcentaje(materiaPrima.titanio)) {
-        resultado.mensajeError += "El titanio debe ser un valor de porcentaje \n"
+        resultado.mensajeError += "Ti debe ser <= 100%. \n";
         resultado.errorValidacion = true
     }
 
     if (!esPorcentaje(materiaPrima.total)) {
-        resultado.mensajeError += "El total debe ser un valor de porcentaje \n"
+        resultado.mensajeError += "Total debe ser <= 100%. \n";
         resultado.errorValidacion = true
     }
 
     if (!esPorcentaje(materiaPrima.gra10)) {
-        resultado.mensajeError += "La granulometría10 debe ser un valor de porcentaje \n"
+        resultado.mensajeError += "Gra10 debe ser <= 100%. \n";
         resultado.errorValidacion = true
     }
 
     if (!esPorcentaje(materiaPrima.gra50)) {
-        resultado.mensajeError += "La granulometría50 debe ser un valor de porcentaje \n"
+        resultado.mensajeError += "Gra50 debe ser <= 100%. \n";
         resultado.errorValidacion = true
     }
 
     if (!esPorcentaje(materiaPrima.gra90)) {
-        resultado.mensajeError += "La granulometría90 debe ser un valor de porcentaje \n"
+        resultado.mensajeError += "Gra90 debe ser <= 100%. \n";
         resultado.errorValidacion = true
     }
 
@@ -131,7 +131,7 @@ const validarProducto = (producto) => {
     }
 
     return resultado
-} 
+}
 
 const validarOrdenTrabajo = (ordenTrabajo) => {
     let resultado = {

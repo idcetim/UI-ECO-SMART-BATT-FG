@@ -10,6 +10,8 @@ import '../../styles/global.css'
 import { useEffect } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { validarMateriasPrimas } from '../../helpers/validadores';
+import AlertModal from '../AlertModal';
+import { formatTextToAlert } from '../../helpers/alertTextFormatter';
 
 export const MateriasPrimas = () => {
 	const [inputs, setInputs] = useState({
@@ -39,6 +41,10 @@ export const MateriasPrimas = () => {
 	const [ubicaciones, setUbicaciones] = useState([])
 	const [granulometriaFile, setGranulometriaFile] = useState(undefined)
 	const [analisisFile, setAnalisisFile] = useState(undefined)
+	const [openAlertModal, setOpenAlertModal] = useState({
+		status: false,
+		text: ''
+	})
 	const granuRef = useRef()
 	const analisisRef = useRef()
 
@@ -64,7 +70,10 @@ export const MateriasPrimas = () => {
 		let resultadoValidacion = validarMateriasPrimas(inputs)
 
 		if (resultadoValidacion.errorValidacion) {
-			alert(resultadoValidacion.mensajeError)
+			setOpenAlertModal({
+				status:true,
+				text: formatTextToAlert(resultadoValidacion.mensajeError)
+			})
 
 			throw new Error()
 		}
@@ -124,7 +133,7 @@ export const MateriasPrimas = () => {
 	return (
 		<div style={{ display: 'flex', justifyContent: 'center' }}>
 			<Toaster />
-
+			<AlertModal setOpenAlertModal={setOpenAlertModal} openAlertModal={openAlertModal}/>
 			<Box sx={{ width: '700px', padding: '20px' }}>
 				<Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
 					<Grid item xs={4} sm={8} md={12}>
