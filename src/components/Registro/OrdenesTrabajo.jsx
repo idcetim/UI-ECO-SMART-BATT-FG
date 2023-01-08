@@ -168,6 +168,20 @@ export const OrdenesTrabajo = () => {
                     </Grid>
 
                     <Grid item xs={2} sm={4} md={4}>
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                            <DatePicker
+                                label="Fecha"
+                                value={inputs.fecha}
+                                inputFormat="DD/MM/YY"
+                                onChange={(newDate) => {
+                                    setInputs({ ...inputs, fecha: `${newDate.$y}-${Number(newDate["$M"]) + 1}-${newDate["$D"]}` })
+                                }}
+                                renderInput={(params) => <TextField size="small"{...params} />}
+                            />
+                        </LocalizationProvider>
+                    </Grid>
+
+                    <Grid item xs={2} sm={4} md={4}>
                         <Typography variant="h6">Materias primas:</Typography>
                         <Paper variant="outlined" sx={{ padding: '20px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                             {/* <SelectMMPP /> */}
@@ -215,7 +229,7 @@ export const OrdenesTrabajo = () => {
                                                 <Grid item xs={6}>
                                                     <FormControl fullWidth>
                                                         <TextField
-                                                            label="cantidad"
+                                                            label="Cantidad (kg)"
                                                             type="number"
                                                             value={inputs.materiasPrimas[i - 1].cantidadEntrada}
                                                             onChange={ev => {
@@ -258,19 +272,6 @@ export const OrdenesTrabajo = () => {
                         </Paper>
                     </Grid>
 
-                    <Grid item xs={2} sm={4} md={4}>
-                        <LocalizationProvider dateAdapter={AdapterDayjs}>
-                            <DatePicker
-                                label="Fecha"
-                                value={inputs.fecha}
-                                inputFormat="DD/MM/YY"
-                                onChange={(newDate) => {
-                                    setInputs({ ...inputs, fecha: `${newDate.$y}-${Number(newDate["$M"]) + 1}-${newDate["$D"]}` })
-                                }}
-                                renderInput={(params) => <TextField size="small"{...params} />}
-                            />
-                        </LocalizationProvider>
-                    </Grid>
 
                     <Grid item xs={2} sm={4} md={4}>
                         <FormControl fullWidth>

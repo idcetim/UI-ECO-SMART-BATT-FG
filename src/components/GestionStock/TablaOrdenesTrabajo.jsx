@@ -269,7 +269,7 @@ export const TablaOrdenesTrabajo = ({ ordenesTrabajo, errorLoadingOrdenesTrabajo
     const columns = [
         { field: 'codigo', headerName: 'Código', width: 130, editable: true },
         { field: 'fecha', headerName: 'Fecha', width: 130, editable: true, renderCell: RenderFecha, renderEditCell: RenderEditFecha },
-        { field: 'cantidadMaterias', headerName: 'Cantidad', width: 130, editable: false, valueFormatter: (params) => {
+        { field: 'cantidadMaterias', headerName: 'Cantidad (kg)', width: 130, editable: false, valueFormatter: (params) => {
             if (!isNaN(params.value)) {
                 return parseFloat(params.value.toFixed(2)).toString()
             }
@@ -277,7 +277,7 @@ export const TablaOrdenesTrabajo = ({ ordenesTrabajo, errorLoadingOrdenesTrabajo
             return ''
         }},
         // { field: 'cantidadProductos', headerName: 'Perdidas', type: "number", width: 130, editable: false, renderCell: RenderPerdidas },
-        { field: 'perdidasODisponible', headerName: 'Perdidas/Disponible', type: "number", width: 130, editable: false, valueFormatter: (params) => {
+        { field: 'perdidasODisponible', headerName: 'Pérdidas (kg)', type: "number", width: 130, editable: false, valueFormatter: (params) => {
             if (!isNaN(params.value)) {
                 return parseFloat(params.value.toFixed(2)).toString()
             }
