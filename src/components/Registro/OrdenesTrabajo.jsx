@@ -50,7 +50,7 @@ export const OrdenesTrabajo = () => {
         fecha: null,
         procesosIds: [1],
         materiasPrimas: [{
-            id: 1,
+            id: null,
             cantidadEntrada: null
         }],
         numeroMateriasPrimas: 1,
@@ -88,10 +88,22 @@ export const OrdenesTrabajo = () => {
     const guardarHandler = async (orden) => {
         let resultadoValidacion = validarOrdenTrabajo(orden)
         let objMateriasPrimas = getMMPPMapping()
-        if(inputs.materiasPrimas[0].cantidadEntrada !== null) {
+
+        if (inputs.materiasPrimas[0].cantidadEntrada !== null) {
+            let cantidadTotalMMPP = {}
+
             for (let mmpp of inputs.materiasPrimas) {
-                if (mmpp.cantidadEntrada > objMateriasPrimas[mmpp.id].disponibilidad) {
-                    resultadoValidacion.mensajeError += "La materia prima seleccionada no tiene suficientes existencias disponibles para satisfacer la cantidad indicada \n"
+                if (cantidadTotalMMPP[mmpp.id]) {
+                    cantidadTotalMMPP[mmpp.id] += Number(mmpp.cantidadEntrada)
+                }
+                else {
+                    cantidadTotalMMPP[mmpp.id] = Number(mmpp.cantidadEntrada)
+                }
+            }
+
+            for (let id of Object.keys(cantidadTotalMMPP)) {
+                if (cantidadTotalMMPP[id] > objMateriasPrimas[id].disponibilidad) {
+                    resultadoValidacion.mensajeError += "La materia prima seleccionada no tiene suficientes existencias disponibles para satisfacer la cantidad indicada. \n"
                     resultadoValidacion.errorValidacion = true
 
                     break
@@ -119,6 +131,10 @@ export const OrdenesTrabajo = () => {
         if (!response.ok) {
             throw new Error(await response.text)
         }
+
+        fetch(mmppEndpoints.getMMPP)
+            .then(response => response.json())
+            .then(json => setMateriasPrimas(json))
     }
 
     const handleChangeMMPP = (event) => {
@@ -229,7 +245,7 @@ export const OrdenesTrabajo = () => {
                                                 <Grid item xs={6}>
                                                     <FormControl fullWidth>
                                                         <TextField
-                                                            label="Cantidad (kg)"
+                                                            label={'Cantidad (kg)'}
                                                             type="number"
                                                             value={inputs.materiasPrimas[i - 1].cantidadEntrada}
                                                             onChange={ev => {

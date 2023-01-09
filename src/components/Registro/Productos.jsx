@@ -102,7 +102,7 @@ export const Productos = () => {
 
 		if (ordenTrabajo) {
 			if (inputs.cantidad > (ordenTrabajo.cantidadMaterias - ordenTrabajo.cantidadProductos)) {
-				resultadoValidacion.mensajeError += "La orden seleccionada no tiene suficientes existencias para satisfacer la cantidad indicada \n"
+				resultadoValidacion.mensajeError += "La orden seleccionada no tiene suficientes existencias para satisfacer la cantidad indicada. \n"
 				resultadoValidacion.errorValidacion = true
 			}
 		}
@@ -177,6 +177,11 @@ export const Productos = () => {
 			if (!response.ok) {
 				throw new Error("Error guardando datos")
 			}
+
+			//es necesario volver a obtenerlos para actualizar la lista de ordenes con las nuevas cantidades
+			fetch(ordenesTrabajoEndpoints.getOrdenesTrabajo)
+				.then(response => response.json())
+				.then(json => setOrdenesTrabajo(json))
 		} catch (error) {
 			console.log("Error añadiendo información de Producto: ", error)
 			throw error
