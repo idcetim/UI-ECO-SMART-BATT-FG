@@ -16,21 +16,26 @@ import { mmppEndpoints } from '../../api/endpoints'
 import { Box } from '@mui/system';
 import { getObjIdToCalidad, getObjIdToOrigen, getObjIdToTamaño, getObjIdToUbicacion } from '../../helpers/api';
 import '../../styles/stockTables.css'
-import { 
-	Button, 
-	FormControl, 
-	Select, 
-	MenuItem, 
-	DialogTitle, 
-	Dialog, 
-	DialogActions, 
-	TextField 
+import {
+	Button,
+	FormControl,
+	Select,
+	MenuItem,
+	DialogTitle,
+	Dialog,
+	DialogActions,
+	TextField
 } from '@mui/material';
 import toast, { Toaster } from 'react-hot-toast';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { validarMateriasPrimas } from '../../helpers/validadores';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import { BlobStorage } from '../../api/blobStorage'
+import { registroEndpoints } from '../../api/endpoints'
+import Tooltip from '@mui/material/Tooltip';
 
 const isValidUrl = urlString => {
 	try {
@@ -48,6 +53,28 @@ const CustomToolbar = () => {
 			<GridToolbarFilterButton />
 		</GridToolbarContainer>
 	)
+}
+
+const guardarArchivo = async (file) => {
+	const formData = new FormData()
+	formData.append('file', file)
+
+	const response = await fetch(registroEndpoints.file, {
+		method: "POST",
+		headers: {
+			'Accept': 'application/json',
+			'Access-Control-Allow-Origin': '*',
+			'file-type': BlobStorage['mmpp-gra']
+		},
+		mode: 'cors',
+		body: formData
+	})
+
+	if (!response.ok) {
+		throw new Error("Error añadiendo archivo MMPP granulometria")
+	}
+
+	return (await response.json()).url
 }
 
 const RenderAnalisis = (props) => {
@@ -74,6 +101,64 @@ const RenderAnalisis = (props) => {
 	return <span style={{ marginLeft: "5px" }}>- -  -  -  - - - - </span>
 }
 
+const RenderEditAnalisis = props => {
+	const { id, value, field } = props
+	const apiRef = useGridApiContext()
+
+	if (isValidUrl(value)) {
+		return (
+			<div style={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+				<Tooltip title="Eliminar archivo de análisis">
+					<DeleteForeverIcon
+						sx={{ cursor: 'pointer' }}
+						onClick={ev => {
+							apiRef.current.setEditCellValue({ id, field, value: "" })
+						}}
+					/>
+				</Tooltip>
+			</div>
+		)
+	}
+
+	return (
+		<div style={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+			<label htmlFor="file-input-analisis">
+				<Tooltip title="Añadir archivo de análisis">
+					<CloudUploadIcon />
+				</Tooltip>
+			</label>
+
+			<input
+				id="file-input-analisis"
+				type="file"
+				style={{ display: 'none' }}
+				onChange={async (ev) => {
+					if (ev.target.files.length > 0) {
+						let promise = guardarArchivo(ev.target.files[0])
+
+						toast.promise(promise, {
+							loading: 'Guardando archivo analisis...',
+							success: 'Registro finalizado',
+							error: 'Error en el registro'
+						}, {
+							style: {
+								minWidth: '250px'
+							},
+							success: {
+								duration: 4000,
+								icon: '✅'
+							}
+						})
+
+						let url = await promise
+
+						apiRef.current.setEditCellValue({ id, field, value: url })
+					}
+				}}
+			/>
+		</div>
+	)
+}
 
 const RenderGranulometria = props => {
 	if (isValidUrl(props.row.urlGranulometria)) {
@@ -99,6 +184,65 @@ const RenderGranulometria = props => {
 	return <span style={{ marginLeft: "5px" }}>- -  -  -  - - - - - -</span>
 }
 
+const RenderEditGranulometria = props => {
+	const { id, value, field } = props
+	const apiRef = useGridApiContext()
+
+	if (isValidUrl(value)) {
+		return (
+			<div style={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+				<Tooltip title="Eliminar archivo granulometria">
+					<DeleteForeverIcon
+						sx={{ cursor: 'pointer' }}
+						onClick={ev => {
+							apiRef.current.setEditCellValue({ id, field, value: "" })
+						}}
+					/>
+				</Tooltip>
+			</div>
+		)
+	}
+
+	return (
+		<div style={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+			<label for="file-input-granulometria">
+				<Tooltip title="Añadir archivo granulometria">
+					<CloudUploadIcon />
+				</Tooltip>
+			</label>
+
+			<input
+				id="file-input-granulometria"
+				type="file"
+				style={{ display: 'none' }}
+				onChange={async (ev) => {
+					if (ev.target.files.length > 0) {
+						let promise = guardarArchivo(ev.target.files[0])
+
+						toast.promise(promise, {
+							loading: 'Guardando archivo granulometria...',
+							success: 'Registro finalizado',
+							error: 'Error en el registro'
+						}, {
+							style: {
+								minWidth: '250px'
+							},
+							success: {
+								duration: 4000,
+								icon: '✅'
+							}
+						})
+
+						let url = await promise
+
+						apiRef.current.setEditCellValue({ id, field, value: url })
+					}
+				}}
+			/>
+		</div>
+	)
+}
+
 export const TablaMMPP = ({ materiasPrimas, errorLoadingLotes }) => {
 	const [rows, setRows] = useState([]);
 	const [rowModesModel, setRowModesModel] = useState({});
@@ -106,10 +250,10 @@ export const TablaMMPP = ({ materiasPrimas, errorLoadingLotes }) => {
 	const [calidades, setCalidades] = useState({})
 	const [origenes, setOrigenes] = useState({})
 	const [ubicaciones, setUbicaciones] = useState({})
-    const [deleteState, setDeleteState] = useState({
-        idToDelete: null,
-        modalOpen: false
-    })
+	const [deleteState, setDeleteState] = useState({
+		idToDelete: null,
+		modalOpen: false
+	})
 
 	useEffect(() => {
 		getObjIdToCalidad()
@@ -144,43 +288,43 @@ export const TablaMMPP = ({ materiasPrimas, errorLoadingLotes }) => {
 		}
 	}, [materiasPrimas])
 
-	const deleteMateriaPrima = async(id) => {
-		setDeleteState({...deleteState, modalOpen: false})
+	const deleteMateriaPrima = async (id) => {
+		setDeleteState({ ...deleteState, modalOpen: false })
 
 		let promise = new Promise((resolve, reject) => {
-            fetch(`${mmppEndpoints.deleteMMPP}?id=${id}`)
-                .then(async(result) => {
-                    if (result.ok) {
-                        setRows(rows.filter((row) => row.id !== id));
-                        resolve(result)
-                    }
+			fetch(`${mmppEndpoints.deleteMMPP}?id=${id}`)
+				.then(async (result) => {
+					if (result.ok) {
+						setRows(rows.filter((row) => row.id !== id));
+						resolve(result)
+					}
 
 					if ((await result.text()) == "Tiene descendientes") {
 						alert('No se ha podido borrar la materia prima ya que hay órdenes de trabajo asociados a ella')
 					}
 
-                    reject(result)
-                })
-                .catch(error => reject(error))
-        })
+					reject(result)
+				})
+				.catch(error => reject(error))
+		})
 
-        toast.promise(promise, {
-            loading: 'Eliminando materia prima...',
-            success: 'Registro eliminado',
-            error: 'Ha habido un error'
-        },
-            {
-                style: {
-                    minWidth: '250px',
-                },
-                success: {
-                    duration: 4000,
-                    icon: '✅',
-                },
-            }
-        )
+		toast.promise(promise, {
+			loading: 'Eliminando materia prima...',
+			success: 'Registro eliminado',
+			error: 'Ha habido un error'
+		},
+			{
+				style: {
+					minWidth: '250px',
+				},
+				success: {
+					duration: 4000,
+					icon: '✅',
+				},
+			}
+		)
 
-        setDeleteState({ ...deleteState, modalOpen: false })
+		setDeleteState({ ...deleteState, modalOpen: false })
 	}
 
 	const handleRowEditStart = (params, event) => {
@@ -200,7 +344,7 @@ export const TablaMMPP = ({ materiasPrimas, errorLoadingLotes }) => {
 	};
 
 	const handleDeleteClick = (id) => async () => {
-		setDeleteState({idToDelete: id, modalOpen: true})
+		setDeleteState({ idToDelete: id, modalOpen: true })
 	};
 
 	const handleCancelClick = (id) => () => {
@@ -434,22 +578,26 @@ export const TablaMMPP = ({ materiasPrimas, errorLoadingLotes }) => {
 		{ field: 'calidadId', headerName: 'Calidad', width: 100, editable: true, renderCell: RenderCalidad, renderEditCell: RenderEditCalidad },
 		{ field: 'origenId', headerName: 'Origen', width: 100, editable: true, renderCell: RenderOrigen, renderEditCell: RenderEditOrigen },
 		{ field: 'ubicacionId', align: 'right', headerName: 'Ubicación', width: 100, editable: true, renderCell: RenderUbicacion, renderEditCell: RenderEditUbicacion },
-		{ field: 'cantidad', type: 'number', headerName: 'Cantidad (kg)', width: 120, editable: true, valueFormatter: (params) => {
-			if (!isNaN(params.value)) {
-				return parseFloat(params.value.toFixed(2)).toString()
-			}
+		{
+			field: 'cantidad', type: 'number', headerName: 'Cantidad (kg)', width: 120, editable: true, valueFormatter: (params) => {
+				if (!isNaN(params.value)) {
+					return parseFloat(params.value.toFixed(2)).toString()
+				}
 
-			return ''
-		} },
-		{ field: 'disponibilidad', type: 'number', headerName: 'Disponible (kg)', width: 120, editable: false, valueFormatter: (params) => {
-			if (!isNaN(params.value)) {
-				return parseFloat(params.value.toFixed(2)).toString()
+				return ''
 			}
+		},
+		{
+			field: 'disponibilidad', type: 'number', headerName: 'Disponible (kg)', width: 120, editable: false, valueFormatter: (params) => {
+				if (!isNaN(params.value)) {
+					return parseFloat(params.value.toFixed(2)).toString()
+				}
 
-			return ''
-		}},
-		{ field: 'urlAnalisis', headerName: 'Analisis', width: 100, editable: true, renderCell: RenderAnalisis },
-		{ field: 'urlGranulometria', headerName: 'Granulometría', width: 110, editable: true, renderCell: RenderGranulometria },
+				return ''
+			}
+		},
+		{ field: 'urlAnalisis', headerName: 'Analisis', width: 100, editable: true, renderCell: RenderAnalisis, renderEditCell: RenderEditAnalisis },
+		{ field: 'urlGranulometria', headerName: 'Granulometría', width: 110, editable: true, renderCell: RenderGranulometria, renderEditCell: RenderEditGranulometria },
 		{ field: 'aluminio', type: 'number', headerName: 'Al', width: 75, editable: true },
 		{ field: 'calcio', type: 'number', headerName: 'Ca', width: 75, editable: true },
 		{ field: 'hierro', type: 'number', headerName: 'Fe', width: 75, editable: true },

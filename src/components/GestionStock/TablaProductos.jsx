@@ -22,6 +22,11 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { validarProducto } from '../../helpers/validadores'
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import { BlobStorage } from '../../api/blobStorage'
+import { registroEndpoints } from '../../api/endpoints'
+import Tooltip from '@mui/material/Tooltip';
 
 const isValidUrl = urlString => {
     try {
@@ -41,15 +46,37 @@ const CustomToolbar = () => {
     )
 }
 
+const guardarArchivo = async (file) => {
+	const formData = new FormData()
+	formData.append('file', file)
+
+	const response = await fetch(registroEndpoints.file, {
+		method: "POST",
+		headers: {
+			'Accept': 'application/json',
+			'Access-Control-Allow-Origin': '*',
+			'file-type': BlobStorage['mmpp-gra']
+		},
+		mode: 'cors',
+		body: formData
+	})
+
+	if (!response.ok) {
+		throw new Error("Error añadiendo archivo MMPP granulometria")
+	}
+
+	return (await response.json()).url
+}
+
 const RenderAnalisis = (props) => {
-    if (isValidUrl(props.row.urlAnalisis)) {
+    if (isValidUrl(props.row.quimicoUrl)) {
         return (
             <strong>
                 <Button
                     component="button"
                     className="button-table"
                     size="small"
-                    onClick={() => window.open(props.row.urlAnalisis)}
+                    onClick={() => window.open(props.row.quimicoUrl)}
                 >📁 Descargar</Button>
             </strong>
         )
@@ -58,21 +85,139 @@ const RenderAnalisis = (props) => {
     return <span style={{ marginLeft: "5px" }}>- -  -  -  - - - - - -</span>
 }
 
+const RenderEditAnalisis = props => {
+    const { id, value, field } = props
+	const apiRef = useGridApiContext()
+
+	if (isValidUrl(value)) {
+		return (
+			<div style={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+				<Tooltip title="Eliminar archivo de análisis">
+					<DeleteForeverIcon
+						sx={{ cursor: 'pointer' }}
+						onClick={ev => {
+							apiRef.current.setEditCellValue({ id, field, value: "" })
+						}}
+					/>
+				</Tooltip>
+			</div>
+		)
+	}
+
+	return (
+		<div style={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+			<label htmlFor="file-input-analisis">
+				<Tooltip title="Añadir archivo de análisis">
+					<CloudUploadIcon />
+				</Tooltip>
+			</label>
+
+			<input
+				id="file-input-analisis"
+				type="file"
+				style={{ display: 'none' }}
+				onChange={async (ev) => {
+					if (ev.target.files.length > 0) {
+						let promise = guardarArchivo(ev.target.files[0])
+
+						toast.promise(promise, {
+							loading: 'Guardando archivo analisis...',
+							success: 'Registro finalizado',
+							error: 'Error en el registro'
+						}, {
+							style: {
+								minWidth: '250px'
+							},
+							success: {
+								duration: 4000,
+								icon: '✅'
+							}
+						})
+
+						let url = await promise
+
+						apiRef.current.setEditCellValue({ id, field, value: url })
+					}
+				}}
+			/>
+		</div>
+	)
+}
+
 const RenderGranulometria = props => {
-    if (isValidUrl(props.row.urlGranulometria)) {
+    if (isValidUrl(props.row.granulometriaUrl)) {
         return (
             <strong>
                 <Button
                     component="button"
                     className="button-table"
                     size="small"
-                    onClick={() => window.open(props.row.urlGranulometria)}
+                    onClick={() => window.open(props.row.granulometriaUrl)}
                 >📁 Descargar</Button>
             </strong>
         )
     }
 
     return <span style={{ marginLeft: "5px" }}>- -  -  -  - - - - - -</span>
+}
+
+const RenderEditGranulometria = props => {
+	const { id, value, field } = props
+	const apiRef = useGridApiContext()
+
+	if (isValidUrl(value)) {
+		return (
+			<div style={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+				<Tooltip title="Eliminar archivo granulometria">
+					<DeleteForeverIcon
+						sx={{ cursor: 'pointer' }}
+						onClick={ev => {
+							apiRef.current.setEditCellValue({ id, field, value: "" })
+						}}
+					/>
+				</Tooltip>
+			</div>
+		)
+	}
+
+	return (
+		<div style={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+			<label htmlFor="file-input-granulometria">
+				<Tooltip title="Añadir archivo granulometria">
+					<CloudUploadIcon />
+				</Tooltip>
+			</label>
+
+			<input
+				id="file-input-granulometria"
+				type="file"
+				style={{ display: 'none' }}
+				onChange={async (ev) => {
+					if (ev.target.files.length > 0) {
+						let promise = guardarArchivo(ev.target.files[0])
+
+						toast.promise(promise, {
+							loading: 'Guardando archivo granulometria...',
+							success: 'Registro finalizado',
+							error: 'Error en el registro'
+						}, {
+							style: {
+								minWidth: '250px'
+							},
+							success: {
+								duration: 4000,
+								icon: '✅'
+							}
+						})
+
+						let url = await promise
+
+						apiRef.current.setEditCellValue({ id, field, value: url })
+					}
+				}}
+			/>
+		</div>
+	)
 }
 
 export const TablaProductos = ({ productos, errorLoadingProductos }) => {
@@ -417,8 +562,8 @@ export const TablaProductos = ({ productos, errorLoadingProductos }) => {
         { field: 'calidadId', headerName: 'Calidad', width: 80, editable: true, renderCell: RenderCalidad, renderEditCell: RenderEditCalidad },
         { field: 'tamañoId', headerName: 'Tamaño', width: 80, editable: true, renderCell: RenderTamaño, renderEditCell: RenderEditTamaño },
         { field: 'ubicacionId', headerName: 'Ubicación', width: 100, editable: true, renderCell: RenderUbicacion, renderEditCell: RenderEditUbicacion },
-        { field: 'quimicoUrl', headerName: 'Analisis', width: 110, editable: true, renderCell: RenderAnalisis },
-        { field: 'granulometriaUrl', headerName: 'Granulometría', width: 110, editable: true, renderCell: RenderGranulometria },
+        { field: 'quimicoUrl', headerName: 'Analisis', width: 110, editable: true, renderCell: RenderAnalisis, renderEditCell: RenderEditAnalisis },
+        { field: 'granulometriaUrl', headerName: 'Granulometría', width: 110, editable: true, renderCell: RenderGranulometria, renderEditCell: RenderEditGranulometria },
         { field: 'aluminio', type: 'number', headerName: 'Al', width: 75, editable: true },
         { field: 'calcio', type: 'number', headerName: 'Ca', width: 75, editable: true },
         { field: 'hierro', type: 'number', headerName: 'Fe', width: 75, editable: true },
