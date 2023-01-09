@@ -36,6 +36,7 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { BlobStorage } from '../../api/blobStorage'
 import { registroEndpoints } from '../../api/endpoints'
 import Tooltip from '@mui/material/Tooltip';
+import WarningModal from '../WarningModal'
 
 const isValidUrl = urlString => {
 	try {
@@ -254,6 +255,10 @@ export const TablaMMPP = ({ materiasPrimas, errorLoadingLotes }) => {
 		idToDelete: null,
 		modalOpen: false
 	})
+	const [openAlertModal, setOpenAlertModal] = useState({
+		status: false,
+		text: ''
+	})
 
 	useEffect(() => {
 		getObjIdToCalidad()
@@ -299,8 +304,11 @@ export const TablaMMPP = ({ materiasPrimas, errorLoadingLotes }) => {
 						resolve(result)
 					}
 
-					if ((await result.text()) == "Tiene descendientes") {
-						alert('No se ha podido borrar la materia prima ya que hay órdenes de trabajo asociados a ella')
+					if ((await result.text()) === "Tiene descendientes") {
+						setOpenAlertModal({
+							status: true,
+							text: 'No es posible borrar ese elemento porque ya tiene productos asociados.'
+						})
 					}
 
 					reject(result)
@@ -667,6 +675,7 @@ export const TablaMMPP = ({ materiasPrimas, errorLoadingLotes }) => {
 				marginBottom: '40px'
 			}}
 		>
+			<WarningModal setOpenAlertModal={setOpenAlertModal} openAlertModal={openAlertModal} />
 			<Dialog
 				open={deleteState.modalOpen}
 				onClose={() => setDeleteState({ ...deleteState, modalOpen: false })}

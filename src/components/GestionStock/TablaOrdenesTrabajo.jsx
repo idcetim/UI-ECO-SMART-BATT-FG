@@ -31,6 +31,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { validarOrdenTrabajo } from '../../helpers/validadores';
+import WarningModal from '../WarningModal'
 
 const isValidUrl = urlString => {
     try {
@@ -57,7 +58,11 @@ export const TablaOrdenesTrabajo = ({ ordenesTrabajo, errorLoadingOrdenesTrabajo
     const [deleteState, setDeleteState] = useState({
         idToDelete: null,
         modalOpen: false
-    })    
+    })
+    const [openAlertModal, setOpenAlertModal] = useState({
+        status: false,
+        text: ''
+    })
 
     useEffect(() => {
         getObjIdToProceso()
@@ -93,8 +98,11 @@ export const TablaOrdenesTrabajo = ({ ordenesTrabajo, errorLoadingOrdenesTrabajo
                         resolve(result)
                     }
 
-                    if ((await result.text()) == "Tiene descendientes") {
-                        alert('No se ha podido borrar la orden ya que hay productos asociados a ella')
+                    if ((await result.text()) === "Tiene descendientes") {
+                        setOpenAlertModal({
+                            status: true,
+                            text: 'No es posible borrar ese elemento porque ya tiene productos asociados.'
+                        })
                     }
 
                     reject(result)
@@ -357,7 +365,7 @@ export const TablaOrdenesTrabajo = ({ ordenesTrabajo, errorLoadingOrdenesTrabajo
             }}
         >
             <Toaster />
-
+            <WarningModal setOpenAlertModal={setOpenAlertModal} openAlertModal={openAlertModal} />
             <Dialog
                 open={deleteState.modalOpen}
                 onClose={() => setDeleteState({ ...deleteState, modalOpen: false })}
