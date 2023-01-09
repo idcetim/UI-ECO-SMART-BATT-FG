@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Alert from '@mui/material/Alert'
@@ -18,6 +19,7 @@ const Login = (props) => {
     const [codigo, setCodigo] = useState("")
     const [codigoErroneo, setCodigoErroneo] = useState(false)
     const [haciendoSubmit, setHaciendoSubmit] = useState(false)
+    const [rol, setRol] = useState(1)
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -30,12 +32,19 @@ const Login = (props) => {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ code: codigo })
+            body: JSON.stringify({
+                rol: rol,
+                code: codigo
+            })
         })
 
         if (response.ok) {
             props.setToken(await response.text())
             props.setLogeado()
+
+            console.log(rol)
+            props.setRol(rol)
+
             setHaciendoSubmit(false)
 
             return
@@ -47,10 +56,16 @@ const Login = (props) => {
 
     return (
         <ThemeProvider theme={theme}>
-            <div style={{ background: "grey", width: "100%", height: "80px", display: "flex", justifyContent: "center", alignItems: "center" }}>
-                <img src={'ferroglobe500.png'} alt="Logo" style={{ width: '70px', display: 'pointer' }} />
-                <span style={{ fontFamily: "Roboto", fontWeight: "bold", fontSize: "25px" }}>Ferroglobe</span>
-            </div>
+            {
+                props.administrador ?
+                    null
+                    :
+                    <div style={{ background: "grey", width: "100%", height: "80px", display: "flex", justifyContent: "center", alignItems: "center" }}>
+                        <img src={'ferroglobe500.png'} alt="Logo" style={{ width: '70px', display: 'pointer' }} />
+                        <span style={{ fontFamily: "Roboto", fontWeight: "bold", fontSize: "25px" }}>Ferroglobe</span>
+                    </div>
+            }
+
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
                 <Box
@@ -61,6 +76,12 @@ const Login = (props) => {
                         alignItems: 'center',
                     }}
                 >
+                    {props.administrador ?
+                        <Alert severity="error" style={{ marginBottom: '20px' }}>Debe iniciar sesión como administrador para tener acceso a esta página</Alert>
+                        :
+                        null
+                    }
+
                     <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
                         <LockOutlinedIcon />
                     </Avatar>
@@ -68,6 +89,18 @@ const Login = (props) => {
                     <Typography component="h1" variant="h5"> Control de acceso </Typography>
 
                     <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+                        <FormControl fullWidth>
+                            <InputLabel>Rol</InputLabel>
+                            <Select
+                                value={rol}
+                                label="Rol"
+                                onChange={ev => setRol(ev.target.value)}
+                            >
+                                <MenuItem value={1}>Ver</MenuItem>
+                                <MenuItem value={2}>Editar</MenuItem>
+                            </Select>
+                        </FormControl>
+
                         <TextField
                             margin="normal"
                             fullWidth

@@ -19,8 +19,6 @@ import Login from "./components/Login";
 const queryClient = new QueryClient()
 
 function App() {
-  const [logeado, setLogeado] = useState(false)
-
   return (
     < div >
       <CookiesProvider>
@@ -32,6 +30,7 @@ function App() {
 
 const CookiesWrapped = () => {
   const [logeado, setLogeado] = useState(null)
+  const [rol, setRol] = useState(null)
   const [cookies, setCookie] = useCookies();
 
   useEffect(() => {
@@ -47,6 +46,10 @@ const CookiesWrapped = () => {
       if (response.ok) {
         setLogeado(true)
 
+        let tokenData = await response.json()
+
+        setRol(tokenData.rol)
+
         return
       }
 
@@ -60,36 +63,76 @@ const CookiesWrapped = () => {
 
   if (logeado == null) {
     return (
-      <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh'}}>
-        <CircularProgress />
-      </div>
+      <Loading />
     )
   }
 
   if (logeado) {
-    return <Contenido />
+    if ((logeado != null) && (rol != null)) {
+
+      return (
+        <QueryClientProvider client={queryClient}>
+          <BrowserRouter >
+            <NavBar />
+            <Routes >
+              {/* <Route path="/" element={< Home />} /> */}
+              <Route path="/" element={<Resumen />} />
+
+              <Route path="/trazabilidad" element={< Trazabilidad />} />
+
+              <Route path="/gestionstock" element={
+                rol === 2 ?
+                  < GestionStock />
+                  :
+                  <Login
+                    administrador={true}
+                    setLogeado={() => setLogeado(true)}
+                    setToken={(token) => setCookie("jwt", token)}
+                    setRol={(logedRol) => setRol(logedRol)}
+                  />
+              } />
+
+              <Route path="/leerlotes" element={< LeerLotes />} />
+
+              <Route path="/registro" element={
+                rol === 2 ?
+                  < Registro />
+                  :
+                  <Login
+                    administrador={true}
+                    setLogeado={() => setLogeado(true)}
+                    setToken={(token) => setCookie("jwt", token)}
+                    setRol={(logedRol) => setRol(logedRol)}
+                  />
+              } />
+
+              <Route path="/EditarTipos" element={< EditarTipos />} />
+            </Routes>
+          </BrowserRouter>
+        </QueryClientProvider >
+      )
+    }
+
+    return (
+      <Loading />
+    )
   }
 
-  return <Login setLogeado={() => setLogeado(true)} setToken={(token) => setCookie("jwt", token)} />
+  return (
+    <Login
+      setLogeado={() => setLogeado(true)}
+      setToken={(token) => setCookie("jwt", token)}
+      setRol={(logedRol) => setRol(logedRol)}
+    />
+  )
 }
 
-const Contenido = () => {
+const Loading = () => {
   return (
-    <QueryClientProvider client={queryClient}>
-      <BrowserRouter >
-        <NavBar />
-        <Routes >
-          {/* <Route path="/" element={< Home />} /> */}
-          <Route path="/" element={<Resumen />} />
-          <Route path="/trazabilidad" element={< Trazabilidad />} />
-          <Route path="/gestionstock" element={< GestionStock />} />
-          <Route path="/leerlotes" element={< LeerLotes />} />
-          <Route path="/registro" element={< Registro />} />
-          <Route path="/EditarTipos" element={< EditarTipos />} />
-        </Routes>
-      </BrowserRouter>
-    </QueryClientProvider >
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+      <CircularProgress />
+    </div>
   )
-} 
+}
 
 export default App;
