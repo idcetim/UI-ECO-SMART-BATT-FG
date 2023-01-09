@@ -79,8 +79,8 @@ const Contenido = () => {
       <BrowserRouter >
         <NavBar />
         <Routes >
-          <Route path="/" element={< Home />} />
-          <Route path="/resumen" element={<Resumen />} />
+          {/* <Route path="/" element={< Home />} /> */}
+          <Route path="/" element={<Resumen />} />
           <Route path="/trazabilidad" element={< Trazabilidad />} />
           <Route path="/gestionstock" element={< GestionStock />} />
           <Route path="/leerlotes" element={< LeerLotes />} />

@@ -96,9 +96,9 @@ const NavBar = () => {
 								display: { xs: 'block', md: 'none' },
 							}}
 						>
-							<MenuItem onClick={handleCloseNavMenu}>
+							{/* <MenuItem onClick={handleCloseNavMenu}>
 								<Typography textAlign="center" component={NavLink} className="small-navlink" style={({ isActive }) => isActive ? actveStyleSmall : null} to='/resumen' sx={smallScreenLinkStyle}>Resumen</Typography>
-							</MenuItem>
+							</MenuItem> */}
 
 							<MenuItem onClick={handleCloseNavMenu}>
 								<Typography textAlign='center' component={NavLink} className="small-navlink" style={({ isActive }) => isActive ? actveStyleSmall : null} to='/trazabilidad' sx={smallScreenLinkStyle}>Trazabilidad</Typography>
@@ -123,7 +123,7 @@ const NavBar = () => {
 					</Box>
 
 					<Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-						<Button component={NavLink} className="navlink" style={({ isActive }) => isActive ? activeStyleBig : null} to='/resumen' sx={{ my: 2, color: 'black', display: 'block' }}>Resumen</Button>
+						{/* <Button component={NavLink} className="navlink" style={({ isActive }) => isActive ? activeStyleBig : null} to='/resumen' sx={{ my: 2, color: 'black', display: 'block' }}>Resumen</Button> */}
 						<Button component={NavLink} className="navlink" style={({ isActive }) => isActive ? activeStyleBig : null} to='/trazabilidad' sx={{ my: 2, color: 'black', display: 'block' }}>Trazabilidad</Button>
 						<Button component={NavLink} className="navlink" style={({ isActive }) => isActive ? activeStyleBig : null} to='/gestionstock' sx={{ my: 2, color: 'black', display: 'block' }}>Gestion stock</Button>
 						<Button component={NavLink} className="navlink" style={({ isActive }) => isActive ? activeStyleBig : null} to='/registro' sx={{ my: 2, color: 'black', display: 'block' }}>Registro</Button>
