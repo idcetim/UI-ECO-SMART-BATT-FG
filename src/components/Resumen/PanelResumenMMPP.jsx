@@ -102,8 +102,8 @@ const PanelResumenMMPP = () => {
                                         <TableCell component="th" scope="row">
                                             {row.calidad}
                                         </TableCell>
-                                        <TableCell align="right">{row.cantidad}</TableCell>
-                                        <TableCell align="right">{row.disponibilidad}</TableCell>
+                                        <TableCell align="right">{parseFloat(Number(row.cantidad).toFixed(2))}</TableCell>
+                                        <TableCell align="right">{parseFloat(Number(row.disponibilidad).toFixed(2))}</TableCell>
                                         <TableCell align="right">{parseFloat(Number(row.disponibilidad / row.cantidad * 100).toFixed(2))}</TableCell>
                                     </TableRow>
                                 )) : null}

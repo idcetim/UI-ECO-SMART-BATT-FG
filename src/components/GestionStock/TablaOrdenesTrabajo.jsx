@@ -265,6 +265,16 @@ export const TablaOrdenesTrabajo = ({ ordenesTrabajo, errorLoadingOrdenesTrabajo
         )
     }
 
+    const RenderPerdidas = props => {
+        if (props.row.cantidadProductos <= 0) {
+            return "-"
+        }
+
+        let porcentajePerdidas = 100 - (props.row.cantidadProductos / props.row.cantidadMaterias) * 100
+
+        return `${parseFloat(porcentajePerdidas.toFixed(2))} %`
+    }
+
 
     const columns = [
         { field: 'codigo', headerName: 'Código', width: 130, editable: true },
@@ -283,6 +293,8 @@ export const TablaOrdenesTrabajo = ({ ordenesTrabajo, errorLoadingOrdenesTrabajo
             }
         }},
         { field: 'procesosIds', headerName: 'Proceso', flex: 1, editable: true, renderCell: RenderProceso, renderEditCell: RenderEditProceso },
+        { field: 'perdidas', headerName: 'Perdidas %', editable: false, align: 'right', renderCell: RenderPerdidas,
+        },
         {
             field: 'actions',
             type: 'actions',
