@@ -85,6 +85,38 @@ export const OrdenesTrabajo = () => {
         return mapping
     }
 
+    const getDisponibilidadMMPP = (id) => {
+        for (let mmpp of materiasPrimas) {
+            if (mmpp.id === id) {
+                return mmpp.disponibilidad
+            }
+        }
+
+        return 0
+    }
+
+    const getCantidadMMPPSeleccionada = (id, materiaExcluida) => {
+        let cantidad = 0
+        let materiasPrimas = []
+
+        if (materiaExcluida != null) {
+            materiasPrimas = inputs.materiasPrimas.filter((_, index) => {
+                return index !== materiaExcluida
+            })
+        }
+        else {
+            materiasPrimas = inputs.materiasPrimas
+        }
+
+        for (let materiaPrima of materiasPrimas) {
+            if (materiaPrima.id === id && !isNaN(Number(materiaPrima.cantidadEntrada))) {
+                cantidad += Number(materiaPrima.cantidadEntrada)
+            }
+        }
+
+        return cantidad
+    }
+
     const guardarHandler = async (orden) => {
         let resultadoValidacion = validarOrdenTrabajo(orden)
         let objMateriasPrimas = getMMPPMapping()
@@ -157,6 +189,14 @@ export const OrdenesTrabajo = () => {
             ...inputs,
             ordenesTrabajo: typeof value === 'string' ? value.split(',') : value
         })
+    }
+
+    const getErrorMateriaPrima = (i) => {
+        if (i && inputs.materiasPrimas[i - 1] && inputs.materiasPrimas[i - 1].id && inputs.materiasPrimas[i - 1].cantidadEntrada) {
+            return getCantidadMMPPSeleccionada(inputs.materiasPrimas[i - 1].id) > getDisponibilidadMMPP(inputs.materiasPrimas[i - 1].id)
+        }
+
+        return false
     }
 
     useEffect(() => {
@@ -244,7 +284,7 @@ export const OrdenesTrabajo = () => {
 
                                                 <Grid item xs={6}>
                                                     <FormControl fullWidth>
-                                                        <TextField
+                                                        {/* <TextField
                                                             label={'Cantidad (kg)'}
                                                             type="number"
                                                             value={inputs.materiasPrimas[i - 1].cantidadEntrada}
@@ -257,7 +297,45 @@ export const OrdenesTrabajo = () => {
                                                                     ...inputs,
                                                                     materiasPrimas: mmpp
                                                                 })
-                                                            }} />
+                                                            }}
+                                                            error={getErrorMateriaPrima(i)}
+                                                        /> */}
+
+                                                        <InputLabel>Cantidad (kg)</InputLabel>
+                                                        <OutlinedInput
+                                                            type="number"
+                                                            label='Cantidad (kg)'
+                                                            value={inputs.materiasPrimas[i - 1].cantidadEntrada ?? ""}
+                                                            onChange={ev => {
+                                                                let mmpp = inputs.materiasPrimas
+
+                                                                mmpp[i - 1].cantidadEntrada = ev.target.value
+
+                                                                setInputs({
+                                                                    ...inputs,
+                                                                    materiasPrimas: mmpp
+                                                                })
+                                                            }}
+                                                            error={getErrorMateriaPrima(i)}
+                                                            endAdornment={
+                                                                <InputAdornment position="end">
+                                                                    <Chip 
+                                                                        label="Max" 
+                                                                        style={{cursor: 'pointer'}}
+                                                                        onClick={ev => {
+                                                                            let mmpp = inputs.materiasPrimas
+
+                                                                            mmpp[i - 1].cantidadEntrada =  getDisponibilidadMMPP(inputs.materiasPrimas[i - 1].id) - getCantidadMMPPSeleccionada(inputs.materiasPrimas[i - 1].id, i - 1)
+
+                                                                            setInputs({
+                                                                                ...inputs,
+                                                                                materiasPrimas: mmpp
+                                                                            })
+                                                                        }} 
+                                                                    />
+                                                                </InputAdornment>
+                                                            }
+                                                        />
                                                     </FormControl>
                                                 </Grid>
                                             </>
@@ -283,6 +361,22 @@ export const OrdenesTrabajo = () => {
                                             </Tooltip>
                                         </div>
                                     </Grid>
+
+                                    {/* <Grid item xs={12}>
+                                        <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
+                                            <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+                                            <OutlinedInput
+                                                id="outlined-adornment-password"
+                                                type={'text'}
+                                                endAdornment={
+                                                    <InputAdornment position="end">
+                                                        <Chip label="Max" style={{cursor: 'pointer'}} />
+                                                    </InputAdornment>
+                                                }
+                                                label="Password"
+                                            />
+                                        </FormControl>
+                                    </Grid> */}
                                 </Grid>
                             </FormControl>
                         </Paper>
