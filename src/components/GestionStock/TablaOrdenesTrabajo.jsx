@@ -32,12 +32,9 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { validarOrdenTrabajo } from '../../helpers/validadores';
-<<<<<<< HEAD
 import { IconButton } from '@mui/material';
 import {botonesEditarYEleminarDisabled} from '../../helpers/mensajes'
-=======
 import WarningModal from '../WarningModal'
->>>>>>> 2043574d128ffe1a4eadbc05be32422e9c586cd0
 
 const isValidUrl = urlString => {
     try {

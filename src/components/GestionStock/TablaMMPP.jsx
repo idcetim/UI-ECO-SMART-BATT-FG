@@ -36,11 +36,8 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { BlobStorage } from '../../api/blobStorage'
 import { registroEndpoints } from '../../api/endpoints'
 import Tooltip from '@mui/material/Tooltip';
-<<<<<<< HEAD
 import {botonesEditarYEleminarDisabled} from '../../helpers/mensajes'
-=======
 import WarningModal from '../WarningModal'
->>>>>>> 2043574d128ffe1a4eadbc05be32422e9c586cd0
 
 const isValidUrl = urlString => {
 	try {
