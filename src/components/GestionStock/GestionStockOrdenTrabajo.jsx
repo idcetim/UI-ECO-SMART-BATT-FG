@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { ordenesTrabajoEndpoints } from '../../api/endpoints'
 import { TablaOrdenesTrabajo } from './TablaOrdenesTrabajo'
 
-export const GestionStockOrdenTrabajo = () => {
+export const GestionStockOrdenTrabajo = ({rol}) => {
     const [ordenesTrabajo, setOrdenesTrabajo] = useState(null)
     const [errorLoadingOrdenesTrabajo, setErrorLoadingOrdenesTrabajo] = useState(false)
 
@@ -29,7 +29,7 @@ export const GestionStockOrdenTrabajo = () => {
     return (
         <div style={{ display: 'flex', flexDirection: 'column' }}>
             <div style={{ display: 'flex', justifyContent: 'center' }}>
-                <TablaOrdenesTrabajo ordenesTrabajo={ordenesTrabajo} errorLoadingOrdenesTrabajo={errorLoadingOrdenesTrabajo} />
+                <TablaOrdenesTrabajo ordenesTrabajo={ordenesTrabajo} errorLoadingOrdenesTrabajo={errorLoadingOrdenesTrabajo} rol={rol} />
             </div>
         </div>
     )

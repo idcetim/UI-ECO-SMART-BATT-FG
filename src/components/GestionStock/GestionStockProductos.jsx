@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { productosEndpoints } from '../../api/endpoints'
 import { TablaProductos } from './TablaProductos'
 
-export const GestionStockProductos = () => {
+export const GestionStockProductos = ({rol}) => {
     const [productos, setProductos] = useState(null)
     const [errorLoadingProductos, setErrorLoadingProductos] = useState(false)
 
@@ -29,7 +29,7 @@ export const GestionStockProductos = () => {
     return (
         <div style={{ display: 'flex', flexDirection: 'column'}}>
             <div style={{display: 'flex', justifyContent: 'center'}}>
-                <TablaProductos productos={productos} errorLoadingProductos={errorLoadingProductos} />
+                <TablaProductos productos={productos} errorLoadingProductos={errorLoadingProductos} rol={rol} />
             </div>
         </div>
     )

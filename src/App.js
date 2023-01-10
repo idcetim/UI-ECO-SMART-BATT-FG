@@ -81,15 +81,7 @@ const CookiesWrapped = () => {
               <Route path="/trazabilidad" element={< Trazabilidad />} />
 
               <Route path="/gestionstock" element={
-                rol === 2 ?
-                  < GestionStock />
-                  :
-                  <Login
-                    administrador={true}
-                    setLogeado={() => setLogeado(true)}
-                    setToken={(token) => setCookie("jwt", token)}
-                    setRol={(logedRol) => setRol(logedRol)}
-                  />
+                < GestionStock rol={rol} />
               } />
 
               <Route path="/leerlotes" element={< LeerLotes />} />

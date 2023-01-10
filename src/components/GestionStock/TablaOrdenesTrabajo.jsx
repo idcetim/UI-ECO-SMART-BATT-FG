@@ -16,7 +16,8 @@ import {
     TextField,
     FormControl,
     Select,
-    MenuItem
+    MenuItem,
+    Tooltip
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
@@ -31,6 +32,8 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { validarOrdenTrabajo } from '../../helpers/validadores';
+import { IconButton } from '@mui/material';
+import {botonesEditarYEleminarDisabled} from '../../helpers/mensajes'
 
 const isValidUrl = urlString => {
     try {
@@ -50,7 +53,7 @@ const CustomToolbar = () => {
     )
 }
 
-export const TablaOrdenesTrabajo = ({ ordenesTrabajo, errorLoadingOrdenesTrabajo }) => {
+export const TablaOrdenesTrabajo = ({ ordenesTrabajo, errorLoadingOrdenesTrabajo, rol }) => {
     const [rows, setRows] = useState([])
     const [rowModesModel, setRowModesModel] = useState({});
     const [procesos, setProcesos] = useState({})
@@ -127,6 +130,10 @@ export const TablaOrdenesTrabajo = ({ ordenesTrabajo, errorLoadingOrdenesTrabajo
     };
 
     const handleEditClick = (id) => () => {
+        if (rol !== 2) {
+            return
+        }
+
         setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
     };
 
@@ -135,6 +142,10 @@ export const TablaOrdenesTrabajo = ({ ordenesTrabajo, errorLoadingOrdenesTrabajo
     };
 
     const handleDeleteClick = (id) => async () => {
+        if (rol !== 2) {
+            return
+        }
+
         setDeleteState({ idToDelete: id, modalOpen: true })
     };
 
@@ -323,14 +334,14 @@ export const TablaOrdenesTrabajo = ({ ordenesTrabajo, errorLoadingOrdenesTrabajo
 
                 return [
                     <GridActionsCellItem
-                        icon={<EditIcon />}
+                        icon={<Tooltip title={rol !== 2 ? botonesEditarYEleminarDisabled : ""}><EditIcon color={rol !== 2 ? "disabled" : "black"}  /></Tooltip>}
                         label="Edit"
                         className="textPrimary"
                         onClick={handleEditClick(id)}
                         color="inherit"
                     />,
                     <GridActionsCellItem
-                        icon={<DeleteIcon />}
+                        icon={<Tooltip title={rol !== 2 ? botonesEditarYEleminarDisabled : ""}><DeleteIcon color={rol !== 2 ? "disabled" : "black"} /></Tooltip>}
                         label="Delete"
                         onClick={handleDeleteClick(id)}
                         color="inherit"

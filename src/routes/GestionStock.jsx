@@ -6,22 +6,22 @@ import { GestionStockMP } from '../components/GestionStock/GestionStockMP'
 import { GestionStockOrdenTrabajo } from '../components/GestionStock/GestionStockOrdenTrabajo'
 import { GestionStockProductos } from '../components/GestionStock/GestionStockProductos'
 
-const GestionStock = () => {
+const GestionStock = ({rol}) => {
     const [currentTab, setCurrentTab] = useState(0)
     return (
         <Box sx={{ width: '100%' }}>
             <StockTabsMenu currentTab={currentTab} setCurrentTab={setCurrentTab} />
 
             <TabPanel value={currentTab} index={0}>
-                <GestionStockMP />
+                <GestionStockMP rol={rol} />
             </TabPanel>
 
             <TabPanel value={currentTab} index={1}>
-                <GestionStockOrdenTrabajo />
+                <GestionStockOrdenTrabajo rol={rol} />
             </TabPanel>
 
             <TabPanel value={currentTab} index={2}>
-                <GestionStockProductos />
+                <GestionStockProductos rol={rol} />
             </TabPanel>
         </Box>
     )

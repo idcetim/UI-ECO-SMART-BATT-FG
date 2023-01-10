@@ -36,6 +36,7 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { BlobStorage } from '../../api/blobStorage'
 import { registroEndpoints } from '../../api/endpoints'
 import Tooltip from '@mui/material/Tooltip';
+import {botonesEditarYEleminarDisabled} from '../../helpers/mensajes'
 
 const isValidUrl = urlString => {
 	try {
@@ -243,7 +244,7 @@ const RenderEditGranulometria = props => {
 	)
 }
 
-export const TablaMMPP = ({ materiasPrimas, errorLoadingLotes }) => {
+export const TablaMMPP = ({ materiasPrimas, errorLoadingLotes, rol }) => {
 	const [rows, setRows] = useState([]);
 	const [rowModesModel, setRowModesModel] = useState({});
 	const [tamaños, setTamaños] = useState({})
@@ -336,6 +337,10 @@ export const TablaMMPP = ({ materiasPrimas, errorLoadingLotes }) => {
 	};
 
 	const handleEditClick = (id) => () => {
+		if (rol !== 2) {
+			return
+		}
+
 		setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
 	};
 
@@ -344,6 +349,10 @@ export const TablaMMPP = ({ materiasPrimas, errorLoadingLotes }) => {
 	};
 
 	const handleDeleteClick = (id) => async () => {
+		if (rol !== 2) {
+			return
+		}
+
 		setDeleteState({ idToDelete: id, modalOpen: true })
 	};
 
@@ -634,14 +643,14 @@ export const TablaMMPP = ({ materiasPrimas, errorLoadingLotes }) => {
 
 				return [
 					<GridActionsCellItem
-						icon={<EditIcon />}
+						icon={<Tooltip title={rol !== 2 ? botonesEditarYEleminarDisabled : ""}><EditIcon color={rol !== 2 ? "disabled" : "black"}  /></Tooltip>}
 						label="Edit"
 						className="textPrimary"
 						onClick={handleEditClick(id)}
 						color="inherit"
 					/>,
 					<GridActionsCellItem
-						icon={<DeleteIcon />}
+						icon={<Tooltip title={rol !== 2 ? botonesEditarYEleminarDisabled : ""}><DeleteIcon color={rol !== 2 ? "disabled" : "black"} /></Tooltip>}
 						label="Delete"
 						onClick={handleDeleteClick(id)}
 						color="inherit"

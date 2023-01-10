@@ -5,7 +5,7 @@ import { TablaLotesCSV } from './TablaLotesCSV'
 import { TablaMMPP } from './TablaMMPP'
 import { readLotesFromCSV } from '../../helpers/readLotesFromCSV'
 
-export const GestionStockMP = () => {
+export const GestionStockMP = ({rol}) => {
   const [materiasPrimas, setMateriasPrimas] = useState(null)
   const [lotesCSV, setLotesCSV] = useState([])
   const [errorLoadingLotes, setErrorLoadingLotes] = useState(false)
@@ -67,6 +67,7 @@ export const GestionStockMP = () => {
               materiasPrimas={materiasPrimas} 
               errorLoadingLotes={errorLoadingLotes} 
               setMateriasPrimas={setMateriasPrimas}
+              rol={rol}
             />
         }
       </div>
