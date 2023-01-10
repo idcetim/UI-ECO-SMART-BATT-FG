@@ -1,7 +1,20 @@
 import { useState, useRef, useEffect } from 'react'
 import { BlobStorage } from '../../api/blobStorage'
 import { registroEndpoints } from '../../api/endpoints'
-import { TextField, Box, Grid, Button, Select, MenuItem, Typography, OutlinedInput, Chip, InputLabel, FormControl } from '@mui/material'
+import {
+	TextField,
+	Box,
+	Grid,
+	Button,
+	Select,
+	MenuItem,
+	Typography,
+	OutlinedInput,
+	Chip,
+	InputLabel,
+	FormControl,
+	InputAdornment
+} from '@mui/material'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
@@ -254,14 +267,39 @@ export const Productos = () => {
 					</Grid>
 
 					<Grid item xs={2} sm={4} md={4}>
-						<TextField
+						{/* <TextField
 							size="small"
 							type="number"
 							label="Cantidad (kg)"
 							variant='outlined'
 							value={inputs.cantidad}
 							onChange={ev => setInputs({ ...inputs, cantidad: ev.target.value })}
-						/>
+						/> */}
+
+						<FormControl fullWidth>
+							<InputLabel>Cantidad (kg)</InputLabel>
+							<OutlinedInput
+								type="number"
+								label='Cantidad (kg)'
+								variant='outlined'
+								size="small"
+								value={inputs.cantidad ? parseFloat(Number(inputs.cantidad).toFixed(2)) : ""}
+								onChange={ev => setInputs({ ...inputs, cantidad: ev.target.value })}
+								endAdornment={
+									<InputAdornment position="end">
+										<Chip
+											label="Max"
+											style={{ cursor: 'pointer' }}
+											onClick={() => {
+												let ordenTrabajo = getOrdenesTrabajoMapping()[inputs.ordenTrabajoId]
+
+												setInputs({ ...inputs, cantidad: ordenTrabajo.cantidadMaterias - ordenTrabajo.cantidadProductos })
+											}}
+										/>
+									</InputAdornment>
+								}
+							/>
+						</ FormControl>
 					</Grid>
 
 					<Grid item xs={2} sm={4} md={4}>
